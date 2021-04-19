@@ -1,0 +1,3 @@
+Contraseña para usuario administrador: admin
+
+Contraseña para usuarios clientes: secret
