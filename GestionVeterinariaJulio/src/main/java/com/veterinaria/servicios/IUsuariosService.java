@@ -11,9 +11,9 @@ public interface IUsuariosService {
 	public abstract List<ModeloUsuarios> listarUsuarios();
 	public abstract ModeloUsuarios buscarId(int id);
 	public abstract ModeloUsuarios enabledCliente(int id, ModeloUsuarios usuario);
-	public abstract ModeloUsuarios editarPerfil(ModeloUsuarios modeloCliente);
+	public abstract ModeloUsuarios editarPerfil(ModeloUsuarios usuario);
 	
 	
-	public abstract Usuarios convertirUsuarios(ModeloUsuarios modeloCliente);
-	public abstract ModeloUsuarios convertirUsuarios(Usuarios cliente);
+	public abstract Usuarios convertirUsuarios(ModeloUsuarios usuario);
+	public abstract ModeloUsuarios convertirUsuarios(Usuarios usuario);
 }

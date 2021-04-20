@@ -26,7 +26,7 @@ import com.veterinaria.servicios.Impl.UsuariosImpl;
 @RequestMapping("/")
 public class UsuariosController {
 	private static final Log LOG_VETERINARIA = LogFactory.getLog(UsuariosController.class);
-	private static final String vista_login = "login", clientes = "listadoClientes";
+	private static final String vista_login = "login", vista_clientes = "listadoClientes";
 	
 	
 	@Autowired
@@ -79,7 +79,7 @@ public class UsuariosController {
 		UserDetails usuario = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String nombreUsuario = usuario.getUsername();
 		
-		ModelAndView mavUsuarios = new ModelAndView(clientes);
+		ModelAndView mavUsuarios = new ModelAndView(vista_clientes);
 		mavUsuarios.addObject("usuarios",usuariosImpl.listarUsuarios());
 		mavUsuarios.addObject("nombre",nombreUsuario.toUpperCase());// mostramos el nombre del usuario en mayúsculas
 		return mavUsuarios;
@@ -90,6 +90,6 @@ public class UsuariosController {
 	@PostMapping("/actived/{id}")
 	public String gestionarCliente(@ModelAttribute("usuario") ModeloUsuarios usuario, @PathVariable("id") int id) {
 		usuariosImpl.enabledCliente(id, usuario);
-		return "redirect:/"+clientes;
+		return "redirect:/"+vista_clientes;
 	}
 }

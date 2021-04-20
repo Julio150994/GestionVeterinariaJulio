@@ -107,6 +107,8 @@
 			
 			<div class="card-headert mt-5 text-center"> <h4>TABLA DE CLIENTES PARA (<span class="text-secondary" th:text="${nombre}"></span>)</h4> </div>
 			
+			<a th:href="@{//}"></a>
+			
 			<div class="card-body" sec:authorize="hasRole('ROLE_ADMIN')">
 				<table class="table table-bordered text-center" id="tablaUsuarios">
 					<thead class="table table-dark">
@@ -132,7 +134,7 @@
 								<form class="form-signin" action="#" th:action="@{/actived/}+${usuario.id}" th:object="${usuario}" method="POST">
 									<input type="hidden" name="id" th:value="${usuario.id}"/>
 									
-									<button class="btn btn-primary text-white" th:field="*{activado}" type="submit" th:if="${usuario.activado}">
+									<button class="btn btn-danger text-white" th:field="*{activado}" type="submit" th:if="${usuario.activado}">
 										<i class="fa fa-moon-o"></i> Desactivar
 									</button>
 										

@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.veterinaria.entidades.Usuarios;
 import com.veterinaria.modelos.ModeloUsuarios;
 import com.veterinaria.servicios.UsuariosService;
+import com.veterinaria.servicios.Impl.ClientesImpl;
 import com.veterinaria.servicios.Impl.UsuariosImpl;
 import javax.validation.Valid;
 import org.apache.commons.logging.Log;
@@ -28,15 +29,20 @@ import org.apache.commons.logging.LogFactory;
 @RequestMapping("/")
 public class ClientesController {
 	private static final Log LOG_VETERINARIA = LogFactory.getLog(ClientesController.class);
-	private static final String menu = "menu", formulario = "registrarCliente", vista_perfil = "perfil_cliente";
+	private static final String menu = "menu", formulario = "registrarCliente", vista_perfil = "perfil_cliente",
+			vista_clientes = "listadoClientes", formAniadir = "/formCliente";
 	
 	@Autowired
 	@Qualifier("usuariosService")
-	private UsuariosService usuarios;
+	private UsuariosService usuariosService;
 	
 	@Autowired
 	@Qualifier("usuariosImpl")
-	private UsuariosImpl clientes;
+	private UsuariosImpl usuarios;
+	
+	@Autowired
+	@Qualifier("clientesImpl")
+	private ClientesImpl clientes;
 	
 	
 	@GetMapping("/registrarCliente")
@@ -58,7 +64,7 @@ public class ClientesController {
 			return formulario;
 		}
 		else {
-			usuarios.registrarUsuario(usuario);
+			usuariosService.registrarUsuario(usuario);
 			LOG_VETERINARIA.info(registrado);
 			mensajeFlash.addFlashAttribute("registrar",registrado);
 			return "redirect:/"+menu;
@@ -74,7 +80,7 @@ public class ClientesController {
 		
 		ModelAndView mavCliente = new ModelAndView(vista_perfil);
 		mavCliente.addObject("cliente",username.toUpperCase());
-		mavCliente.addObject("usuario",clientes.buscarId(id));
+		mavCliente.addObject("usuario",usuarios.buscarId(id));
 		return mavCliente;
 	}
 	
@@ -93,7 +99,7 @@ public class ClientesController {
 			return vista_perfil;
 		}
 		else {
-			clientes.editarPerfil(cliente);
+			usuarios.editarPerfil(cliente);
 			
 			String perfil = "Perfil de "+nombreUsuario+" editado correctamente";
 			LOG_VETERINARIA.info(perfil);
@@ -101,5 +107,41 @@ public class ClientesController {
 			
 			return "redirect:/"+menu;
 		}
+	}
+	
+	/*-----------Métodos para el administrador----------------*/
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@GetMapping({"/formCliente","/formCliente/{id}"})
+	public ModelAndView formularioCliente(@PathVariable("id") int id) {
+		LOG_VETERINARIA.info("Formulario de cliente");
+		ModelAndView mavVeterinario = new ModelAndView(formAniadir);
+		mavVeterinario.addObject("veterinarios",new Usuarios());
+		return mavVeterinario;
+	}	
+	
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PostMapping("/saveCliente")
+	public String guardarCliente(@ModelAttribute("clientes") ModeloUsuarios cliente, RedirectAttributes mensajeFlash) {
+		if(cliente.getId() == 0) {
+			clientes.aniadirCliente(cliente);
+			mensajeFlash.addFlashAttribute("aniadido","Cliente "+cliente.getUsername()+" añadido éxitosamente");
+		}
+		else {
+			clientes.editarCliente(cliente);
+			mensajeFlash.addFlashAttribute("editado","Cliente "+cliente.getUsername()+" editado éxitosamente");
+		}
+		return "redirect:/"+vista_clientes;
+	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PostMapping("/eliminarCliente/{id}")
+	public String eliminarCliente(ModeloUsuarios cliente, @PathVariable("id") int id, RedirectAttributes mensajeFlash) {
+		if(id > 0) {
+			clientes.eliminarCliente(cliente, id);
+			mensajeFlash.addFlashAttribute("eliminado","Cliente "+cliente.getUsername()+" eliminado éxitosamente");
+		}
+		
+		return "redirect:/"+vista_clientes;
 	}
 }
