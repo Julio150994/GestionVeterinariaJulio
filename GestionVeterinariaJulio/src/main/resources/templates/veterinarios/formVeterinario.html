@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thyemeleaf.org" xmlns:sec="http://www.thyemeleaf.org/extras/spring-security">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    	<!-- Meta, title, CSS, favicons, etc. -->
+    	<meta charset="utf-8">
+    	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Registrar cliente</title>
+		
+		<!-- Bootstrap -->
+    	<link th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
+    	<!-- Font Awesome -->
+    	<link th:href="@{/vendors/fontawesome/css/font-awesome.min.css}" rel="stylesheet">
+    	<!-- NProgress -->
+    	<link th:href="@{/vendors/nprogress/nprogress.css}" rel="stylesheet">
+
+    	<!-- Custom Theme Style -->
+    	<link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
+    	<link type="text/css" th:href="@{/css/veterinarios.css}" rel="stylesheet"/>
+	</head>
+
+	<body>
+		<div class="container" id="formBody">
+			<div class="card mt-5 col-lg-6 offset-lg-3 col-md-4 offset-md-3 col-12">
+				<div class="card-header text-center"> <h4>AÑADIR VETERINARIO</h4> </div>
+			
+				<div class="card-body">
+					<form class="form-signin" action="#" th:action="@{/saveVeterinario}" th:object="${veterinarios}" method="post">
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+						<div class="form-label-group">
+							<input type="text" th:field="*{nombre}" placeholder="Nombre" class="form-control" name="nombre" id="datoCliente"/>
+							<div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error producido en el nombre</div>
+						</div>
+						<div class="form-label-group">
+							<input type="text" th:field="*{apellidos}" placeholder="Apellidos" class="form-control" name="apellidos" id="datoCliente"/>
+							<div class="text-danger" th:if="${#fields.hasErrors('apellidos')}" th:errors="*{apellidos}">Error producido en los apellidos</div>
+						</div>
+						<div class="form-label-group">
+							<input type="text" th:field="*{telefono}" placeholder="Nº de teléfono" class="form-control" name="telefono" id="datoCliente"/>
+							<div class="text-danger" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}">Error producido en el número de teléfono</div>
+						</div>
+						<div class="form-label-group">
+							<input type="text" th:field="*{username}" placeholder="Username" class="form-control" name="username" id="datoCliente"/>
+							<div class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Error producido en el nombre de usuario</div>
+						</div>
+						<div class="form-label-group">
+							<input type="password" th:field="*{password}" placeholder="Password" class="form-control" name="password"/>
+							<div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error producido en la contraseña</div>
+						</div>
+					
+						<div class="card-footer">
+							<a th:href="@{/}" class="btn btn-secondary"><i class="fa fa-arrow-circle-left"></i> Volver al menú</a>
+						
+							<button type="submit" class="btn btn-success"><i class="fa fa-briefcase-medical"></i> Guardar</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		
+		<!-- jQuery -->
+    	<script th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
+    	<!-- Bootstrap -->
+   		<script th:src="@{/vendors/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
+    	<!-- FastClick -->
+    	<script th:src="@{/vendors/fastclick/lib/fastclick.js}"></script>
+    	<!-- NProgress -->
+    	<script th:src="@{/vendors/nprogress/nprogress.js}"></script>
+    
+    	<!-- Custom Theme Scripts -->
+    	<script th:src="@{/build/js/custom.min.js}"></script>
+	</body>
+</html>
