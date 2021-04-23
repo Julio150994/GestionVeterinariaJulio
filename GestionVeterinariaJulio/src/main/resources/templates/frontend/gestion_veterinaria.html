@@ -58,10 +58,10 @@
                       	<a class="dropdown-item" th:href="@{/}"><i class="fa fa-link pull-left"></i> <span>Volver al menú</span></a>
                       </li>
                       <li sec:authorize="hasRole('ROLE_ADMIN')">
-                      	<a class="dropdown-item" th:href="@{/listadoClientes}"> <i class="fa fa-link pull-left"></i> Listado de clientes</a>
+                      	<a class="dropdown-item" th:href="@{/clientes/listadoClientes}"> <i class="fa fa-link pull-left"></i> Listado de clientes</a>
                       </li>
                       <li sec:authorize="hasRole('ROLE_ADMIN')">
-                      	<a class="dropdown-item" th:href="@{/veterinarios/listadoVeterinarios}"> <i class="fa fa-link pull-left"></i> Mostrar veterinarios</a>
+                      	<a class="dropdown-item" th:href="@{/veterinarios/listadoVeterinarios}"> <i class="fa fa-link pull-left"></i> Listado de veterinarios</a>
                       </li>
                       <li sec:authorize="hasRole('ROLE_CLIENTE')">
                       	<a class="dropdown-item" th:href="@{/perfil_cliente/}+${usuario}"><i class="fa fa-link pull-left"></i> Perfil de usuario</a>
@@ -104,11 +104,11 @@
         <!-- page content -->
         <div class="right_col" role="main">
           <div class="panel panel-body">
-            <div class="page-title">
+            <div class="page-title">              
               <div class="title_left">
               	<div class="alert alert-success" th:if="${registrar != null}" th:text="${registrar}"> </div>
-              	<div class="alert alert-info" th:if="${login != null}" role="alert" th:text="${login}"> </div>
-              	
+              	<div class="alert alert-info" th:if="${login != null}" role="alert" th:text="${login}"> </div>	
+               	
                	<div sec:authorize="hasRole('ROLE_CLIENTE')" class="alert alert-info text-white" th:if="${editado!=null}">
                		<span th:text="${editado}"></span>
                	</div>
@@ -117,8 +117,6 @@
                 <h3 sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENTE') or hasRole('ROLE_VETERINARIO')">
                 	Web de clínica DAM
                 </h3>
-                
-                <div sec:authorize="hasRole('ROLE_ADMIN')" th:replace="veterinarios/ListadoVeterinarios :: frontVeterinarios"></div>
               </div>
             </div>
 

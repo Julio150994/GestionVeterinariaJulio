@@ -6,7 +6,7 @@
     	<meta charset="utf-8">
     	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Registrar cliente</title>
+		<title>Formulario de veterinario</title>
 		
 		<!-- Bootstrap -->
     	<link th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
@@ -17,17 +17,18 @@
 
     	<!-- Custom Theme Style -->
     	<link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
-    	<link type="text/css" th:href="@{/css/veterinarios.css}" rel="stylesheet"/>
+    	<link type="text/css" th:href="@{/css/usuarios.css}" rel="stylesheet"/>
 	</head>
 
 	<body>
-		<div class="container" id="formBody">
+		<div class="container" id="formUsuario">
 			<div class="card mt-5 col-lg-6 offset-lg-3 col-md-4 offset-md-3 col-12">
-				<div class="card-header text-center"> <h4>AÑADIR VETERINARIO</h4> </div>
-			
 				<div class="card-body">
-					<form class="form-signin" action="#" th:action="@{/saveVeterinario}" th:object="${veterinarios}" method="post">
+					<form class="form-signin" action="#" th:action="@{/veterinarios/saveVeterinario}" th:object="${usuario}" method="post">
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+					<div class="card-header text-center"> <h3 th:text="${usuario.id != 0} ? 'FORMULARIO EDITAR VETERINARIO': 'FORMULARIO AÑADIR VETERINARIO'"> <span th:text="${nombre}"></span></h3> </div>
+						<input type="hidden" name="id" th:field="*{id}"/>
+						
 						<div class="form-label-group">
 							<input type="text" th:field="*{nombre}" placeholder="Nombre" class="form-control" name="nombre" id="datoCliente"/>
 							<div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error producido en el nombre</div>
@@ -45,14 +46,15 @@
 							<div class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Error producido en el nombre de usuario</div>
 						</div>
 						<div class="form-label-group">
-							<input type="password" th:field="*{password}" placeholder="Password" class="form-control" name="password"/>
+							<input type="password" th:field="*{password}" placeholder="Password" class="form-control" name="password" id="datoCliente"/>
 							<div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error producido en la contraseña</div>
 						</div>
 					
-						<div class="card-footer">
-							<a th:href="@{/}" class="btn btn-secondary"><i class="fa fa-arrow-circle-left"></i> Volver al menú</a>
+						<div class="card-footer" id="panelVeterinario">
+							<a th:href="@{/veterinarios/listadoVeterinarios}" class="btn btn-secondary"><i class="fa fa-arrow-circle-left"></i> Volver al menú</a>
 						
-							<button type="submit" class="btn btn-success"><i class="fa fa-briefcase-medical"></i> Guardar</button>
+							<button type="submit" th:if="${usuario.id == 0}" class="btn btn-success"><i class="fa fa-user-plus"></i> Añadir</button>
+							<button type="submit" th:if="${usuario.id != 0}" class="btn btn-primary"><i class="fa fa-edit"></i> Editar </button>
 						</div>
 					</form>
 				</div>

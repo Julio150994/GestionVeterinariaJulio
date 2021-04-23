@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.veterinaria.entidades.Usuarios;
 import com.veterinaria.modelos.ModeloUsuarios;
@@ -26,6 +28,11 @@ public class UsuariosImpl implements IUsuariosService {
 	@Override
 	public List<ModeloUsuarios> listarUsuarios() {
 		return usuarios.findAll().stream().map(u->convertirUsuarios(u)).collect(Collectors.toList());
+	}
+	
+	@Override
+	public Page<Usuarios> paginacionUsuarios(Pageable usuario) {
+		return usuarios.findAll(usuario);
 	}
 	
 	@Override

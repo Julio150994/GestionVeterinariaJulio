@@ -41,7 +41,7 @@
 						</div>
 						
 						<div class="alert alert-danger" th:if="${error != null}" role="alert" th:text="${error}" id="error"></div>
-						<div class="alert alert-info" th:if="${logout_user != null}" role="alert" th:text="${logout_user}"></div>
+						<div class="alert alert-info" th:if="${logout_user != null}" role="alert" th:text="${logout_user}" id="error"></div>
 						
 						<div class="card-footer">							
 							<a th:href="@{/}" class="btn btn-secondary"><i class="fa fa-arrow-circle-left"></i> Volver al menú</a>

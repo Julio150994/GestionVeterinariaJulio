@@ -1,10 +1,9 @@
 package com.veterinaria.servicios.Impl;
 
-import java.util.List;
-import java.util.stream.Collectors;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.veterinaria.entidades.Usuarios;
 import com.veterinaria.modelos.ModeloUsuarios;
@@ -20,38 +19,30 @@ public class VeterinariosImpl implements VeterinariosService {
 	private VeterinariosRepository veterinarios;
 	
 	@Autowired
+	private BCryptPasswordEncoder encriptar;
+	
+	@Autowired
 	private DozerBeanMapper dozerUsuarios;
 	
 	
 	@Override
-	public List<ModeloUsuarios> listarVeterinarios() {
-		return veterinarios.findAll().stream().map(v->convertirVeterinarios(v)).collect(Collectors.toList());
-	}
-	
-	@Override
-	public ModeloUsuarios buscarIdVeterinario(ModeloUsuarios usuario, int id) {
-		if(usuario.getRol() == "ROLE_VETERINARIO")
-			return convertirVeterinarios(veterinarios.findById(id).orElse(null));
-		else
-			return null;
-	}
-	
-	@Override
 	public ModeloUsuarios aniadirVeterinario(ModeloUsuarios usuario) {
+		usuario.setPassword(encriptar.encode(usuario.getPassword()));
+		usuario.setActivado(true);
 		usuario.setRol("ROLE_VETERINARIO");
 		return dozerUsuarios.map(veterinarios.save(convertirVeterinarios(usuario)),ModeloUsuarios.class);
 	}
 
 	@Override
 	public ModeloUsuarios editarVeterinario(ModeloUsuarios usuario) {
+		usuario.setPassword(encriptar.encode(usuario.getPassword()));
 		usuario.setRol("ROLE_VETERINARIO");
 		return dozerUsuarios.map(veterinarios.save(convertirVeterinarios(usuario)),ModeloUsuarios.class);
 	}
 
 	@Override
-	public void eliminarVeterinario(ModeloUsuarios usuario, int id) {
-		if(usuario.getRol() == "ROLE_VETERINARIO")
-			veterinarios.deleteById(id);
+	public void eliminarVeterinario(int id) {
+		veterinarios.deleteById(id);
 	}
 
 	@Override

@@ -9,4 +9,5 @@ import com.veterinaria.entidades.Usuarios;
 @Repository("veterinariosRepository")
 public interface VeterinariosRepository extends JpaRepository<Usuarios, Serializable> {
 	
+	public abstract Usuarios findByUsername(String username);
 }

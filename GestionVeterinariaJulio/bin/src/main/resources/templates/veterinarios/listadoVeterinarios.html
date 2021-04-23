@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thyemeleaf.org" xmlns:sec="http://www.thyemeleaf.org/extras/spring-security">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    	<!-- Meta, title, CSS, favicons, etc. -->
+    	<meta charset="utf-8">
+    	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+    	<title>Vista mostrar veterinarios</title>
+		
+		<!-- Bootstrap -->
+    	<link th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
+    	<!-- Font Awesome -->
+    	<link th:href="@{/vendors/fontawesome/css/font-awesome.min.css}" rel="stylesheet">
+    	<!-- NProgress -->
+    	<link th:href="@{/vendors/nprogress/nprogress.css}" rel="stylesheet">
+
+    	<!-- Custom Theme Style -->
+    	<link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
+    	<link type="text/css" th:href="@{/css/veterinarios.css}" rel="stylesheet"/>
+	</head>
+
+	<body>
+	  	<div sec:authorize="hasRole('ROLE_ADMIN')" class="container" th:fragment="frontVeterinarios">
+			<div class="card-headert mt-5 text-center"> <h4>TABLA DE VETERINARIOS DE (<span class="text-secondary" th:text="${nombre}"></span>)</h4> </div>
+			
+			<a th:href="@{/veterinarios/formVeterinario}" class="btn btn-success"><i class="fa fa-user-md"></i> Nuevo veterinario</a>
+			
+			<div class="card-body" sec:authorize="hasRole('ROLE_ADMIN')">
+				<table class="table table-bordered text-center" id="tablaVeterinarios">
+					<thead class="table table-dark">
+						<tr>
+							<th>Id</th>
+							<th>Nombre</th>
+							<th>Apellidos</th>
+							<th>Teléfono</th>
+							<th>Username</th>
+							<th>Password</th>
+						</tr>
+					</thead>
+						
+					<tbody class="table table-light" th:each="usuario: ${veterinarios}" th:if="${usuario.rol == 'ROLE_VETERINARIO'}">
+						<tr>
+							<td th:text="${usuario.id}"></td>
+							<td th:text="${usuario.nombre}"></td>
+							<td th:text="${usuario.apellidos}"></td>
+							<td th:text="${usuario.telefono}"></td>
+							<td th:text="${usuario.username}"></td>
+							<td th:text="${usuario.password}"></td>
+							<td><a th:href="@{/veterinarios/formVeterinario/}+${usuario.id}" class="btn btn-primary"><i class="fa fa-user-edit"></i> Editar</a></td>
+							<td><button class="btn btn-danger"><i class="fa fa-trash"></i> Eliminar</button></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		
+		<!-- jQuery -->
+    	<script th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
+    	<!-- Bootstrap -->
+   		<script th:src="@{/vendors/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
+    	<!-- FastClick -->
+    	<script th:src="@{/vendors/fastclick/lib/fastclick.js}"></script>
+    	<!-- NProgress -->
+    	<script th:src="@{/vendors/nprogress/nprogress.js}"></script>
+    
+    	<!-- Custom Theme Scripts -->
+    	<script th:src="@{/build/js/custom.min.js}"></script>
+	</body>
+</html>

@@ -21,13 +21,13 @@ public class Usuarios {
 	private int id;
 	
 	@NotEmpty(message="Debe introducir un nombre simple o compuesto")
-	@Pattern(regexp="^[A-Z]{1}[a-z]{0,29}$",message="El nombre simple o compuesto no puede contener números, también debe empezar en mayúscula y seguir todo en minúsculas")
+	@Pattern(regexp="^\\D{1,30}$",message="El nombre simple o compuesto no puede contener números, también debe empezar en mayúscula y seguir todo en minúsculas")
 	@Size(min=1,max=30,message="El nombre debe tener entre 1 y 30 caracteres de longitud máxima")
 	@Column(name="nombre",nullable=false,length=30)
 	private String nombre;
 	
 	@NotEmpty(message="Debe introducir dos apellidos")
-	@Pattern(regexp="^[A-Z]{1}[a-z]\\D{1,50}$",message="Debe ser dos apellidos que no pueden contener números, también debe empezar en mayúscula y seguir todo en minúsculas")
+	@Pattern(regexp="^\\D{1,50}$",message="Debe ser dos apellidos que no pueden contener números, también debe empezar en mayúscula y seguir todo en minúsculas")
 	@Size(min=1,max=50,message="Entre los dos apellidos debe haber entre 1 y 50 caracteres de longitud máxima")
 	@Column(name="apellidos",nullable=false,length=50)
 	private String apellidos;
@@ -57,9 +57,10 @@ public class Usuarios {
 	public Usuarios() {
 		
 	}
-
-	public Usuarios(int id, @NotEmpty(message = "Debe introducir un nombre simple o compuesto") @Pattern(regexp = "^[A-Z]{1}[a-z]{0,29}$", message = "El nombre simple o compuesto no puede contener números, también debe empezar en mayúscula y seguir todo en minúsculas") @Size(min = 1, max = 30, message = "El nombre debe tener entre 1 y 30 caracteres de longitud máxima") String nombre,
-			@NotEmpty(message = "Debe introducir dos apellidos") @Pattern(regexp = "^[A-Z]{1}[a-z]\\D{1,50}$", message = "Debe ser dos apellidos que no pueden contener números, también debe empezar en mayúscula y seguir todo en minúsculas") @Size(min = 1, max = 50, message = "Entre los dos apellidos debe haber entre 1 y 50 caracteres de longitud máxima") String apellidos,
+	
+	
+	public Usuarios(int id, @NotEmpty(message = "Debe introducir un nombre simple o compuesto") @Pattern(regexp = "^\\D{1,30}$", message = "El nombre simple o compuesto no puede contener números, también debe empezar en mayúscula y seguir todo en minúsculas") @Size(min = 1, max = 30, message = "El nombre debe tener entre 1 y 30 caracteres de longitud máxima") String nombre,
+			@NotEmpty(message = "Debe introducir dos apellidos") @Pattern(regexp = "^\\D{1,50}$", message = "Debe ser dos apellidos que no pueden contener números, también debe empezar en mayúscula y seguir todo en minúsculas") @Size(min = 1, max = 50, message = "Entre los dos apellidos debe haber entre 1 y 50 caracteres de longitud máxima") String apellidos,
 			@NotEmpty(message = "Debe introducir un número de teléfono") @Pattern(regexp = "^\\d{9,10}$", message = "El teléfono no debe contener letras, espacios en blanco y debe tener entre 9 y 10 caracteres") @Min(value = 9, message = "No debe tener menos de 9 caracteres") String telefono,
 			@NotEmpty(message = "Debe introducir un nombre de usuario") @Pattern(regexp = "^[a-zA-Z]{1}[a-zA-Z0-9]{0,29}$", message = "El nombre de usuario no debe contener espacios en blanco y 30 caracteres de longitud máxima") String username,
 			@NotEmpty(message = "Debe introducir una contraseña de usuario") String password, boolean activado, String rol) {

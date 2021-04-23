@@ -39,11 +39,12 @@ public class SecurityVeterinaria extends WebSecurityConfigurerAdapter {
 		.authorizeRequests()
 			.antMatchers("/","/auth/**","/build/**","/css/**","/error/**","/frontend/**","/images/**","/js/**","/maps/**","/vendors/**","/webjars/**").permitAll()
 			.antMatchers("/menu","/registrarCliente","/auth/registrarCliente","/auth/login").permitAll()
-			.antMatchers("/listadoClientes","/formCliente","/formCliente/{id}","/eliminarCliente/{id}").access("hasRole('ROLE_ADMIN')")
+			.antMatchers("/clientes/listadoClientes","/clientes/formCliente","/clientes/formCliente/{id}","/clientes/saveCliente",
+					"/clientes/eliminarCliente/{id}","/clientes/mostrarCliente").access("hasRole('ROLE_ADMIN')")
 			.antMatchers("/actived/{id}").access("hasRole('ROLE_ADMIN')")
 			.antMatchers("/perfil_cliente/{id}","/editarPerfil").access("hasRole('ROLE_CLIENTE')")
-			.antMatchers("/veterinarios/listadoVeterinarios","/veterinarios/formVeterinario",
-					"veterinarios/formVeterinario/{id}","veterinarios/eliminarVeterinario/{id}").access("hasRole('ROLE_ADMIN')")
+			.antMatchers("/veterinarios/listadoVeterinarios","/veterinarios/formVeterinario","/veterinarios/formVeterinario/{id}","/veterinarios/saveVeterinario",
+					"/veterinarios/eliminarVeterinario/{id}","/veterinarios/mostrarVeterinario").access("hasRole('ROLE_ADMIN')")
 			.anyRequest().authenticated()
 			.and()
 		.formLogin()
