@@ -72,7 +72,7 @@ public class ModeloUsuarios {
 		this.password = password;
 	}
 
-	public boolean isActivado() {
+	public boolean isActivado() {		
 		return activado;
 	}
 

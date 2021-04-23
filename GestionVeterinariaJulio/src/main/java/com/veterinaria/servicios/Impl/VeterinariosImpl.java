@@ -36,6 +36,7 @@ public class VeterinariosImpl implements VeterinariosService {
 	@Override
 	public ModeloUsuarios editarVeterinario(ModeloUsuarios usuario) {
 		usuario.setPassword(encriptar.encode(usuario.getPassword()));
+		usuario.setActivado(true);
 		usuario.setRol("ROLE_VETERINARIO");
 		return dozerUsuarios.map(veterinarios.save(convertirVeterinarios(usuario)),ModeloUsuarios.class);
 	}
