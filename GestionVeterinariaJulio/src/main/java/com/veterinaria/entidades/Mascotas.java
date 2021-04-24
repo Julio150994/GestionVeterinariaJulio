@@ -36,16 +36,16 @@ public class Mascotas {
 	private String foto;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="idUsuario")
-	private Usuarios idUsuario;
+	@JoinColumn(name="idCliente")
+	private Usuarios idCliente;
 	
 	
 	public Mascotas() {
 		
 	}	
-	
+
 	public Mascotas(int id, String nombre, String tipo, String raza, Date fechaNacimiento, String foto,
-			Usuarios idUsuario) {
+			Usuarios idCliente) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -53,9 +53,9 @@ public class Mascotas {
 		this.raza = raza;
 		this.fechaNacimiento = fechaNacimiento;
 		this.foto = foto;
-		this.idUsuario = idUsuario;
+		this.idCliente = idCliente;
 	}
-	
+
 
 	public int getId() {
 		return id;
@@ -105,11 +105,11 @@ public class Mascotas {
 		this.foto = foto;
 	}
 
-	public Usuarios getIdUsuario() {
-		return idUsuario;
+	public Usuarios getIdCliente() {
+		return idCliente;
 	}
 
-	public void setIdUsuario(Usuarios idUsuario) {
-		this.idUsuario = idUsuario;
+	public void setIdCliente(Usuarios idCliente) {
+		this.idCliente = idCliente;
 	}
 }

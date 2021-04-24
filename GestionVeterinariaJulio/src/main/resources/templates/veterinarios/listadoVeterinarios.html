@@ -111,7 +111,7 @@
             
             
             <div sec:authorize="hasRole('ROLE_ADMIN')" class="container">
-			<div class="card-headert mt-5 text-center"> <h3>TABLA DE VETERINARIOS DE (<span class="text-secondary" th:text="${nombre}"></span>)</h3> </div>
+			<div class="card-headert mt-5 text-center"> <h3>TABLA DE VETERINARIOS (<span class="text-secondary" th:text="${nombre}"></span>)</h3> </div>
 			
 			<div class="panel panel-body alert alert-warning" th:if="${veterinarios.empty}" th:text="${veterinariosTxt}"></div>
 			

@@ -25,8 +25,8 @@ public class Citas {
 	private Mascotas idMascota;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="idUsuario")
-	private Usuarios idUsuario;
+	@JoinColumn(name="idVeterinario")
+	private Usuarios idVeterinario;
 
 	@Column(name="fecha",nullable=false)
 	private Date fecha;
@@ -44,18 +44,20 @@ public class Citas {
 	public Citas() {
 		
 	}	
-	
-	public Citas(int id, Mascotas idMascota, Usuarios idUsuario, Date fecha, String motivo, String informe, boolean realizada) {
+
+	public Citas(int id, Mascotas idMascota, Usuarios idVeterinario, Date fecha, String motivo, String informe,
+			boolean realizada) {
 		super();
 		this.id = id;
 		this.idMascota = idMascota;
-		this.idUsuario = idUsuario;
+		this.idVeterinario = idVeterinario;
 		this.fecha = fecha;
 		this.motivo = motivo;
 		this.informe = informe;
 		this.realizada = realizada;
 	}
-
+	
+	
 	public int getId() {
 		return id;
 	}
@@ -70,14 +72,14 @@ public class Citas {
 
 	public void setIdMascota(Mascotas idMascota) {
 		this.idMascota = idMascota;
+	}	
+
+	public Usuarios getIdVeterinario() {
+		return idVeterinario;
 	}
 
-	public Usuarios getIdUsuario() {
-		return idUsuario;
-	}
-
-	public void setIdUsuario(Usuarios idUsuario) {
-		this.idUsuario = idUsuario;
+	public void setIdVeterinario(Usuarios idVeterinario) {
+		this.idVeterinario = idVeterinario;
 	}
 
 	public Date getFecha() {
