@@ -6,7 +6,7 @@ import java.sql.Date;
 public class ModeloCitas {
 	private int id;
 	private ModeloMascotas idMascota;
-	private ModeloUsuarios idUsuario;
+	private ModeloUsuarios idVeterinario;
 	private Date fecha;
 	private String motivo,informe;
 	private boolean realizada;
@@ -16,12 +16,12 @@ public class ModeloCitas {
 		
 	}	
 
-	public ModeloCitas(int id, ModeloMascotas idMascota, ModeloUsuarios idUsuario, Date fecha, String motivo,
+	public ModeloCitas(int id, ModeloMascotas idMascota, ModeloUsuarios idVeterinario, Date fecha, String motivo,
 			String informe, boolean realizada) {
 		super();
 		this.id = id;
 		this.idMascota = idMascota;
-		this.idUsuario = idUsuario;
+		this.idVeterinario = idVeterinario;
 		this.fecha = fecha;
 		this.motivo = motivo;
 		this.informe = informe;
@@ -42,14 +42,14 @@ public class ModeloCitas {
 
 	public void setIdMascota(ModeloMascotas idMascota) {
 		this.idMascota = idMascota;
+	}	
+
+	public ModeloUsuarios getIdVeterinario() {
+		return idVeterinario;
 	}
 
-	public ModeloUsuarios getVeterinarios() {
-		return idUsuario;
-	}
-
-	public void setVeterinarios(ModeloUsuarios idUsuario) {
-		this.idUsuario = idUsuario;
+	public void setIdVeterinario(ModeloUsuarios idVeterinario) {
+		this.idVeterinario = idVeterinario;
 	}
 
 	public Date getFecha() {

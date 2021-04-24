@@ -8,7 +8,7 @@ public class ModeloMascotas {
 	private String nombre,tipo,raza;
 	private Date fechaNacimiento;// o tipo SQL como en JDBC
 	private String foto;
-	private ModeloUsuarios idUsuario;
+	private ModeloUsuarios idCliente;
 	
 	
 	public ModeloMascotas() {
@@ -16,7 +16,7 @@ public class ModeloMascotas {
 	}
 
 	public ModeloMascotas(int id, String nombre, String tipo, String raza, Date fechaNacimiento, String foto,
-			ModeloUsuarios idUsuario) {
+			ModeloUsuarios idCliente) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -24,7 +24,7 @@ public class ModeloMascotas {
 		this.raza = raza;
 		this.fechaNacimiento = fechaNacimiento;
 		this.foto = foto;
-		this.idUsuario = idUsuario;
+		this.idCliente = idCliente;
 	}
 
 	public int getId() {
@@ -75,11 +75,11 @@ public class ModeloMascotas {
 		this.foto = foto;
 	}
 
-	public ModeloUsuarios getCliente() {
-		return idUsuario;
+	public ModeloUsuarios getIdCliente() {
+		return idCliente;
 	}
 
-	public void setCliente(ModeloUsuarios idUsuario) {
-		this.idUsuario = idUsuario;
+	public void setIdCliente(ModeloUsuarios idCliente) {
+		this.idCliente = idCliente;
 	}
 }
