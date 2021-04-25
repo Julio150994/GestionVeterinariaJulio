@@ -30,23 +30,23 @@
 						<input type="hidden" name="id" th:field="*{id}"/>
 						
 						<div class="form-label-group">
-							<input type="text" th:field="*{nombre}" placeholder="Nombre" class="form-control" name="nombre" id="datoCliente"/>
+							<input type="text" th:field="*{nombre}" placeholder="Nombre" class="form-control" name="nombre" id="datoCliente" th:value="*{nombre}"/>
 							<div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error producido en el nombre</div>
 						</div>
 						<div class="form-label-group">
-							<input type="text" th:field="*{apellidos}" placeholder="Apellidos" class="form-control" name="apellidos" id="datoCliente"/>
+							<input type="text" th:field="*{apellidos}" placeholder="Apellidos" class="form-control" name="apellidos" id="datoCliente" th:value="*{apellidos}"/>
 							<div class="text-danger" th:if="${#fields.hasErrors('apellidos')}" th:errors="*{apellidos}">Error producido en los apellidos</div>
 						</div>
 						<div class="form-label-group">
-							<input type="text" th:field="*{telefono}" placeholder="Nº de teléfono" class="form-control" name="telefono" id="datoCliente"/>
+							<input type="text" th:field="*{telefono}" placeholder="Nº de teléfono" class="form-control" name="telefono" id="datoCliente" th:value="*{telefono}"/>
 							<div class="text-danger" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}">Error producido en el número de teléfono</div>
 						</div>
 						<div class="form-label-group">
-							<input type="text" th:field="*{username}" placeholder="Username" class="form-control" name="username" id="datoCliente"/>
+							<input type="text" th:field="*{username}" placeholder="Username" class="form-control" name="username" id="datoCliente" th:value="*{username}"/>
 							<div class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Error producido en el nombre de usuario</div>
 						</div>
 						<div class="form-label-group">
-							<input type="password" th:field="*{password}" placeholder="Password" class="form-control" name="password" id="datoCliente"/>
+							<input type="password" th:field="*{password}" placeholder="Password" class="form-control" name="password" id="datoCliente" th:value="*{password}"/>
 							<div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error producido en la contraseña</div>
 						</div>
 					
