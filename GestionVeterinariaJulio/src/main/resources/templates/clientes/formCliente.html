@@ -51,7 +51,7 @@
 						</div>
 					
 						<div class="card-footer" id="panelCliente">
-							<a th:href="@{/clientes/listadoClientes}" class="btn btn-secondary"><i class="fa fa-arrow-circle-left"></i>  Volver al menú</a>
+							<a th:href="@{/clientes/listadoClientes}" class="btn btn-secondary"><i class="fa fa-arrow-circle-left"></i>  Volver a listado de clientes</a>
 							
 							<button type="submit" th:if="${usuario.id == 0}" class="btn btn-success"><i class="fa fa-user-plus"></i> Añadir</button>
 							<button type="submit" th:if="${usuario.id != 0}" class="btn btn-primary"><i class="fa fa-edit"></i> Editar </button>
