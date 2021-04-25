@@ -24,7 +24,7 @@
 		<div sec:authorize="hasRole('ROLE_ADMIN')" class="container" id="formUsuario">
 			<div class="card mt-5 col-lg-6 offset-lg-3 col-md-4 offset-md-3 col-12">
 				<div class="card-body">
-					<form class="form-signin" action="#" th:action="@{/clientes/saveCliente}" th:object="${usuario}" method="POST">					
+					<form class="form-signin" action="#" th:action="@{/clientes/saveCliente}" th:object="${usuario}" method="post">			
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 					<div class="card-header text-center"> <h3 th:text="${usuario.id != 0} ? 'FORMULARIO EDITAR CLIENTE': 'FORMULARIO AÑADIR CLIENTE'"> <span th:text="${nombre}"></span></h3> </div>
 						<input type="hidden" name="id" th:field="*{id}"/>
@@ -50,7 +50,7 @@
 							<div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error producido en la contraseña</div>
 						</div>
 					
-						<div class="card-footer" id="panelCliente">
+						<div class="card-footer" id="panelCliente">						
 							<a th:href="@{/clientes/listadoClientes}" class="btn btn-secondary"><i class="fa fa-arrow-circle-left"></i>  Volver a listado de clientes</a>
 							
 							<button type="submit" th:if="${usuario.id == 0}" class="btn btn-success"><i class="fa fa-user-plus"></i> Añadir</button>

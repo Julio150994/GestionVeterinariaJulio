@@ -158,7 +158,7 @@ public class ClientesController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/actived/{id}")
 	public String gestionarCliente(@ModelAttribute("usuario") ModeloUsuarios usuario, @PathVariable("id") int id, @RequestParam(name="username",required=false) String username,
-			@RequestParam(name="activado",required=false) boolean activado, RedirectAttributes mensajeFlash) {
+			@RequestParam(name="activado",required=false) boolean activado, BindingResult clienteValido, RedirectAttributes mensajeFlash) {
 		
 		if(activado == false) {
 			txtCliente = "Cliente "+username+" activado correctamente";
@@ -198,6 +198,7 @@ public class ClientesController {
 	@PostMapping("/clientes/saveCliente")
 	public String saveCliente(@Valid @ModelAttribute("usuario") ModeloUsuarios cliente, BindingResult clienteValido,
 			RedirectAttributes mensajeFlash) {
+		
 		if(clienteValido.hasErrors())
 			return "redirect:"+formCliente;
 		else {

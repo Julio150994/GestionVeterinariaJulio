@@ -48,17 +48,11 @@ public class VeterinariosImpl implements VeterinariosService {
 
 	@Override
 	public Usuarios convertirVeterinarios(ModeloUsuarios usuario) {
-		if(usuario.getRol() == "ROLE_VETERINARIO")
-			return dozerUsuarios.map(usuario, Usuarios.class);
-		else
-			return null;
+		return dozerUsuarios.map(usuario, Usuarios.class);
 	}
 
 	@Override
 	public ModeloUsuarios convertirVeterinarios(Usuarios usuario) {
-		if(usuario.getRol() == "ROLE_VETERINARIO")
-			return dozerUsuarios.map(usuario, ModeloUsuarios.class);
-		else
-			return null;
+		return dozerUsuarios.map(usuario, ModeloUsuarios.class);
 	}
 }

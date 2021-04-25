@@ -30,7 +30,7 @@ public class ClientesImpl implements ClientesService {
 		usuario.setPassword(encriptar.encode(usuario.getPassword()));
 		usuario.setActivado(false);
 		usuario.setRol("ROLE_CLIENTE");
-		return dozerUsuarios.map(clientes.save(convertirClientes(usuario)),ModeloUsuarios.class);
+		return dozerUsuarios.map(clientes.save(convertirClientes(usuario)), ModeloUsuarios.class);
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class ClientesImpl implements ClientesService {
 		usuario.setPassword(encriptar.encode(usuario.getPassword()));
 		usuario.setActivado(false);
 		usuario.setRol("ROLE_CLIENTE");
-		return dozerUsuarios.map(clientes.save(convertirClientes(usuario)),ModeloUsuarios.class);
+		return dozerUsuarios.map(clientes.save(convertirClientes(usuario)), ModeloUsuarios.class);
 	}
 
 	@Override
@@ -48,17 +48,11 @@ public class ClientesImpl implements ClientesService {
 
 	@Override
 	public Usuarios convertirClientes(ModeloUsuarios usuario) {
-		if(usuario.getRol() == "ROLE_CLIENTE")
-			return dozerUsuarios.map(usuario, Usuarios.class);
-		else
-			return null;
+		return dozerUsuarios.map(usuario, Usuarios.class);
 	}
 
 	@Override
 	public ModeloUsuarios convertirClientes(Usuarios usuario) {
-		if(usuario.getRol() == "ROLE_CLIENTE")
-			return dozerUsuarios.map(usuario, ModeloUsuarios.class);
-		else
-			return null;
+		return dozerUsuarios.map(usuario, ModeloUsuarios.class);
 	}
 }
