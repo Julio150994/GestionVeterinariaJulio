@@ -141,8 +141,7 @@
 									<input type="hidden" name="id" th:field="*{id}"/>
 									<input type="hidden" name="username" th:value="${usuario.username}"/>
 									
-									<button class="btn btn-warning" th:data-confirm-delete="|¿Estás seguro de eliminar al veterinario ${usuario.username} ?|"
-										onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false"> <i class="fa fa-trash"></i> Eliminar</button>
+									<button class="btn btn-warning"> <i class="fa fa-trash"></i> Eliminar</button>
 								</form>
 							</td>
 							<td class="border"><a th:href="@{/veterinarios/mostrarVeterinario/}+${usuario.id}" class="btn btn-secondary"><i class="fa fa-eye"></i> Ver veterinario</a></td>
