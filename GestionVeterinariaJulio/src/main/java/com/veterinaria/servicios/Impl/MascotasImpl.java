@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import com.veterinaria.entidades.Mascotas;
 import com.veterinaria.modelos.ModeloMascotas;
+import com.veterinaria.modelos.ModeloUsuarios;
 import com.veterinaria.repositorios.MascotasRepository;
 import com.veterinaria.servicios.MascotasService;
 
@@ -34,14 +35,14 @@ public class MascotasImpl implements MascotasService {
 	}
 	
 	@Override
-	public ModeloMascotas aniadirMascota(ModeloMascotas mascota) {
-		mascota.setIdCliente(null);
+	public ModeloMascotas aniadirMascota(ModeloMascotas mascota, ModeloUsuarios cliente) {
+		mascota.setIdCliente(cliente);
 		return dozerMascotas.map(mascotas.save(convertirMascotas(mascota)),ModeloMascotas.class);
 	}
 
 	@Override
-	public ModeloMascotas editarMascota(ModeloMascotas mascota) {
-		mascota.setIdCliente(null);
+	public ModeloMascotas editarMascota(ModeloMascotas mascota, ModeloUsuarios cliente) {
+		mascota.setIdCliente(cliente);
 		return dozerMascotas.map(mascotas.save(convertirMascotas(mascota)),ModeloMascotas.class);
 	}
 

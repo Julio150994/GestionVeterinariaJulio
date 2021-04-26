@@ -19,43 +19,47 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class FileSystemStorageService implements StorageService {
 
-	private final Path rootLocation;
-
+	private final Path rootImagenMascota;
+	
+	@Autowired
+	StorageService mascotasService;
+	
+	
 	@Autowired
 	public FileSystemStorageService(StorageProperties properties) {
-		this.rootLocation = Paths.get(properties.getLocation());
+		this.rootImagenMascota = Paths.get(properties.getLocation());
 	}
 
 	@Override
-	public void store(MultipartFile file) {
+	public String store(MultipartFile fileMascota, int idMascota) {
+		String nombreImagen = StringUtils.cleanPath(fileMascota.getOriginalFilename());// para el nombre de la ruta de imágen
+		String extensionImg = StringUtils.getFilenameExtension(nombreImagen);// para la extensión de la imágen
+		String mascotaStore = nombreImagen+"."+extensionImg;
+		
 		try {
-			if (file.isEmpty()) {
-				throw new StorageException("Failed to store empty file.");
-			}
-			Path destinationFile = this.rootLocation.resolve(
-					Paths.get(file.getOriginalFilename()))
-					.normalize().toAbsolutePath();
-			if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath())) {
-				// This is a security check
-				throw new StorageException(
-						"Cannot store file outside current directory.");
-			}
-			try (InputStream inputStream = file.getInputStream()) {
-				Files.copy(inputStream, destinationFile,
-					StandardCopyOption.REPLACE_EXISTING);
+			if (fileMascota.isEmpty())
+				throw new StorageException("Error. Debe subir una imágen");
+			
+			if(nombreImagen.contains(".."))
+				throw new StorageException("No debe almacenar esta imágen fuera del directorio "+fileMascota);
+			
+			/* Para subir el archivo al servidor */
+			try (InputStream inputStream = fileMascota.getInputStream()) {
+				Files.copy(inputStream,this.rootImagenMascota.resolve(mascotaStore), StandardCopyOption.REPLACE_EXISTING);
+				return mascotaStore;
 			}
 		}
 		catch (IOException e) {
-			throw new StorageException("Failed to store file.", e);
+			throw new StorageException("Error al almacenar la imágen.", e);
 		}
 	}
 
 	@Override
 	public Stream<Path> loadAll() {
 		try {
-			return Files.walk(this.rootLocation, 1)
-				.filter(path -> !path.equals(this.rootLocation))
-				.map(this.rootLocation::relativize);
+			return Files.walk(this.rootImagenMascota, 1)
+				.filter(path -> !path.equals(this.rootImagenMascota))
+				.map(this.rootImagenMascota::relativize);
 		}
 		catch (IOException e) {
 			throw new StorageException("Failed to read stored files", e);
@@ -65,7 +69,7 @@ public class FileSystemStorageService implements StorageService {
 
 	@Override
 	public Path load(String filename) {
-		return rootLocation.resolve(filename);
+		return rootImagenMascota.resolve(filename);
 	}
 
 	@Override
@@ -83,27 +87,27 @@ public class FileSystemStorageService implements StorageService {
 			}
 		}
 		catch (MalformedURLException e) {
-			throw new StorageFileNotFoundException("Could not read file: " + filename, e);
+			throw new StorageFileNotFoundException("No se ha podido leer el archivo: " + filename, e);
 		}
 	}
 
 	@Override
 	public void deleteAll() {
-		FileSystemUtils.deleteRecursively(rootLocation.toFile());
+		FileSystemUtils.deleteRecursively(rootImagenMascota.toFile());
 	}
 
 	@Override
 	public void init() {
 		try {
-			Files.createDirectories(rootLocation);
+			Files.createDirectories(rootImagenMascota);
 		}
 		catch (IOException e) {
-			throw new StorageException("Could not initialize storage", e);
+			throw new StorageException("Error al iniciar el almacenamiento de la imágen", e);
 		}
 	}
 
 	@Override
 	public void deleteImage(String imagen) {
-				
+		mascotasService.deleteImage(imagen);
 	}
 }
