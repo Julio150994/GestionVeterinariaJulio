@@ -145,14 +145,16 @@
 								class="img-responsive rounded-circle center" alt="Imagen" id="imagenMascota"/> -->
 							<td class="border"><a th:href="@{/mascotas/formMascota/}+${mascota.id}" class="btn btn-primary"><i class="fa fa-edit"></i> Editar</a></td>
 							<td class="border">
-								<button class="btn btn-warning" data-target="#eliminarMascota"><i class="fa fa-trash"></i> Eliminar</button>
+								<button class="btn btn-warning" data-toggle="modal" data-target="#modalMascota">
+									<i class="fa fa-trash"></i> Eliminar
+								</button>
 								
 								<!-- Eliminar con formulario modal -->
-								<div class="modal fade" id="eliminarMascota" role="dialog" aria-labelledby="eliminar" aria-hidden="true">
+								<div class="modal fade" id="modalMascota" tabindex="-1" role="dialog" aria-labelledby="eliminar" aria-hidden="true">
   									<div class="modal-dialog" role="document">
     									<div class="modal-content">
       										<div class="modal-body">
-        										<span>¿Estás seguro de eliminar esta mascota ?</span>
+        										¿Estás seguro de eliminar esta mascota ?
       										</div>
       										<div class="modal-footer">
         										<a th:href="@{/mascotas/listadoMascotas}" class="btn btn-secondary" data-dismiss="modal">
