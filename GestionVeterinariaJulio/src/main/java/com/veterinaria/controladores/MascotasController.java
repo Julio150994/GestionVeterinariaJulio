@@ -85,21 +85,19 @@ public class MascotasController {
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@PostMapping("/mascotas/saveMascota")
 	public String saveMascota(@Valid @ModelAttribute("mascota") ModeloMascotas modeloMascota, ModeloUsuarios modeloCliente, BindingResult validarMascota,
-			RedirectAttributes mensajeFlash, Model cliente, @RequestParam("file") MultipartFile foto) {
+			RedirectAttributes mensajeFlash, Model cliente, @RequestParam("file") MultipartFile file) {
 		
-		if(validarMascota.hasErrors()) {
-			cliente.addAttribute("clientes",mostrarClientes.listarUsuarios());
+		if(validarMascota.hasErrors())
 			return "redirect:"+formMascota;
-		}
 		else {
 			if(modeloMascota.getId() == 0) {
 				mascotas.aniadirMascota(modeloMascota, modeloCliente);
 				
 				/*--------------Añadimos también la imágen--------------------*/
-				if(!foto.isEmpty()) {
-					String imagenMascota = mascotasService.store(foto,modeloMascota.getId());
+				if(!file.isEmpty()) {
+					String imagenMascota = mascotasService.store(file,modeloMascota.getId());
 					LOG_VETERINARIA.info(imagenMascota);
-					modeloMascota.setFoto(MvcUriComponentsBuilder.fromMethodName(FotoMascotaController.class,"servidorMascota",imagenMascota)
+					modeloMascota.setFoto(MvcUriComponentsBuilder.fromMethodName(FotoMascotaController.class,"serveFile",imagenMascota)
 							.build().toUriString());// ruta de la imágen para la mascota
 					mascotas.editarMascota(modeloMascota, modeloCliente);
 				}
@@ -110,13 +108,13 @@ public class MascotasController {
 			}
 			else {
 				
-				if(!foto.isEmpty()) {
+				if(!file.isEmpty()) {
 					if(modeloMascota.getFoto() != null)
 						mascotasService.deleteImage(modeloMascota.getFoto());
 				
-					String imagenMascota = mascotasService.store(foto,modeloMascota.getId());
+					String imagenMascota = mascotasService.store(file,modeloMascota.getId());
 					LOG_VETERINARIA.info(imagenMascota);
-					modeloMascota.setFoto(MvcUriComponentsBuilder.fromMethodName(FotoMascotaController.class,"servidorMascota",imagenMascota)
+					modeloMascota.setFoto(MvcUriComponentsBuilder.fromMethodName(FotoMascotaController.class,"serveFile",imagenMascota)
 							.build().toUriString());// ruta de la imágen para la mascota
 				}
 				else {

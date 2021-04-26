@@ -20,8 +20,8 @@ public class FotoMascotaController {
 	
 	@GetMapping("/mascotasImg/{filename:.+}")
 	@ResponseBody
-	public ResponseEntity<Resource> servidorMascota(@PathVariable("foto") String foto) {
-		Resource fotoMascota = storageMascotas.loadAsResource(foto);
-		return ResponseEntity.ok().body(fotoMascota);
+	public ResponseEntity<Resource> serveFile(@PathVariable("foto") String filename) {
+		Resource file = storageMascotas.loadAsResource(filename);
+		return ResponseEntity.ok().body(file);
 	}
 }
