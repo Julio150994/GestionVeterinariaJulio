@@ -1,17 +1,23 @@
 package com.veterinaria.modelos;
 
+import java.util.List;
+
+
 public class ModeloUsuarios {
 	private int id;
 	private String nombre,apellidos,telefono,username,password;
 	private boolean activado;
 	private String rol;
+	private List<ModeloMascotas> mascotas;
+	private List<ModeloCitas> citas;
 	
 	
 	public ModeloUsuarios() {
 		
 	}	
-
-	public ModeloUsuarios(int id, String nombre, String apellidos, String telefono, String username, String password, boolean activado, String rol) {
+	
+	public ModeloUsuarios(int id, String nombre, String apellidos, String telefono, String username, String password,
+			boolean activado, String rol, List<ModeloMascotas> mascotas, List<ModeloCitas> citas) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -21,9 +27,11 @@ public class ModeloUsuarios {
 		this.password = password;
 		this.activado = activado;
 		this.rol = rol;
+		this.mascotas = mascotas;
+		this.citas = citas;
 	}
-	
-	
+
+
 	public int getId() {
 		return id;
 	}
@@ -86,5 +94,21 @@ public class ModeloUsuarios {
 
 	public void setRol(String rol) {
 		this.rol = rol;
+	}
+
+	public List<ModeloMascotas> getMascotas() {
+		return mascotas;
+	}
+
+	public void setMascotas(List<ModeloMascotas> mascotas) {
+		this.mascotas = mascotas;
+	}
+
+	public List<ModeloCitas> getCitas() {
+		return citas;
+	}
+
+	public void setCitas(List<ModeloCitas> citas) {
+		this.citas = citas;
 	}
 }
