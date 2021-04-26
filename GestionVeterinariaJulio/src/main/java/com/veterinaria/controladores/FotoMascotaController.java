@@ -16,12 +16,12 @@ import com.veterinaria.storage.StorageService;
 public class FotoMascotaController {
 	
 	@Autowired
-	private StorageService storageMascotas;
+	private StorageService mascotasService;
 	
 	@GetMapping("/mascotasImg/{filename:.+}")
 	@ResponseBody
-	public ResponseEntity<Resource> serveFile(@PathVariable("foto") String filename) {
-		Resource file = storageMascotas.loadAsResource(filename);
+	public ResponseEntity<Resource> servidorMascota(@PathVariable("file") String filename) {
+		Resource file = mascotasService.loadAsResource(filename);
 		return ResponseEntity.ok().body(file);
 	}
 }

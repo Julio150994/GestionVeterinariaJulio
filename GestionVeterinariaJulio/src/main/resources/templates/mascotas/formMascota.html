@@ -42,7 +42,7 @@
 							<div class="text-danger" th:if="${#fields.hasErrors('raza')}" th:errors="*{raza}">Error producido en la raza</div>
 						</div>
 						<div class="form-label-group">
-							<input type="date" th:field="*{fechaNacimiento}" placeholder="Fecha de nacimiento" class="form-control" name="fechaNacimiento" id="datoMascota" th:value="*{fechaNacimiento}"/>
+							<input type="date" th:field="*{fechaNacimiento}" class="form-control" name="fechaNacimiento" id="datoMascota" th:value="*{fechaNacimiento}"/>
 							<div class="text-danger" th:if="${#fields.hasErrors('fechaNacimiento')}" th:errors="*{fechaNacimiento}">Error producido en la fecha de nacimiento</div>
 						</div>
 						<div class="form-label-group">

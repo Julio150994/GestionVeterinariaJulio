@@ -148,7 +148,8 @@
 								<form action="#" th:action="@{/mascotas/eliminarMascota/}+${mascota.id}" th:object="${mascota}" method="POST">
 									<input type="hidden" name="id" th:field="*{id}"/>
 									
-									<button class="btn btn-warning"><i class="fa fa-trash"></i> Eliminar</button>
+									<button class="btn btn-warning" th:data-confirm-delete="|¿Estás seguro de eliminar a la mascota ${mascota.id} ?|"
+										onclick="if (!confirm(this.getAttribute('data-confirm-delete'))) return false"><i class="fa fa-trash"></i> Eliminar</button>
 								</form>
 							</td>
 							<td class="border"><a th:href="@{/mascotas/mostrarMascota/}+${mascota.id}" class="btn btn-secondary"><i class="fa fa-eye"></i> Ver mascota</a></td>

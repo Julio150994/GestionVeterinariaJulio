@@ -47,7 +47,7 @@ public class Mascotas {
 	@Column(name="fechaNacimiento",nullable=false)
 	private LocalDate fechaNacimiento;	
 	
-	@Column(name="foto",unique=true,nullable=false,length=100)
+	@Column(name="foto",nullable=false,length=100)
 	private String foto;
 	
 	@ManyToOne(fetch=FetchType.LAZY)

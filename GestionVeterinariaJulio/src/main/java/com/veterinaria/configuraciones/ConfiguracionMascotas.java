@@ -1,12 +1,11 @@
 package com.veterinaria.configuraciones;
 
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import com.veterinaria.storage.StorageProperties;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 
 @Configuration
-@EnableConfigurationProperties(StorageProperties.class)
+@EnableJpaAuditing
 public class ConfiguracionMascotas {
 	
 }

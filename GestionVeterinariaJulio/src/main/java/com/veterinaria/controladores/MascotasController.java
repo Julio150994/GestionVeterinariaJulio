@@ -85,7 +85,7 @@ public class MascotasController {
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@PostMapping("/mascotas/saveMascota")
 	public String saveMascota(@Valid @ModelAttribute("mascota") ModeloMascotas modeloMascota, ModeloUsuarios modeloCliente, BindingResult validarMascota,
-			RedirectAttributes mensajeFlash, Model cliente, @RequestParam("file") MultipartFile file) {
+			RedirectAttributes mensajeFlash, Model cliente, @RequestParam("file") MultipartFile foto) {
 		
 		if(validarMascota.hasErrors())
 			return "redirect:"+formMascota;
@@ -94,10 +94,10 @@ public class MascotasController {
 				mascotas.aniadirMascota(modeloMascota, modeloCliente);
 				
 				/*--------------Añadimos también la imágen--------------------*/
-				if(!file.isEmpty()) {
-					String imagenMascota = mascotasService.store(file,modeloMascota.getId());
+				if(!foto.isEmpty()) {
+					String imagenMascota = mascotasService.store(foto,modeloMascota.getId());
 					LOG_VETERINARIA.info(imagenMascota);
-					modeloMascota.setFoto(MvcUriComponentsBuilder.fromMethodName(FotoMascotaController.class,"serveFile",imagenMascota)
+					modeloMascota.setFoto(MvcUriComponentsBuilder.fromMethodName(FotoMascotaController.class,"servidorMascota",imagenMascota)
 							.build().toUriString());// ruta de la imágen para la mascota
 					mascotas.editarMascota(modeloMascota, modeloCliente);
 				}
@@ -108,13 +108,13 @@ public class MascotasController {
 			}
 			else {
 				
-				if(!file.isEmpty()) {
+				if(!foto.isEmpty()) {
 					if(modeloMascota.getFoto() != null)
 						mascotasService.deleteImage(modeloMascota.getFoto());
 				
-					String imagenMascota = mascotasService.store(file,modeloMascota.getId());
+					String imagenMascota = mascotasService.store(foto,modeloMascota.getId());
 					LOG_VETERINARIA.info(imagenMascota);
-					modeloMascota.setFoto(MvcUriComponentsBuilder.fromMethodName(FotoMascotaController.class,"serveFile",imagenMascota)
+					modeloMascota.setFoto(MvcUriComponentsBuilder.fromMethodName(FotoMascotaController.class,"servidorMascota",imagenMascota)
 							.build().toUriString());// ruta de la imágen para la mascota
 				}
 				else {
