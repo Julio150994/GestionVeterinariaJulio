@@ -1,0 +1,13 @@
+/* Imagenes de la tabla */
+#imagenMascota {
+	width: 60px;
+	height: 60px;
+}
+
+
+/* Para formularios de la mascota */
+#datoMascota { margin-top: 2.65%; }
+
+#formMascota { margin-top: 3%; }
+
+#panelMascota { margin-top: 3.67%; }

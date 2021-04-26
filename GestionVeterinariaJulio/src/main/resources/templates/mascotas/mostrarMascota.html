@@ -6,6 +6,7 @@
     	<meta charset="utf-8">
     	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Datos de la mascota</title>
 		
 		<!-- Bootstrap -->
     	<link th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
@@ -16,7 +17,7 @@
 
     	<!-- Custom Theme Style -->
     	<link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
-    	<link type="text/css" th:href="@{/css/usuarios.css}" rel="stylesheet"/>
+    	<link type="text/css" th:href="@{/css/mascotas.css}" rel="stylesheet"/>
 	</head>
 
 	<body class="nav-md">
@@ -52,12 +53,18 @@
                   <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li sec:authorize="!isAuthenticated()"><a th:href="@{/auth/login}"><i class="fa fa-link pull-left"></i> Login</a></li>
-                      <li sec:authorize="!isAuthenticated()"><a th:href="@{/formRegistrar}"><i class="fa fa-link pull-left"></i> Registrar cliente</a></li>
+                      <li sec:authorize="!isAuthenticated()"><a th:href="@{/registrarCliente}"><i class="fa fa-link pull-left"></i> Registrar cliente</a></li>
                       <li sec:authorize="hasRole('ROLE_ADMIN')">
                       	<a class="dropdown-item" th:href="@{/}"><i class="fa fa-link pull-left"></i> <span>Volver al menú</span></a>
                       </li>
                       <li sec:authorize="hasRole('ROLE_ADMIN')">
-                      	<a class="dropdown-item" th:href="@{/listadoClientes}"> <i class="fa fa-link pull-left"></i> Listado de clientes</a>
+                      	<a class="dropdown-item" th:href="@{/clientes/listadoClientes}"> <i class="fa fa-link pull-left"></i> Listado de clientes</a>
+                      </li>
+                      <li sec:authorize="hasRole('ROLE_ADMIN')">
+                      	<a class="dropdown-item" th:href="@{/veterinarios/listadoVeterinarios}"> <i class="fa fa-link pull-left"></i> Listado de veterinarios</a>
+                      </li>
+                      <li sec:authorize="hasRole('ROLE_CLIENTE')">
+                      	<a class="dropdown-item" th:href="@{/mascotas/listadoMascotas}"> <i class="fa fa-link pull-left"></i> Listado de mascotas</a>
                       </li>
                     </ul>
                   </li>
@@ -82,6 +89,7 @@
                       <img th:src="@{/images/img.png}" alt=""> <span th:text="${#authentication.name}"></span>
                     </a>
                     <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+                      <a sec:authorize="hasRole('ROLE_CLIENTE')" class="dropdown-item" th:href="@{/perfil_cliente/}+${usuario}"><i class="fa fa-user pull-left"></i> Perfil de usuario</a>
                       <a sec:authorize="isAuthenticated()" class="dropdown-item"  th:href="@{/auth/login?logout_user}"><i class="fa fa-sign-out pull-left"></i> Logout</a>
                     </div>
                   </li>
@@ -95,62 +103,25 @@
         <div class="right_col" role="main">
           <div class="panel panel-body">
             <div class="page-title">
-              <div class="title_left">
-              	<div class="alert alert-success" th:if="${registrar}" th:text="${registrar}"></div>
-              	<div class="alert alert-info" th:if="${login}" th:text="${login}"></div>
-              	
+              <div class="title_left">              	
                 <h3 sec:authorize="!isAuthenticated()">Página de inicio</h3>
               </div>
             </div>
             
-            <div sec:authorize="hasRole('ROLE_ADMIN')" class="container">
-			
-			<div class="card-headert mt-5 text-center"> <h4>TABLA DE CLIENTES PARA (<span class="text-secondary" th:text="${nombre}"></span>)</h4> </div>
-			
-			<a th:href="@{//}"></a>
-			
-			<div class="card-body" sec:authorize="hasRole('ROLE_ADMIN')">
-				<table class="table table-bordered text-center" id="tablaUsuarios">
-					<thead class="table table-dark">
-						<tr>
-							<th>Nombre</th>
-							<th>Apellidos</th>
-							<th>Teléfono</th>
-							<th>Username</th>
-							<th>Password</th>
-							<th>Activado/Desactivado</th>
-							<th>Rol</th>
-						</tr>
-					</thead>
-						
-					<tbody class="table table-light" th:each="usuario: ${usuarios}" th:if="${usuario.rol == 'ROLE_CLIENTE'}">
-						<tr>
-							<td th:text="${usuario.nombre}"></td>
-							<td th:text="${usuario.apellidos}"></td>
-							<td th:text="${usuario.telefono}"></td>
-							<td th:text="${usuario.username}"></td>
-							<td th:text="${usuario.password}"></td>
-							<td>
-								<form class="form-signin" action="#" th:action="@{/actived/}+${usuario.id}" th:object="${usuario}" method="POST">
-									<input type="hidden" name="id" th:value="${usuario.id}"/>
-									
-									<button class="btn btn-danger text-white" th:field="*{activado}" type="submit" th:if="${usuario.activado}">
-										<i class="fa fa-moon-o"></i> Desactivar
-									</button>
-										
-									<button class="btn btn-primary text-white" th:field="*{activado}" type="submit" th:unless="${usuario.activado}">
-										<i class="fa fa-sun-o"></i> Activar
-									</button>
-									
-									<input type="hidden" name="rol" th:value="${usuario.rol}"/>
-								</form>
-							</td>
-							<td th:text="${usuario.rol}"></td>
-						</tr>
-					</tbody>
-				</table>
+            <div sec:authorize="hasRole('ROLE_ADMIN')" class="container col-sm-8 mt-5">
+            	<div class="card-header text-center"> <h3>DATOS DE MASCOTA ID (<span th:text="${mascota.id}"></span>)</h3></div>
+            	
+            	<div class="container mt-4">
+           			<ul class="list-group">
+           				<li class="list-group-item" id="datoUsuario"><span class="text-left"><strong>Nombre:</strong></span> <span th:text="${mascota.nombre}" class="text-right"></span></li>
+           				<li class="list-group-item" id="datoUsuario"><span class="text-left"><strong>Tipo:</strong></span> <span th:text="${mascota.tipo}" class="text-right"></span></li>
+           				<li class="list-group-item" id="datoUsuario"><span class="text-left"><strong>Raza:</strong></span> <span th:text="${mascota.raza}" class="text-right"></span></li>
+           				<li class="list-group-item" id="datoUsuario"><span class="text-left"><strong>Fecha de nacimiento:</strong></span> <span th:text="${mascota.fechaNacimiento}" class="text-right"></span></li>
+           				<li class="list-group-item" id="datoUsuario"><span class="text-left"><strong>Foto:</strong></span> <span th:text="${mascota.foto}" class="text-right"></span></li>
+           				<li class="list-group-item bg-success text-white" id="datoUsuario"><span class="text-left"><strong>Cliente:</strong></span> <span th:text="${mascota.usuario.username}" class="text-right"></span></li>
+           			</ul>
+           		</div>
 			</div>
-		</div>
 
             <div class="clearfix"></div>
           </div>

@@ -1,0 +1,5 @@
+CONTRASEÑAS PARA NUESTROS USUARIOS DE LA BASE DE DATOS:
+
+- Usuario administrador: admin
+- Usuarios clientes: secret
+- Usuarios veterinarios: secret

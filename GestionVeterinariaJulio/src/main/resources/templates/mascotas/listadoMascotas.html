@@ -6,7 +6,7 @@
     	<meta charset="utf-8">
     	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Listado de clientes</title>
+		<title>Listado de mascotas de cliente</title>
 		
 		<!-- Bootstrap -->
     	<link th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
@@ -17,7 +17,7 @@
 
     	<!-- Custom Theme Style -->
     	<link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
-    	<link type="text/css" th:href="@{/css/usuarios.css}" rel="stylesheet"/>
+    	<link type="text/css" th:href="@{/css/mascotas.css}" rel="stylesheet"/>
 	</head>
 
 	<body class="nav-md">
@@ -60,7 +60,7 @@
                       <li sec:authorize="hasRole('ROLE_ADMIN')">
                       	<a class="dropdown-item" th:href="@{/clientes/listadoClientes}"> <i class="fa fa-link pull-left"></i> Listado de clientes</a>
                       </li>
-                       <li sec:authorize="hasRole('ROLE_ADMIN')">
+                      <li sec:authorize="hasRole('ROLE_ADMIN')">
                       	<a class="dropdown-item" th:href="@{/veterinarios/listadoVeterinarios}"> <i class="fa fa-link pull-left"></i> Listado de veterinarios</a>
                       </li>
                       <li sec:authorize="hasRole('ROLE_CLIENTE')">
@@ -89,6 +89,7 @@
                       <img th:src="@{/images/img.png}" alt=""> <span th:text="${#authentication.name}"></span>
                     </a>
                     <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+                      <a sec:authorize="hasRole('ROLE_CLIENTE')" class="dropdown-item" th:href="@{/perfil_cliente/}+${usuario}"><i class="fa fa-user pull-left"></i> Perfil de usuario</a>
                       <a sec:authorize="isAuthenticated()" class="dropdown-item"  th:href="@{/auth/login?logout_user}"><i class="fa fa-sign-out pull-left"></i> Logout</a>
                     </div>
                   </li>
@@ -107,84 +108,68 @@
               </div>
             </div>
             
-            <div class="panel panel-body alert alert-primary" th:if="${activado}" th:text="${activado}"></div>
-            <div class="panel panel-body alert alert-warning" th:if="${desactivado}" th:text="${desactivado}"></div>
             <div class="panel panel-body alert alert-success" th:if="${insertado}" th:text="${insertado}"></div>
             <div class="panel panel-body alert alert-info" th:if="${editado}" th:text="${editado}"></div>
             <div class="panel panel-body alert alert-danger" th:if="${eliminado}" th:text="${eliminado}"></div>
             
             
-            <div sec:authorize="hasRole('ROLE_ADMIN')" class="container mt-4">
+            <div sec:authorize="hasRole('ROLE_CLIENTE')" class="container mt-4">
 
-			<div class="card-headert mt-5 text-center"> <h3>TABLA DE CLIENTES (<span class="text-secondary" th:text="${nombre}"></span>)</h3> </div>
+			<div class="card-headert mt-5 text-center"> <h3>MASCOTAS DEL CLIENTE (<span class="text-secondary" th:text="${cliente}"></span>)</h3> </div>
 			
-			<div class="panel panel-body alert alert-warning" th:if="${clientes.empty}" th:text="${clientesTxt}"></div>
+			<div class="panel panel-body alert alert-warning" th:if="${mascotas.empty}" th:text="${mascotasTxt}"></div>
 			
 			<div class="card-body">
-				<a th:href="@{/clientes/formCliente}" class="btn btn-success"><i class="fa fa-user-plus"></i> Nuevo cliente</a>
+				<a th:href="@{/mascotas/formMascota}" class="btn btn-success"><i class="fa fa-user-plus"></i> Nueva mascota</a>
 			
-				<table class="table table-bordered text-center" id="tablaClientes">
+				<table class="table table-bordered text-center" id="tablaMascotas">
 					<thead class="table table-dark">
 						<tr>
 							<th>Nombre</th>
-							<th>Apellidos</th>
-							<th>Teléfono</th>
-							<th>Username</th>
-							<th colspan="4">Operaciones</th>
+							<th>Tipo</th>
+							<th>Raza</th>
+							<th>Fecha de nacimiento</th>
+							<th>Foto</th>
+							<th colspan="3">Operaciones</th>
 						</tr>
 					</thead>
 						
-					<tbody class="table table-light" th:each="usuario: ${clientes}" th:if="${usuario.rol == 'ROLE_CLIENTE'}">
+					<tbody class="table table-light" th:each="mascota: ${mascotas}">
 						<tr>
-							<td class="border" th:text="${usuario.nombre}"></td>
-							<td class="border" th:text="${usuario.apellidos}"></td>
-							<td class="border" th:text="${usuario.telefono}"></td>
-							<td class="border" th:text="${usuario.username}"></td>
+							<td class="border" th:text="${mascota.nombre}"></td>
+							<td class="border" th:text="${mascota.tipo}"></td>
+							<td class="border" th:text="${mascota.raza}"></td>
+							<td class="border" th:text="${mascota.fechaNacimiento}"></td>
+							<td class="border"><img th:src="${#strings.isEmpty(mascota.foto)} 'http://localhost:8080/mascotasImg/image.png' : ${mascota.foto}? "
+								class="img-responsive rounded-circle center" alt="Imagen" id="imagenMascota"/></td>
+							<td class="border"><a th:href="@{/mascotas/formMascota/}+${mascota.id}" class="btn btn-primary"><i class="fa fa-edit"></i> Editar</a></td>
 							<td class="border">
-								<form class="form-signin" action="#" th:action="@{/actived/}+${usuario.id}" th:object="${usuario}" method="POST">
-									<input type="hidden" name="id" th:value="${usuario.id}"/>
-									<input type="hidden" name="username" th:value="${usuario.username}"/>
-									<input type="hidden" name="activado" th:value="${usuario.activado}"/>
-									
-									<button class="btn btn-danger text-white" th:field="*{activado}" type="submit" th:if="${usuario.activado}">
-										<i class="fa fa-toggle-on"></i> Desactivar
-									</button>
-										
-									<button class="btn btn-info text-white" th:field="*{activado}" type="submit" th:unless="${usuario.activado}">
-										<i class="fa fa-toggle-off"></i> Activar
-									</button>
-									
-									<input type="hidden" name="rol" th:value="${usuario.rol}"/>
-								</form>
-							</td>
-							<td class="border"><a th:href="@{/clientes/formCliente/}+${usuario.id}" class="btn btn-primary"><i class="fa fa-edit"></i> Editar</a></td>
-							<td class="border">
-								<form action="#" th:action="@{/clientes/eliminarCliente/}+${usuario.id}" th:object="${usuario}" method="POST">
+								<!-- Eliminar con formulario modal -->
+								<form action="#" th:action="@{/mascotas/eliminarMascota/}+${mascota.id}" th:object="${mascota}" method="POST">
 									<input type="hidden" name="id" th:field="*{id}"/>
-									<input type="hidden" name="username" th:value="${usuario.username}"/>
 									
 									<button class="btn btn-warning"><i class="fa fa-trash"></i> Eliminar</button>
 								</form>
 							</td>
-							<td class="border"><a th:href="@{/clientes/mostrarCliente/}+${usuario.id}" class="btn btn-secondary"><i class="fa fa-eye"></i> Ver cliente</a></td>
+							<td class="border"><a th:href="@{/mascotas/mostrarMascota/}+${mascota.id}" class="btn btn-secondary"><i class="fa fa-eye"></i> Ver mascota</a></td>
 						</tr>
 					</tbody>
 				</table>
 				
 				<!-- Mostramos paginaciones para los clientes -->
-				<div class="panel panel-body col-sm-2" th:if="${!clientes.empty}">
+				<div class="panel panel-body col-sm-2" th:if="${!mascotas.empty}">
 					<div class="col-md-2"></div>
 					<div class="col-md-8">
 						<nav aria-label="Page clientes">
 							<ul class="pagination justify-content-center">
 								 <li class="page-item" th:classappend="${anterior == 0 ? 'disabled': ''}">
-      								<a class="page-link" th:href="@{|/clientes/listadoClientes/?pagina=${anterior}|}">Anterior</a>
+      								<a class="page-link" th:href="@{|/mascotas/listadoMascotas/?pagina=${anterior}|}">Anterior</a>
     							</li>
     							<li class="page-item" th:each="pagina: ${paginas}" th:classappend="${actual == pagina ? 'active': ''}">
-      								<a th:href="@{|/clientes/listadoClientes/?pagina=${pagina}|}" class="page-link" th:text="${pagina}"></a>
+      								<a th:href="@{|/mascotas/listadoMascotas/?pagina=${pagina}|}" class="page-link" th:text="${pagina}"></a>
     							</li>
     							<li class="page-item" th:classappend="${actual == ultima ? 'disabled': ''}">
-      								<a class="page-link" th:href="@{|/clientes/listadoClientes/?pagina=${siguiente}|}">Siguiente</a>
+      								<a class="page-link" th:href="@{|/mascotas/listadoMascotas/?pagina=${siguiente}|}">Siguiente</a>
     							</li>
   							</ul>
 						</nav>

@@ -45,6 +45,8 @@ public class SecurityVeterinaria extends WebSecurityConfigurerAdapter {
 					"/veterinarios/eliminarVeterinario/{id}","/veterinarios/mostrarVeterinario").access("hasRole('ROLE_ADMIN')")
 			.antMatchers("/actived/{id}").access("hasRole('ROLE_ADMIN')")
 			.antMatchers("/perfil_cliente/{id}","/editarPerfil").access("hasRole('ROLE_CLIENTE')")
+			.antMatchers("/mascotas/listadoMascotas","/mascotas/formMascota","/mascotas/formMascota/{id}","/mascotas/saveMascota",
+					"/mascotas/eliminarMascota/{id}","/mascotas/mostrarMascota").access("hasRole('ROLE_CLIENTE')")
 			.anyRequest().authenticated()
 			.and()
 		.formLogin()

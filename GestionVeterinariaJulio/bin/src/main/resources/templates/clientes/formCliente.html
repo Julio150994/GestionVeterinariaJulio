@@ -6,7 +6,7 @@
     	<meta charset="utf-8">
     	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Vista perfil del usuario</title>
+		<title>Formulario de cliente</title>
 		
 		<!-- Bootstrap -->
     	<link th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
@@ -17,43 +17,44 @@
 
     	<!-- Custom Theme Style -->
     	<link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
-		<link type="text/css" th:href="@{/css/clientes.css}" rel="stylesheet">
+		<link type="text/css" th:href="@{/css/usuarios.css}" rel="stylesheet">
 	</head>
 
 	<body>		
-		<div sec:authorize="hasRole('ROLE_ADMIN')" class="container">
+		<div sec:authorize="hasRole('ROLE_ADMIN')" class="container" id="formUsuario">
 			<div class="card mt-5 col-lg-6 offset-lg-3 col-md-4 offset-md-3 col-12">
-				<div class="card-header text-center"> <h3>FORMULARIO DEL CLIENTE USUARIO <span th:text="${nombre}"></span></h3> </div>
-			
 				<div class="card-body">
-					<form class="form-signin" action="#" th:action="@{/}" th:object="${clientes}" method="POST">
+					<form class="form-signin" action="#" th:action="@{/clientes/saveCliente}" th:object="${usuario}" method="post">			
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-						<input type="hidden" name="id" th:value="${usuario.id}"/>
+					<div class="card-header text-center"> <h3 th:text="${usuario.id != 0} ? 'FORMULARIO EDITAR CLIENTE': 'FORMULARIO AÑADIR CLIENTE'"> <span th:text="${nombre}"></span></h3> </div>
+						<input type="hidden" name="id" th:field="*{id}"/>
 						
 						<div class="form-label-group">
-							<input type="text" th:field="*{nombre}" class="form-control" name="nombre" id="datoCliente" th:value="*{nombre}"/>
+							<input type="text" th:field="*{nombre}" class="form-control" placeholder="Nombre" name="nombre" id="datoCliente" th:value="*{nombre}"/>
 							<div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error producido en el nombre</div>
 						</div>
 						<div class="form-label-group">
-							<input type="text" th:field="*{apellidos}" class="form-control" name="apellidos" id="datoCliente" th:value="*{apellidos}"/>
+							<input type="text" th:field="*{apellidos}" class="form-control" placeholder="Apellidos" name="apellidos" id="datoCliente" th:value="*{apellidos}"/>
 							<div class="text-danger" th:if="${#fields.hasErrors('apellidos')}" th:errors="*{apellidos}">Error producido en los apellidos</div>
 						</div>
 						<div class="form-label-group">
-							<input type="text" th:field="*{telefono}" class="form-control" name="telefono" id="datoCliente" th:value="*{telefono}"/>
+							<input type="text" th:field="*{telefono}" class="form-control" placeholder="Teléfono" name="telefono" id="datoCliente" th:value="*{telefono}"/>
 							<div class="text-danger" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}">Error producido en el número de teléfono</div>
 						</div>
 						<div class="form-label-group">
-							<input type="hidden" th:field="*{username}" class="form-control" name="username" id="dato_usuario" th:value="*{username}"/>
+							<input type="text" th:field="*{username}" class="form-control" placeholder="Username" name="username" id="datoCliente" th:value="*{username}"/>
 							<div class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Error producido en el nombre de usuario</div>
 						</div>
 						<div class="form-label-group">
-							<input type="hidden" th:field="*{password}" class="form-control" name="password" id="dato_usuario" th:value="*{password}"/>
+							<input type="password" th:field="*{password}" class="form-control" placeholder="Password" name="password" id="datoCliente" th:value="*{password}"/>
 							<div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error producido en la contraseña</div>
 						</div>
 					
-						<div class="card-footer">
-							<a th:href="@{/listadoClientes}" class="btn btn-secondary"><i class="fa fa-arrow-circle-left"></i>  Volver al menú</a>
-							<button type="submit" class="btn btn-primary"><i class="fa fa-user"></i> Guardar</button>
+						<div class="card-footer" id="panelCliente">						
+							<a th:href="@{/clientes/listadoClientes}" class="btn btn-secondary"><i class="fa fa-arrow-circle-left"></i>  Volver a listado de clientes</a>
+							
+							<button type="submit" th:if="${usuario.id == 0}" class="btn btn-success"><i class="fa fa-user-plus"></i> Añadir</button>
+							<button type="submit" th:if="${usuario.id != 0}" class="btn btn-primary"><i class="fa fa-edit"></i> Editar </button>
 						</div>
 					</form>
 				</div>

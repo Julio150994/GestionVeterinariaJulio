@@ -6,7 +6,7 @@
     	<meta charset="utf-8">
     	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
-    	<title>Vista mostrar veterinarios</title>
+		<title>Listado de clientes</title>
 		
 		<!-- Bootstrap -->
     	<link th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
@@ -17,43 +17,176 @@
 
     	<!-- Custom Theme Style -->
     	<link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
-    	<link type="text/css" th:href="@{/css/veterinarios.css}" rel="stylesheet"/>
+    	<link type="text/css" th:href="@{/css/usuarios.css}" rel="stylesheet"/>
+    	
 	</head>
 
-	<body>
-	  	<div sec:authorize="hasRole('ROLE_ADMIN')" class="container" th:fragment="frontVeterinarios">
-			<div class="card-headert mt-5 text-center"> <h4>TABLA DE VETERINARIOS DE (<span class="text-secondary" th:text="${nombre}"></span>)</h4> </div>
+	<body class="nav-md">
+	  <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a th:href="@{/}" class="site_title"><i class="fa fa-paw"></i> <span>Clínica DAM</span></a>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <!-- menu profile quick info -->
+            <div sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENTE') or hasRole('ROLE_VETERINARIO')" class="profile clearfix">
+              <div class="profile_pic">
+                <img th:src="@{/images/img.png}" alt="..." class="img-circle profile_img">
+              </div>
+              <div class="profile_info">
+                <span>Bienvenido/a, </span>
+                <h2 th:text="${#authentication.name}"></h2>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <!-- /menu profile quick info -->
+            <br/>
+
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                <h3>Opciones</h3>
+                <ul class="nav side-menu">
+                  <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li sec:authorize="!isAuthenticated()"><a th:href="@{/auth/login}"><i class="fa fa-link pull-left"></i> Login</a></li>
+                      <li sec:authorize="!isAuthenticated()"><a th:href="@{/registrarCliente}"><i class="fa fa-link pull-left"></i> Registrar cliente</a></li>
+                      <li sec:authorize="hasRole('ROLE_ADMIN')">
+                      	<a class="dropdown-item" th:href="@{/}"><i class="fa fa-link pull-left"></i> <span>Volver al menú</span></a>
+                      </li>
+                      <li sec:authorize="hasRole('ROLE_ADMIN')">
+                      	<a class="dropdown-item" th:href="@{/clientes/listadoClientes}"> <i class="fa fa-link pull-left"></i> Listado de clientes</a>
+                      </li>
+                       <li sec:authorize="hasRole('ROLE_ADMIN')">
+                      	<a class="dropdown-item" th:href="@{/veterinarios/listadoVeterinarios}"> <i class="fa fa-link pull-left"></i> Listado de veterinarios</a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- /sidebar menu -->
+          </div>
+        </div>
+
+        <!-- top navigation -->
+        <div class="top_nav">
+            <div class="nav_menu">
+                <div class="nav toggle">
+                  <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                </div>
+                <nav class="nav navbar-nav">
+                <ul class=" navbar-right">
+                  <li sec:authorize="!isAuthenticated()" class="text-secondary">Debe iniciar sesión para mostrar a un usuario</li>
+                  <li sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENTE') or hasRole('ROLE_VETERINARIO')" class="nav-item dropdown open" style="padding-left: 15px;">
+                    <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+                      <img th:src="@{/images/img.png}" alt=""> <span th:text="${#authentication.name}"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+                      <a sec:authorize="isAuthenticated()" class="dropdown-item"  th:href="@{/auth/login?logout_user}"><i class="fa fa-sign-out pull-left"></i> Logout</a>
+                    </div>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="panel panel-body">
+            <div class="page-title">
+              <div class="title_left">              	
+                <h3 sec:authorize="!isAuthenticated()">Página de inicio</h3>
+              </div>
+            </div>
+            
+            <div class="alert alert-success" th:if="${insertado}" th:text="${insertado}"></div>
+        	<div class="alert alert-info" th:if="${editado}" th:text="${editado}"></div>
+			<div class="alert alert-danger" th:if="${eliminado}" th:text="${eliminado}"></div>
+            
+            
+            <div sec:authorize="hasRole('ROLE_ADMIN')" class="container">
+			<div class="card-headert mt-5 text-center"> <h3>TABLA DE VETERINARIOS (<span class="text-secondary" th:text="${nombre}"></span>)</h3> </div>
 			
-			<a th:href="@{/veterinarios/formVeterinario}" class="btn btn-success"><i class="fa fa-user-md"></i> Nuevo veterinario</a>
+			<div class="panel panel-body alert alert-warning" th:if="${veterinarios.empty}" th:text="${veterinariosTxt}"></div>
 			
-			<div class="card-body" sec:authorize="hasRole('ROLE_ADMIN')">
+			<div class="card-body">
+				<a th:href="@{/veterinarios/formVeterinario}" class="btn btn-success"><i class="fa fa-user-md"></i> Nuevo veterinario</a>
+			
 				<table class="table table-bordered text-center" id="tablaVeterinarios">
 					<thead class="table table-dark">
 						<tr>
-							<th>Id</th>
 							<th>Nombre</th>
 							<th>Apellidos</th>
 							<th>Teléfono</th>
 							<th>Username</th>
-							<th>Password</th>
+							<th colspan="3">Operaciones</th>
 						</tr>
 					</thead>
 						
 					<tbody class="table table-light" th:each="usuario: ${veterinarios}" th:if="${usuario.rol == 'ROLE_VETERINARIO'}">
 						<tr>
-							<td th:text="${usuario.id}"></td>
-							<td th:text="${usuario.nombre}"></td>
-							<td th:text="${usuario.apellidos}"></td>
-							<td th:text="${usuario.telefono}"></td>
-							<td th:text="${usuario.username}"></td>
-							<td th:text="${usuario.password}"></td>
-							<td><a th:href="@{/veterinarios/formVeterinario/}+${usuario.id}" class="btn btn-primary"><i class="fa fa-user-edit"></i> Editar</a></td>
-							<td><button class="btn btn-danger"><i class="fa fa-trash"></i> Eliminar</button></td>
+							<td class="border" th:text="${usuario.nombre}"></td>
+							<td class="border" th:text="${usuario.apellidos}"></td>
+							<td class="border" th:text="${usuario.telefono}"></td>
+							<td class="border" th:text="${usuario.username}"></td>
+							<td class="border"><a th:href="@{/veterinarios/formVeterinario/}+${usuario.id}" class="btn btn-primary"><i class="fa fa-edit"></i> Editar</a></td>
+							<td class="border">
+								<form action="#" th:action="@{/veterinarios/eliminarVeterinario/}+${usuario.id}" th:object="${usuario}" method="POST">
+									<input type="hidden" name="id" th:field="*{id}"/>
+									<input type="hidden" name="username" th:value="${usuario.username}"/>
+									
+									<button class="btn btn-warning"> <i class="fa fa-trash"></i> Eliminar</button>
+								</form>
+							</td>
+							<td class="border"><a th:href="@{/veterinarios/mostrarVeterinario/}+${usuario.id}" class="btn btn-secondary"><i class="fa fa-eye"></i> Ver veterinario</a></td>
 						</tr>
 					</tbody>
 				</table>
+				
+				<!-- Mostramos paginaciones para los veterinarios -->
+				<div class="panel panel-body col-sm-2" th:if="${!veterinarios.empty}">
+					<div class="col-md-2"></div>
+					<div class="col-md-8">
+						<nav aria-label="Page clientes">
+							<ul class="pagination justify-content-center">
+								 <li class="page-item" th:classappend="${anterior == 0 ? 'disabled': ''}">
+      								<a class="page-link" th:href="@{|/veterinarios/listadoVeterinarios/?pagina=${anterior}|}">Anterior</a>
+    							</li>
+    							<li class="page-item" th:each="pagina: ${paginas}" th:classappend="${actual == pagina ? 'active': ''}">
+      								<a th:href="@{|/veterinarios/listadoVeterinarios/?pagina=${pagina}|}" class="page-link" th:text="${pagina}"></a>
+    							</li>
+    							<li class="page-item" th:classappend="${actual == ultima ? 'disabled': ''}">
+      								<a class="page-link" th:href="@{|/veterinarios/listadoVeterinarios/?pagina=${siguiente}|}">Siguiente</a>
+    							</li>
+  							</ul>
+						</nav>
+					</div>
+					<div class="col-md-2"></div>
+				</div>
 			</div>
 		</div>
+
+            <div class="clearfix"></div>
+          </div>
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right">
+            <span><i class="fa fa-copyright"></i> Copyright 2021. Todos los derechos reservados.</span>
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+      	</div>
+       </div>
 		
 		<!-- jQuery -->
     	<script th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>

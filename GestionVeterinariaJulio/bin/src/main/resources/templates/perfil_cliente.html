@@ -43,14 +43,14 @@
 							<div class="text-danger" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}">Error producido en el número de teléfono</div>
 						</div>
 						<div class="form-label-group">
-							<input type="hidden" th:field="*{username}" class="form-control" name="username" id="dato_usuario" th:value="*{username}"/>
+							<input type="text" th:field="*{username}" class="form-control" name="username" id="datoCliente" th:value="*{username}"/>
 							<div class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Error producido en el nombre de usuario</div>
 						</div>
 						<div class="form-label-group">
-							<input type="hidden" th:field="*{password}" class="form-control" name="password" id="dato_usuario" th:value="*{password}"/>
+							<input type="password" th:field="*{password}" class="form-control" placeholder="Password" name="password" id="datoCliente" th:value="*{password}"/>
 							<div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error producido en la contraseña</div>
 						</div>
-				
+						
 						<!-- Ocultamos el campo rol con CSS y establecemos ROLE_CLIENTE como valor por defecto -->
 						<div class="form-label-group" id="dato_usuario">
 							<select name="rol" class="form-control">
