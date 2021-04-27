@@ -34,14 +34,16 @@
 						<div class="form-label-group">
 							<select class="form-control" id="datoCita">
 								<option value="">Seleccione una mascota</option>
-								<option th:each="mascota: ${mascotas}" th:value="${mascota.id}" th:text="${mascota.nombre}"></option>
+								<!-- th:each="mascota: ${mascotas}" th:value="${mascota.id}" th:text="${mascota.nombre}" -->
+								<option></option>
 							</select>
 							<div class="text-danger" th:if="${#fields.hasErrors('idMascota')}" th:errors="*{idMascota}">Error producido en idMascota</div>
 						</div>
 						<div class="form-label-group">
 							<select class="form-control" id="datoCita">
 								<option value="">Seleccione un veterinario</option>
-								<option th:each="usuario: ${veterinarios}" th:if="${usuario.rol == 'ROLE_VETERINARIO'}" th:value="${usuario.id}" th:text="${usuario.username}"></option>
+								<!-- th:each="usuario: ${veterinarios}" th:if="${usuario.rol == 'ROLE_VETERINARIO'}" th:value="${usuario.id}" th:text="${usuario.username}" -->
+								<option></option>
 							</select>
 							<div class="text-danger" th:if="${#fields.hasErrors('idVeterinario')}" th:errors="*{idVeterinario}">Error producido en idVeterinario</div>
 						</div>
