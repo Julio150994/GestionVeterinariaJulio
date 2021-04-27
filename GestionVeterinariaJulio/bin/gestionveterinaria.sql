@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-04-2021 a las 14:01:33
+-- Tiempo de generación: 27-04-2021 a las 00:00:36
 -- Versión del servidor: 10.4.14-MariaDB
 -- Versión de PHP: 7.4.10
 
@@ -52,7 +52,7 @@ CREATE TABLE `hibernate_sequence` (
 --
 
 INSERT INTO `hibernate_sequence` (`next_val`) VALUES
-(35);
+(13);
 
 -- --------------------------------------------------------
 
@@ -69,6 +69,13 @@ CREATE TABLE `mascotas` (
   `tipo` varchar(30) NOT NULL,
   `idCliente` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `mascotas`
+--
+
+INSERT INTO `mascotas` (`id`, `fechaNacimiento`, `foto`, `nombre`, `raza`, `tipo`, `idCliente`) VALUES
+(1, '2021-02-02', '', 'Sam', 'Guacamayo Azul', 'Loro', 2);
 
 -- --------------------------------------------------------
 
@@ -92,18 +99,18 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `activado`, `apellidos`, `nombre`, `password`, `rol`, `telefono`, `username`) VALUES
-(1, b'1', 'admin', 'Admin', '$2a$10$R3gTOJF9t0CynhJ3nb1XKO5nMFCCxPEa/bkWHyQP00DL1DHVKUtHi', 'ROLE_ADMIN', '123456789', 'admin'),
-(2, b'0', 'Sánchez Chozas', 'Nuria', '$2a$10$s4QCRZa0.ZBULUctIepJZO9B6ZLl/x289.j22sRT1NgW1/kuIueGu', 'ROLE_CLIENTE', '675397345', 'nuria56'),
-(3, b'0', 'López Pérez', 'Juan', '$2a$10$LBJnkqtnfxW/qvsQnPQQ6uQC7K6GhvELQaJhsSpFLzq1/Qa4SbSwu', 'ROLE_CLIENTE', '678487512', 'juanlope95'),
-(4, b'0', 'Gómez González', 'Ana Belén', '$2a$10$WyDi9x2K3uQH7610DmjZZOJex/ExxM/nv./pOpeVmBYTGsrPeHt.O', 'ROLE_CLIENTE', '678568545', 'anabelen54'),
-(5, b'1', 'Traverso Carrero', 'Fabio', '$2a$10$ZsfnV9zmoJ6E61b4xEn4B.80yXEt.FRg7QgQq2/z.Yxni1KUx0f2i', 'ROLE_VETERINARIO', '672113415', 'fabitraver89'),
-(6, b'1', 'López Chozas', 'Julián', '$2a$10$PlOTY3SplfVG6p5vAPbj9eF0cNYGlti5nwqLB/eumE.EPBKqBxB1e', 'ROLE_VETERINARIO', '678224590', 'julianlope'),
-(7, b'0', 'Gomero López', 'Francisco', '$2a$10$SqvMjySy7mag9IGWdnrJVezBNBm.Rti8yUDiWzcMU2s/fu/j93bv.', 'ROLE_CLIENTE', '672781134', 'frango1995'),
-(8, b'1', 'Gómez Gardón', 'Laura', '$2a$10$150UKo4RllwtEaFEyFUEReXZKg8OTyiSkLw.QigKjnuPPrlu/.Qi2', 'ROLE_VETERINARIO', '678983216', 'lau90'),
-(9, b'0', 'Pérez Gardón', 'Julia', '$2a$10$0u0txk8XY6lpaQHTxwlsZOOetW1jNK/ySyqZYEjo4xemzFsVTHATm', 'ROLE_CLIENTE', '956892190', 'julialv1995'),
-(10, b'0', 'Reyes Gil', 'Álvaro', '$2a$10$DnzF9.Ft/WMkf0/eQEIaGedEFrGS2UrCWRv8X/oFD4Q2dtp0lBGPS', 'ROLE_CLIENTE', '678443391', 'alvaroreyes54'),
-(11, b'1', 'Castañeda López', 'Alfredo', '$2a$10$RPf8TKvOTMjz.V.YbZ17Mus2XZyzOn8cbBsYhKuae55W7p6bNvcgS', 'ROLE_VETERINARIO', '678998813', 'alfredocalo13'),
-(12, b'1', 'López Reyes', 'Ignacio', '$2a$10$JnC9nw1zQrbpE..6EugorOmiHBUDExgbBoIxwiY9xnuyZKVOSb2Oy', 'ROLE_VETERINARIO', '678119021', 'ignaciolore90');
+(1, b'1', 'admin', 'Admin', '$2a$10$yIiYpfdwG0X4Dcl9KOoE9ef/EA45GFMNPBWja4d5rj5g4xXhSAE5C', 'ROLE_ADMIN', '123456789', 'admin'),
+(2, b'0', 'Sánchez Chozas', 'Nuria', '$2a$10$TnlzohZzvXuUhfUfL/xgF.lhVmk6KVrMFwx2f0n7dFLYkqaJ8HvIG', 'ROLE_CLIENTE', '675397345', 'nuria56'),
+(3, b'0', 'López Pérez', 'Juan', '$2a$10$sg1DGchx98DDCxrhCVY8MeFDvbJpKuDu2BgJxCNS1yS4Rcg3fugeC', 'ROLE_CLIENTE', '678487512', 'juanlope95'),
+(4, b'0', 'Gómez González', 'Ana Belén', '$2a$10$n87/Mp9.bM8KPUQqymkRgOCgUKinjU68tygiuAW186U6yPIlTPhH.', 'ROLE_CLIENTE', '678568545', 'anabelen54'),
+(5, b'1', 'Traverso Carrero', 'Fabio', '$2a$10$qboszceSfZglcObRjC0w9.5lkhfal2tO9KkBbRreY9zko2iq/xyUa', 'ROLE_VETERINARIO', '672113415', 'fabitraver89'),
+(6, b'1', 'López Chozas', 'Julián', '$2a$10$zsmmav0i14QcJ8sRrA2VOOhbCA084hH4iEFD8ZqvhT/rYscI16RUG', 'ROLE_VETERINARIO', '678224590', 'julianlope'),
+(7, b'0', 'Gomero López', 'Francisco', '$2a$10$hE78bWT8vErRWqSeeqzzyOg6EcoHL5i3aqj.30NVGlGhMgz/cr1ze', 'ROLE_CLIENTE', '672781134', 'frango1992'),
+(8, b'1', 'Gómez Gardón', 'Laura', '$2a$10$/rNd.Ul17ral3C/EowdBoOfK/QHYwAGwCIzp1dkk5PH7c.t0NPsAS', 'ROLE_VETERINARIO', '678983216', 'lau90'),
+(9, b'0', 'Pérez Gardón', 'Julia', '$2a$10$WbtdJqJxWljs1TNjTC7JiOSBzOEr6oFAiA9Cd7/ZZJVg1JempoTuG', 'ROLE_CLIENTE', '956892190', 'julialv1995'),
+(10, b'0', 'Reyes Gil', 'Álvaro', '$2a$10$uLZcdjnmAjhn4VGHdN4eye8sWv2k.4D/xSz0aFb8L277c/RVrstWe', 'ROLE_CLIENTE', '678443391', 'alvaroreyes54'),
+(11, b'1', 'Castañeda López', 'Alfredo', '$2a$10$IE5ERtQJE5eEQuY56SamRODNUGj7DCj.4Ze6EpDVMgDBDTmAH0t1G', 'ROLE_VETERINARIO', '678998813', 'alfredocalo13'),
+(12, b'1', 'López Reyes', 'Ignacio', '$2a$10$eAQltccoUfaITkGnett8l.SkphCoLKUniVsCjTS6kAn3JO.eSQpGq', 'ROLE_VETERINARIO', '678119021', 'ignaciolore90');
 
 --
 -- Índices para tablas volcadas

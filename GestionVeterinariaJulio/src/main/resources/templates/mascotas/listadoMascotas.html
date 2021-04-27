@@ -66,6 +66,12 @@
                       <li sec:authorize="hasRole('ROLE_CLIENTE')">
                       	<a class="dropdown-item" th:href="@{/mascotas/listadoMascotas}"> <i class="fa fa-link pull-left"></i> Listado de mascotas</a>
                       </li>
+                      <li sec:authorize="hasRole('ROLE_CLIENTE')">
+                      	<a class="dropdown-item" th:href="@{/citas/formCita}"><i class="fa fa-link pull-left"></i> Pedir cita</a>
+                      </li>
+                      <li sec:authorize="hasRole('ROLE_CLIENTE')">
+                      	<a class="dropdown-item" th:href="@{/perfil_cliente/}+${usuario}"><i class="fa fa-link pull-left"></i> Perfil de usuario</a>
+                      </li>
                     </ul>
                   </li>
                 </ul>
@@ -111,6 +117,7 @@
             <div class="panel panel-body alert alert-success" th:if="${insertado}" th:text="${insertado}"></div>
             <div class="panel panel-body alert alert-info" th:if="${editado}" th:text="${editado}"></div>
             <div class="panel panel-body alert alert-danger" th:if="${eliminado}" th:text="${eliminado}"></div>
+            <div class="panel panel-body alert alert-warning" th:if="${cancelado}" th:text="${cancelado}"></div>
             
             
             <div sec:authorize="hasRole('ROLE_CLIENTE')" class="container mt-4">
@@ -140,9 +147,8 @@
 							<td class="border" th:text="${mascota.tipo}"></td>
 							<td class="border" th:text="${mascota.raza}"></td>
 							<td class="border" th:text="${mascota.fechaNacimiento}"></td>
-							<td class="border"></td>
-							<!-- <img th:src="${#strings.isEmpty(mascota.foto)} 'http://localhost:8080/mascotasImg/image.png' : ${mascota.foto}? "
-								class="img-responsive rounded-circle center" alt="Imagen" id="imagenMascota"/> -->
+							<td class="border"><img th:src="${#strings.isEmpty(mascota.foto)} 'http://localhost:8080/mascotasImg/image.png' : ${mascota.foto}? "
+								class="img-responsive rounded-circle center" alt="Imagen" id="imagenMascota"/></td>
 							<td class="border"><a th:href="@{/mascotas/formMascota/}+${mascota.id}" class="btn btn-primary"><i class="fa fa-edit"></i> Editar</a></td>
 							<td class="border">
 								<button class="btn btn-warning" data-toggle="modal" data-target="#modalMascota">
@@ -150,18 +156,18 @@
 								</button>
 								
 								<!-- Eliminar con formulario modal -->
-								<div class="modal fade" id="modalMascota" tabindex="-1" role="dialog" aria-labelledby="eliminar" aria-hidden="true">
+								<div class="modal fade" id="modalMascota" role="dialog" aria-labelledby="eliminar" aria-hidden="true">
   									<div class="modal-dialog" role="document">
     									<div class="modal-content">
       										<div class="modal-body">
-        										¿Estás seguro de eliminar esta mascota ?
+        										<h5 class="text-center">¿Estás seguro de eliminar esta mascota ?</h5>
       										</div>
       										<div class="modal-footer">
         										<a th:href="@{/mascotas/listadoMascotas}" class="btn btn-secondary" data-dismiss="modal">
         											<i class="fa fa-arrow-circle-left"></i> No
         										</a>
         										
-        										<form action="#" th:action="@{/mascotas/eliminarMascota/}+${mascota.id}" th:object="${mascota}" method="POST">
+        										<form action="#" th:action="@{/mascotas/eliminarMascota/}+${mascota.id}" th:object="${mascota}" method="POST">													
 													<button class="btn btn-warning"><i class="fa fa-trash"></i> Sí</button>
 												</form>
       										</div>

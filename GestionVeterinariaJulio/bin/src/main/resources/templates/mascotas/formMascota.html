@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thyemeleaf.org" xmlns:sec="http://www.thyemeleaf.org/extras/spring-security">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    	<!-- Meta, title, CSS, favicons, etc. -->
+    	<meta charset="utf-8">
+    	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Formulario de mascota</title>
+		
+		<!-- Bootstrap -->
+    	<link th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
+    	<!-- Font Awesome -->
+    	<link th:href="@{/vendors/fontawesome/css/font-awesome.min.css}" rel="stylesheet">
+    	<!-- NProgress -->
+    	<link th:href="@{/vendors/nprogress/nprogress.css}" rel="stylesheet">
+
+    	<!-- Custom Theme Style -->
+    	<link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
+    	<link type="text/css" th:href="@{/css/mascotas.css}" rel="stylesheet"/>
+	</head>
+
+	<body>
+		<div sec:authorize="hasRole('ROLE_CLIENTE')" class="container" id="formMascota">
+			<div class="card mt-5 col-lg-6 offset-lg-3 col-md-4 offset-md-3 col-12">
+				<div class="card-body">
+					<form class="form-signin" action="#" th:action="@{/mascotas/saveMascota}" th:object="${mascota}" method="post" enctype="multipart/form-data">
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+					<div class="card-header text-center"> <h3 th:text="${mascota.id != 0} ? 'FORMULARIO EDITAR MASCOTA': 'FORMULARIO AÑADIR MASCOTA'"> </h3> </div>
+						<input type="hidden" name="id" th:field="*{id}"/>
+						
+						<div class="form-label-group">
+							<input type="text" th:field="*{nombre}" placeholder="Nombre" class="form-control" name="nombre" id="datoMascota" th:value="*{nombre}"/>
+							<div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error producido en el nombre</div>
+						</div>
+						<div class="form-label-group">
+							<input type="text" th:field="*{tipo}" placeholder="Tipo" class="form-control" name="tipo" id="datoMascota" th:value="*{tipo}"/>
+							<div class="text-danger" th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}">Error producido en el tipo</div>
+						</div>
+						<div class="form-label-group">
+							<input type="text" th:field="*{raza}" placeholder="Raza" class="form-control" name="raza" id="datoMascota" th:value="*{raza}"/>
+							<div class="text-danger" th:if="${#fields.hasErrors('raza')}" th:errors="*{raza}">Error producido en la raza</div>
+						</div>
+						<div class="form-label-group">
+							<input type="date" th:field="*{fechaNacimiento}" class="form-control" name="fechaNacimiento" id="datoMascota" th:value="*{fechaNacimiento}"/>
+							<div class="text-danger" th:if="${#fields.hasErrors('fechaNacimiento')}" th:errors="*{fechaNacimiento}">Error producido en la fecha de nacimiento</div>
+						</div>
+						<div class="form-label-group">
+							<input type="file" th:field="*{foto}" placeholder="Foto" class="form-control input-file" name="foto" id="datoMascota" th:value="*{foto}"/>
+							<div class="text-danger" th:if="${#fields.hasErrors('foto')}" th:errors="*{foto}">Error producido al subir la foto</div>
+						</div>
+					
+						<div class="card-footer" id="panelMascota">
+							<a th:href="@{/mascotas/listadoMascotas}" class="btn btn-secondary"><i class="fa fa-arrow-circle-left"></i> Volver a listado de mascotas</a>
+						
+							<button type="submit" th:if="${mascota.id == 0}" class="btn btn-success"><i class="fa fa-plus-circle"></i> Añadir</button>
+							<button type="submit" th:if="${mascota.id != 0}" class="btn btn-primary"><i class="fa fa-edit"></i> Editar </button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		
+		<!-- jQuery -->
+    	<script th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
+    	<!-- Bootstrap -->
+   		<script th:src="@{/vendors/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
+    	<!-- FastClick -->
+    	<script th:src="@{/vendors/fastclick/lib/fastclick.js}"></script>
+    	<!-- NProgress -->
+    	<script th:src="@{/vendors/nprogress/nprogress.js}"></script>
+    
+    	<!-- Custom Theme Scripts -->
+    	<script th:src="@{/build/js/custom.min.js}"></script>
+	</body>
+</html>

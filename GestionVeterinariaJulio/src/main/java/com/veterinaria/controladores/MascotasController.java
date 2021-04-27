@@ -87,8 +87,10 @@ public class MascotasController {
 	public String saveMascota(@Valid @ModelAttribute("mascota") ModeloMascotas modeloMascota, ModeloUsuarios modeloCliente, BindingResult validarMascota,
 			RedirectAttributes mensajeFlash, Model cliente, @RequestParam("file") MultipartFile foto) {
 		
-		if(validarMascota.hasErrors())
+		if(validarMascota.hasErrors()) {
+			cliente.addAttribute("clientes",mostrarClientes.listarUsuarios());
 			return "redirect:"+formMascota;
+		}
 		else {
 			if(modeloMascota.getId() == 0) {
 				mascotas.aniadirMascota(modeloMascota, modeloCliente);
@@ -137,12 +139,18 @@ public class MascotasController {
 	public String eliminarMascota(@ModelAttribute("mascota") ModeloMascotas mascota, @PathVariable("id") int id,
 			RedirectAttributes mensajeFlash) {
 		/* Eliminamos mascota con el uso de formulario modal */
+		if(id == 0)  {
+			txtMascota = "La mascota no ha podido ser eliminada";
+			LOG_VETERINARIA.info(txtMascota);
+			mensajeFlash.addFlashAttribute("cancelado",txtMascota);
+		}
+		else {
+			mascotas.eliminarMascota(id);
+			txtMascota = "Mascota eliminada correctamente";
+			LOG_VETERINARIA.info(txtMascota);
+			mensajeFlash.addFlashAttribute("eliminado",txtMascota);
+		}
 		
-		mascotas.eliminarMascota(id);
-		
-		txtMascota = "Mascota eliminada correctamente";
-		LOG_VETERINARIA.info(txtMascota);
-		mensajeFlash.addFlashAttribute("eliminado",txtMascota);
 		return "redirect:"+vista_mascotas;
 	}
 	

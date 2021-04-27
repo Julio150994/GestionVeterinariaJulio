@@ -60,8 +60,11 @@
                       <li sec:authorize="hasRole('ROLE_ADMIN')">
                       	<a class="dropdown-item" th:href="@{/clientes/listadoClientes}"> <i class="fa fa-link pull-left"></i> Listado de clientes</a>
                       </li>
-                       <li sec:authorize="hasRole('ROLE_ADMIN')">
+                      <li sec:authorize="hasRole('ROLE_ADMIN')">
                       	<a class="dropdown-item" th:href="@{/veterinarios/listadoVeterinarios}"> <i class="fa fa-link pull-left"></i> Listado de veterinarios</a>
+                      </li>
+                      <li sec:authorize="hasRole('ROLE_CLIENTE')">
+                      	<a class="dropdown-item" th:href="@{/mascotas/listadoMascotas}"> <i class="fa fa-link pull-left"></i> Listado de mascotas</a>
                       </li>
                     </ul>
                   </li>
