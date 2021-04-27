@@ -31,6 +31,7 @@ import com.veterinaria.servicios.Impl.UsuariosImpl;
 public class CitasController {
 	private static final Log LOG_VETERINARIA = LogFactory.getLog(CitasController.class);
 	private static final String formCita = "/citas/formCita";
+	private String txtCita;
 	
 	@Autowired
 	@Qualifier("usuariosImpl")
@@ -47,7 +48,7 @@ public class CitasController {
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/citas/formCita")
-	public ModelAndView formularioCita(ModeloUsuarios modeloUsuario, ModeloMascotas modeloMascota) {
+	public ModelAndView formularioCita(@ModelAttribute("usuario") ModeloUsuarios modeloUsuario, ModeloMascotas modeloMascota) {
 		LOG_VETERINARIA.info("Formulario para pedir la cita");
 		UserDetails usuario = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
@@ -55,15 +56,21 @@ public class CitasController {
 		mavCita.addObject("cita", new Citas());
 		mavCita.addObject("cliente",usuario.getUsername().toUpperCase());
 		
-		if(modeloUsuario.getRol() == "ROLE_VETERINARIO")
-			mavCita.addObject("veterinarios",veterinarios.listarUsuarios());
-		else {
+		if(modeloUsuario.getRol() == "ROLE_VETERINARIO") {
 			LOG_VETERINARIA.info("Veterinarios listados");
-			mavCita.addObject("veterinarios","Veterinarios no encontrados");
+			mavCita.addObject("veterinarios",veterinarios.listarUsuarios());
+		}
+		else {
+			txtCita = "Veterinarios no encontrados";
+			LOG_VETERINARIA.info(txtCita);
+			mavCita.addObject("veterinarios",txtCita);
 		}
 		
-		if(modeloMascota.getId() == 0)
-			mavCita.addObject("mascotas","Mascotas no encontradas");
+		if(modeloMascota.getId() == 0) {
+			txtCita = "Mascotas no encontradas";
+			LOG_VETERINARIA.info(txtCita);
+			mavCita.addObject("mascotas",txtCita);
+		}
 		else {
 			LOG_VETERINARIA.info("Mascotas listadas");
 			mavCita.addObject("mascotas",mascotas.listarMascotas());
@@ -74,7 +81,7 @@ public class CitasController {
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@PostMapping("/citas/saveCita")
-	public String pedirCita(@Valid @ModelAttribute("cita") ModeloCitas modeloCita, ModeloUsuarios modeloUsuario, ModeloMascotas modeloMascota,
+	public String pedirCita(@Valid @ModelAttribute("cita") ModeloCitas modeloCita, @ModelAttribute("usuario") ModeloUsuarios modeloUsuario, ModeloMascotas modeloMascota,
 			BindingResult validarCita, RedirectAttributes mensajeFlash, Model cita) {
 		if(validarCita.hasErrors()) {
 			LOG_VETERINARIA.info("Error en la validación de la cita");
@@ -84,7 +91,7 @@ public class CitasController {
 		else {
 			citas.pedirCita(modeloCita, modeloMascota, modeloUsuario);
 			
-			String txtCita = "Esta cita se ha pedido correctamente";
+			txtCita = "La cita se ha pedido correctamente";
 			LOG_VETERINARIA.info(txtCita);
 			mensajeFlash.addFlashAttribute("citaPedida",txtCita);
 		}
