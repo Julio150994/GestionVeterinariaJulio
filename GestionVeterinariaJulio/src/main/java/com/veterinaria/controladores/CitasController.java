@@ -53,7 +53,7 @@ public class CitasController {
 		
 		ModelAndView mavCita = new ModelAndView(formCita);
 		mavCita.addObject("cita", new Citas());
-		mavCita.addObject("cliente",usuario.getUsername());
+		mavCita.addObject("cliente",usuario.getUsername().toUpperCase());
 		
 		if(modeloUsuario.getRol() == "ROLE_VETERINARIO")
 			mavCita.addObject("veterinarios",veterinarios.listarUsuarios());
@@ -88,7 +88,7 @@ public class CitasController {
 			LOG_VETERINARIA.info(txtCita);
 			mensajeFlash.addFlashAttribute("citaPedida",txtCita);
 		}
-		return "redirect:"+formCita;
-			
+		
+		return "redirect:"+formCita;	
 	}
 }

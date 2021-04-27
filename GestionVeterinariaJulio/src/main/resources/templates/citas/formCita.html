@@ -6,7 +6,7 @@
     	<meta charset="utf-8">
     	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Formulario de añadir cita</title>
+		<title>Formulario de pedir cita</title>
 		
 		<!-- Bootstrap -->
     	<link th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
@@ -21,27 +21,27 @@
 	</head>
 
 	<body>		
-		<div sec:authorize="hasRole('ROLE_CLIENTE')" class="container" id="formUsuario">
+		<div sec:authorize="hasRole('ROLE_CLIENTE')" class="container" id="formCita">
 			<div class="alert alert-success" th:if="${citaPedida != null}" th:text="${citaPedida}"></div>
 		
 			<div class="card mt-5 col-lg-6 offset-lg-3 col-md-4 offset-md-3 col-12">
 				<div class="card-body">
 					<form class="form-signin" action="#" th:action="@{/citas/saveCita}" th:object="${cita}" method="post">			
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-						<h3>CITA PARA CLIENTE <span th:text="${cliente}"></span></h3>
+						<h3 class="text-center">CITA PARA CLIENTE <span th:text="${cliente}"></span></h3>
 						<input type="hidden" name="id" th:field="*{id}"/>
 						
 						<div class="form-label-group">
-							<select class="form-control">
-								<option value="">Seleccione una mascota:</option>
-								<option th:each="mascota: ${mascotas}"  th:value="${mascota.id}"><span th:text="${mascota.tipo}"></span></option>
+							<select class="form-control" id="datoCita">
+								<option value="">Seleccione una mascota</option>
+								<option th:each="mascota: ${mascotas}" th:value="${mascota.id}" th:text="${mascota.nombre}"></option>
 							</select>
 							<div class="text-danger" th:if="${#fields.hasErrors('idMascota')}" th:errors="*{idMascota}">Error producido en idMascota</div>
 						</div>
 						<div class="form-label-group">
-							<select class="form-control">
-								<option value="">Seleccione un veterinario:</option>
-								<option th:each="usuario: ${veterinarios}" th:value="${usuario.id}"><span th:text="${usuario.username}"></span></option>
+							<select class="form-control" id="datoCita">
+								<option value="">Seleccione un veterinario</option>
+								<option th:each="usuario: ${veterinarios}" th:if="${usuario.rol == 'ROLE_VETERINARIO'}" th:value="${usuario.id}" th:text="${usuario.username}"></option>
 							</select>
 							<div class="text-danger" th:if="${#fields.hasErrors('idVeterinario')}" th:errors="*{idVeterinario}">Error producido en idVeterinario</div>
 						</div>
@@ -61,7 +61,7 @@
 						<div class="card-footer" id="panelCita">
 							<a th:href="@{/}" class="btn btn-secondary"><i class="fa fa-arrow-circle-left"></i> Volver al menú</a>
 										
-							<button type="submit" class="btn btn-success"><i class="fa fa-user-plus"></i> Añadir</button>
+							<button type="submit" class="btn btn-info"><i class="fa fa-user-plus"></i> Pedir cita</button>
 						</div>
 					</form>
 				</div>
