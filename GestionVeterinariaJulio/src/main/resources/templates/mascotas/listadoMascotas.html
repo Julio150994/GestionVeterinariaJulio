@@ -18,6 +18,11 @@
     	<!-- Custom Theme Style -->
     	<link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
     	<link type="text/css" th:href="@{/css/mascotas.css}" rel="stylesheet"/>
+    	
+    	<!-- Para utilizar nuestro formulario modal -->
+    	<script type="text/javascript" th:src="@{/js/mascota_modal.js}"></script>
+    	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 	</head>
 
 	<body class="nav-md">
@@ -117,12 +122,11 @@
             <div class="panel panel-body alert alert-success" th:if="${insertado}" th:text="${insertado}"></div>
             <div class="panel panel-body alert alert-info" th:if="${editado}" th:text="${editado}"></div>
             <div class="panel panel-body alert alert-danger" th:if="${eliminado}" th:text="${eliminado}"></div>
-            <div class="panel panel-body alert alert-warning" th:if="${cancelado}" th:text="${cancelado}"></div>
             
             
             <div sec:authorize="hasRole('ROLE_CLIENTE')" class="container mt-4">
 
-			<div class="card-headert mt-5 text-center"> <h3>MASCOTAS DEL CLIENTE <span class="text-secondary" th:text="${cliente}"></span></h3> </div>
+			<div class="card-headert mt-5 text-center"> <h3>MASCOTAS DE <span class="text-secondary" th:text="${clienteActual}"></span></h3> </div>
 			
 			<div class="panel panel-body alert alert-warning" th:if="${mascotas.empty}" th:text="${mascotasTxt}"></div>
 			
@@ -140,40 +144,21 @@
 							<th colspan="3">Operaciones</th>
 						</tr>
 					</thead>
-						
+					
+					<!-- th:if="${mascota.cliente.id == usuario}" -->
 					<tbody class="table table-light" th:each="mascota: ${mascotas}">
 						<tr>
 							<td class="border" th:text="${mascota.nombre}"></td>
 							<td class="border" th:text="${mascota.tipo}"></td>
 							<td class="border" th:text="${mascota.raza}"></td>
-							<td class="border" th:text="${mascota.fechaNacimiento}"></td>
-							<td class="border"><img th:src="${#strings.isEmpty(mascota.foto)} 'http://localhost:8080/mascotasImg/image.png' : ${mascota.foto}? "
-								class="img-responsive rounded-circle center" alt="Imagen" id="imagenMascota"/></td>
+							<td class="border" th:text="${#dates.format(mascota.fechaNacimiento,'dd/MM/yyyy')}"></td>
+							<td class="border"><img th:src="${#strings.isEmpty(mascota.foto)} ? '/mascotasImg/image.png': ${mascota.foto}"
+								 th:alt="${mascota.foto}" class="center-block" id="imagenMascota"/></td>
 							<td class="border"><a th:href="@{/mascotas/formMascota/}+${mascota.id}" class="btn btn-primary"><i class="fa fa-edit"></i> Editar</a></td>
 							<td class="border">
-								<button class="btn btn-warning" data-toggle="modal" data-target="#modalMascota">
+								<button class="btn btn-warning" th:onclick="eliminarMascota([[${mascota.id}]],[[${mascota.nombre}]])">
 									<i class="fa fa-trash"></i> Eliminar
 								</button>
-								
-								<!-- Eliminar con formulario modal -->
-								<div class="modal fade" id="modalMascota" role="dialog" aria-labelledby="eliminar" aria-hidden="true">
-  									<div class="modal-dialog" role="document">
-    									<div class="modal-content">
-      										<div class="modal-body">
-        										<h5 class="text-center">¿Estás seguro de eliminar esta mascota ?</h5>
-      										</div>
-      										<div class="modal-footer">
-        										<a th:href="@{/mascotas/listadoMascotas}" class="btn btn-secondary" data-dismiss="modal">
-        											<i class="fa fa-arrow-circle-left"></i> No
-        										</a>
-        										
-        										<form action="#" th:action="@{/mascotas/eliminarMascota/}+${mascota.id}" th:object="${mascota}" method="POST">													
-													<button class="btn btn-warning"><i class="fa fa-trash"></i> Sí</button>
-												</form>
-      										</div>
-    									</div>
-  									</div>
-								</div>
 							</td>
 							<td class="border"><a th:href="@{/mascotas/mostrarMascota/}+${mascota.id}" class="btn btn-secondary"><i class="fa fa-eye"></i> Ver mascota</a></td>
 						</tr>
@@ -181,6 +166,8 @@
 				</table>
 				
 				<!-- Mostramos paginaciones para los clientes -->
+				<!-- SELECT COUNT(*) FROM mascotas WHERE idCliente = 2; -->
+				
 				<div class="panel panel-body col-sm-2" th:if="${!mascotas.empty}">
 					<div class="col-md-2"></div>
 					<div class="col-md-8">

@@ -1,5 +1,6 @@
 package com.veterinaria.storage;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -16,60 +17,56 @@ import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+
 @Service
 public class FileSystemStorageService implements StorageService {
+	
+	private final Path rootLocation;
 
-	private final Path rootImagenMascota;
-	
-	@Autowired
-	StorageService mascotasService;
-	
-	
 	@Autowired
 	public FileSystemStorageService(StorageProperties properties) {
-		this.rootImagenMascota = Paths.get(properties.getLocation());
+		this.rootLocation = Paths.get(properties.getLocation());
 	}
 
 	@Override
-	public String store(MultipartFile fileMascota, int idMascota) {
-		String nombreImagen = StringUtils.cleanPath(fileMascota.getOriginalFilename());// para el nombre de la ruta de imágen
-		String extensionImg = StringUtils.getFilenameExtension(nombreImagen);// para la extensión de la imágen
-		String mascotaStore = nombreImagen+"."+extensionImg;
+	public String store(MultipartFile file) {		
+		String nombreFoto = StringUtils.cleanPath(file.getOriginalFilename());
 		
 		try {
-			if (fileMascota.isEmpty())
-				throw new StorageException("Error. Debe subir una imágen");
+			if (file.isEmpty()) {
+				throw new StorageException("Error. Es una imágen vacía");
+			}
 			
-			if(nombreImagen.contains(".."))
-				throw new StorageException("No debe almacenar esta imágen fuera del directorio "+fileMascota);
-			
-			/* Para subir el archivo al servidor */
-			try (InputStream inputStream = fileMascota.getInputStream()) {
-				Files.copy(inputStream,this.rootImagenMascota.resolve(mascotaStore), StandardCopyOption.REPLACE_EXISTING);
-				return mascotaStore;
+			if (nombreFoto.contains("..")) {
+				throw new StorageException("No se puede almacenar la imágen fuera del directorio actual");
+			}
+			try (InputStream inputStream = file.getInputStream()) {
+				Files.copy(inputStream, this.rootLocation.resolve(nombreFoto),
+					StandardCopyOption.REPLACE_EXISTING);
+				return nombreFoto;
 			}
 		}
 		catch (IOException e) {
-			throw new StorageException("Error al almacenar la imágen.", e);
+			throw new StorageException("Error. No se pudo almacenar la imágen.", e);
 		}
 	}
 
 	@Override
 	public Stream<Path> loadAll() {
 		try {
-			return Files.walk(this.rootImagenMascota, 1)
-				.filter(path -> !path.equals(this.rootImagenMascota))
-				.map(this.rootImagenMascota::relativize);
+			return Files.walk(this.rootLocation, 1)
+				.filter(path -> !path.equals(this.rootLocation))
+				.map(this.rootLocation::relativize);
 		}
 		catch (IOException e) {
-			throw new StorageException("Failed to read stored files", e);
+			throw new StorageException("No se ha podido leer la imágen almacenada", e);
 		}
 
 	}
 
 	@Override
 	public Path load(String filename) {
-		return rootImagenMascota.resolve(filename);
+		return rootLocation.resolve(filename);
 	}
 
 	@Override
@@ -82,32 +79,40 @@ public class FileSystemStorageService implements StorageService {
 			}
 			else {
 				throw new StorageFileNotFoundException(
-						"Could not read file: " + filename);
+						"No se ha podido leer esta imágen: " + filename);
 
 			}
 		}
 		catch (MalformedURLException e) {
-			throw new StorageFileNotFoundException("No se ha podido leer el archivo: " + filename, e);
+			throw new StorageFileNotFoundException("No se pudo leer esta imágen: " + filename, e);
 		}
 	}
 
 	@Override
 	public void deleteAll() {
-		FileSystemUtils.deleteRecursively(rootImagenMascota.toFile());
+		FileSystemUtils.deleteRecursively(rootLocation.toFile());
 	}
 
 	@Override
 	public void init() {
 		try {
-			Files.createDirectories(rootImagenMascota);
+			Files.createDirectories(rootLocation);
 		}
 		catch (IOException e) {
-			throw new StorageException("Error al iniciar el almacenamiento de la imágen", e);
+			throw new StorageException("No se pudo inicializar el almacenamiento", e);
 		}
 	}
 
+	
 	@Override
-	public void deleteImage(String imagen) {
-		mascotasService.deleteImage(imagen);
+	public void delete(String filename) {		
+		// Eliminamos la imágen existente en el id del usuario que hemos eliminado
+		File rutaImagen = new File(filename);
+		
+		String nombre = rutaImagen.getName();
+		File imagen = new File("mascotasImg//"+nombre);
+		
+		if(imagen.exists())
+			imagen.delete();
 	}
 }

@@ -3,19 +3,19 @@ package com.veterinaria.storage;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 
-
-@ConfigurationProperties("storage")
+@ConfigurationProperties(prefix="storage")
 @Service
 public class StorageProperties {
 
-	private String localizacion = "mascotasImg";
-
+	private String location = "mascotasImg";
+	
+	
 	public String getLocation() {
-		return localizacion;
+		return location;
 	}
 
-	public void setLocation(String localizacion) {
-		this.localizacion = localizacion;
+	public void setLocation(String location) {
+		this.location = location;
 	}
 
 }

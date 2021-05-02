@@ -3,9 +3,8 @@ package com.veterinaria.configuraciones;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-
 @Configuration
 @EnableJpaAuditing
-public class ConfiguracionMascotas {
+public class ConfiguraFotos {
 	
 }

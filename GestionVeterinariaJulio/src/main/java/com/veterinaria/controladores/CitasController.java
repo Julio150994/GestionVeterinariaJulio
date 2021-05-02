@@ -6,6 +6,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -18,9 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.veterinaria.entidades.Citas;
+import com.veterinaria.entidades.Usuarios;
 import com.veterinaria.modelos.ModeloCitas;
 import com.veterinaria.modelos.ModeloMascotas;
 import com.veterinaria.modelos.ModeloUsuarios;
+import com.veterinaria.repositorios.CitasRepository;
+import com.veterinaria.repositorios.UsuariosRepository;
 import com.veterinaria.servicios.Impl.CitasImpl;
 import com.veterinaria.servicios.Impl.MascotasImpl;
 import com.veterinaria.servicios.Impl.UsuariosImpl;
@@ -34,46 +38,63 @@ public class CitasController {
 	private String txtCita;
 	
 	@Autowired
-	@Qualifier("usuariosImpl")
-	private UsuariosImpl veterinarios;
+	@Qualifier("citasImpl")
+	private CitasImpl citas;
 	
 	@Autowired
 	@Qualifier("mascotasImpl")
 	private MascotasImpl mascotas;
 	
 	@Autowired
-	@Qualifier("citasImpl")
-	private CitasImpl citas;
+	@Qualifier("usuariosImpl")
+	private UsuariosImpl veterinarios;
+	
+	@Autowired
+	@Qualifier("usuariosRepository")
+	private UsuariosRepository usuariosRepository;
+	
+	@Autowired
+	@Qualifier("citasRepository")
+	private CitasRepository citasRepository;
 	
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/citas/formCita")
-	public ModelAndView formularioCita(@ModelAttribute("usuario") ModeloUsuarios modeloUsuario, ModeloMascotas modeloMascota) {
+	public ModelAndView formularioCita(@ModelAttribute("veterinario") ModeloUsuarios modeloVeterinario,
+			@ModelAttribute("mascota") ModeloMascotas modeloMascota) {
 		LOG_VETERINARIA.info("Formulario para pedir la cita");
 		UserDetails usuario = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
 		ModelAndView mavCita = new ModelAndView(formCita);
-		mavCita.addObject("cita", new Citas());
-		mavCita.addObject("cliente",usuario.getUsername().toUpperCase());
 		
-		if(modeloUsuario.getRol() == "ROLE_VETERINARIO") {
-			LOG_VETERINARIA.info("Veterinarios listados");
-			mavCita.addObject("veterinarios",veterinarios.listarUsuarios());
-		}
-		else {
-			txtCita = "Veterinarios no encontrados";
-			LOG_VETERINARIA.info(txtCita);
-			mavCita.addObject("veterinarios",txtCita);
-		}
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
-		if(modeloMascota.getId() == 0) {
-			txtCita = "Mascotas no encontradas";
-			LOG_VETERINARIA.info(txtCita);
-			mavCita.addObject("mascotas",txtCita);
-		}
-		else {
-			LOG_VETERINARIA.info("Mascotas listadas");
-			mavCita.addObject("mascotas",mascotas.listarMascotas());
+		if(auth.getPrincipal() != "anonymousUser") {
+			Usuarios clienteActual = usuariosRepository.findByUsername(auth.getName());
+			mavCita.addObject("usuario",clienteActual.getId());
+		
+			mavCita.addObject("cita", new Citas());
+			mavCita.addObject("clienteActual",usuario.getUsername().toUpperCase());
+			
+			if(modeloVeterinario == null) {
+				txtCita = "Veterinarios no encontrados";
+				LOG_VETERINARIA.info(txtCita);
+				mavCita.addObject("veterinario",txtCita);
+			}
+			else {
+				LOG_VETERINARIA.info("Veterinarios listados");
+				mavCita.addObject("veterinarios",veterinarios.listarUsuarios());
+			}
+			
+			if(modeloMascota == null) {
+				txtCita = "Mascotas no encontradas";
+				LOG_VETERINARIA.info(txtCita);
+				mavCita.addObject("mascota",txtCita);
+			}
+			else {
+				LOG_VETERINARIA.info("Mascotas listadas");
+				mavCita.addObject("mascotas",mascotas.listarMascotas());
+			}
 		}
 		
 		return mavCita;
@@ -81,21 +102,27 @@ public class CitasController {
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@PostMapping("/citas/saveCita")
-	public String pedirCita(@Valid @ModelAttribute("cita") ModeloCitas modeloCita, @ModelAttribute("usuario") ModeloUsuarios modeloUsuario, ModeloMascotas modeloMascota,
-			BindingResult validarCita, RedirectAttributes mensajeFlash, Model cita) {
-		if(validarCita.hasErrors()) {
-			LOG_VETERINARIA.info("Error en la validación de la cita");
-			cita.addAttribute("mascotas",mascotas.listarMascotas());
-			cita.addAttribute("veterinarios",veterinarios.listarUsuarios());
-		}
-		else {
-			citas.pedirCita(modeloCita, modeloMascota, modeloUsuario);
+	public String pedirCita(@Valid @ModelAttribute("cita") ModeloCitas cita, BindingResult validarCita, ModeloMascotas mascota,
+			ModeloUsuarios veterinario, RedirectAttributes mensajeFlash, Model modeloCita) {
+		
+		UserDetails usuario = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		long countCitas = citasRepository.countByFecha(cita.getFecha());
+		LOG_VETERINARIA.info("Nº de citas con la fecha introducida: "+countCitas);
+		
+		if(countCitas < 3) {
+			citas.pedirCita(cita);
 			
-			txtCita = "La cita se ha pedido correctamente";
+			txtCita = usuario.getUsername()+", has pedido tu cita correctamente";
 			LOG_VETERINARIA.info(txtCita);
 			mensajeFlash.addFlashAttribute("citaPedida",txtCita);
 		}
+		else {
+			txtCita = usuario.getUsername()+", no puedes añadir más citas para la fecha "+cita.getFecha();
+			LOG_VETERINARIA.info(txtCita);
+			mensajeFlash.addFlashAttribute("citaCancelada",txtCita);
+		}
 		
-		return "redirect:"+formCita;	
+		return "redirect:"+formCita;
 	}
 }

@@ -1,5 +1,6 @@
 package com.veterinaria.modelos;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -8,14 +9,14 @@ public class ModeloUsuarios {
 	private String nombre,apellidos,telefono,username,password;
 	private boolean activado;
 	private String rol;
-	private List<ModeloMascotas> mascotas;
-	private List<ModeloCitas> citas;
+	private List<ModeloMascotas> mascotas = new ArrayList<ModeloMascotas>();
+	private List<ModeloCitas> citas = new ArrayList<ModeloCitas>();
 	
 	
 	public ModeloUsuarios() {
 		
-	}	
-	
+	}
+
 	public ModeloUsuarios(int id, String nombre, String apellidos, String telefono, String username, String password,
 			boolean activado, String rol, List<ModeloMascotas> mascotas, List<ModeloCitas> citas) {
 		super();

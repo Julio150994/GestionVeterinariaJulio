@@ -5,8 +5,8 @@ import java.sql.Date;
 
 public class ModeloCitas {
 	private int id;
-	private ModeloMascotas idMascota;
-	private ModeloUsuarios idVeterinario;
+	private ModeloMascotas mascota;
+	private ModeloUsuarios veterinario;
 	private Date fecha;
 	private String motivo,informe;
 	private boolean realizada;
@@ -16,17 +16,18 @@ public class ModeloCitas {
 		
 	}	
 
-	public ModeloCitas(int id, ModeloMascotas idMascota, ModeloUsuarios idVeterinario, Date fecha, String motivo,
+	public ModeloCitas(int id, ModeloMascotas mascota, ModeloUsuarios veterinario, Date fecha, String motivo,
 			String informe, boolean realizada) {
 		super();
 		this.id = id;
-		this.idMascota = idMascota;
-		this.idVeterinario = idVeterinario;
+		this.mascota = mascota;
+		this.veterinario = veterinario;
 		this.fecha = fecha;
 		this.motivo = motivo;
 		this.informe = informe;
 		this.realizada = realizada;
 	}
+
 
 	public int getId() {
 		return id;
@@ -34,22 +35,22 @@ public class ModeloCitas {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public ModeloMascotas getIdMascota() {
-		return idMascota;
-	}
-
-	public void setIdMascota(ModeloMascotas idMascota) {
-		this.idMascota = idMascota;
 	}	
 
-	public ModeloUsuarios getIdVeterinario() {
-		return idVeterinario;
+	public ModeloMascotas getMascota() {
+		return mascota;
 	}
 
-	public void setIdVeterinario(ModeloUsuarios idVeterinario) {
-		this.idVeterinario = idVeterinario;
+	public void setMascota(ModeloMascotas mascota) {
+		this.mascota = mascota;
+	}	
+
+	public ModeloUsuarios getVeterinario() {
+		return veterinario;
+	}
+
+	public void setVeterinario(ModeloUsuarios veterinario) {
+		this.veterinario = veterinario;
 	}
 
 	public Date getFecha() {

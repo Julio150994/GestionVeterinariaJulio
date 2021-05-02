@@ -2,13 +2,12 @@ package com.veterinaria.modelos;
 
 import java.sql.Date;
 
-
 public class ModeloMascotas {
 	private int id;
 	private String nombre,tipo,raza;
-	private Date fechaNacimiento;// o tipo SQL como en JDBC
+	private Date fechaNacimiento;
 	private String foto;
-	private ModeloUsuarios idCliente;
+	private ModeloUsuarios cliente;
 	
 	
 	public ModeloMascotas() {
@@ -16,7 +15,7 @@ public class ModeloMascotas {
 	}
 
 	public ModeloMascotas(int id, String nombre, String tipo, String raza, Date fechaNacimiento, String foto,
-			ModeloUsuarios idCliente) {
+			ModeloUsuarios cliente) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -24,7 +23,7 @@ public class ModeloMascotas {
 		this.raza = raza;
 		this.fechaNacimiento = fechaNacimiento;
 		this.foto = foto;
-		this.idCliente = idCliente;
+		this.cliente = cliente;
 	}
 
 	public int getId() {
@@ -75,11 +74,11 @@ public class ModeloMascotas {
 		this.foto = foto;
 	}
 
-	public ModeloUsuarios getIdCliente() {
-		return idCliente;
+	public ModeloUsuarios getCliente() {
+		return cliente;
 	}
 
-	public void setIdCliente(ModeloUsuarios idCliente) {
-		this.idCliente = idCliente;
+	public void setCliente(ModeloUsuarios cliente) {
+		this.cliente = cliente;
 	}
 }

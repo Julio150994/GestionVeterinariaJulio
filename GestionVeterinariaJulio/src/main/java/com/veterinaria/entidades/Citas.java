@@ -1,6 +1,7 @@
 package com.veterinaria.entidades;
 
 import java.sql.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import org.springframework.format.annotation.DateTimeFormat;
 
 
 @Entity
@@ -20,20 +25,28 @@ public class Citas {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="idMascota")
-	private Mascotas idMascota;
+	private Mascotas mascota;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="idVeterinario")
-	private Usuarios idVeterinario;
-
+	private Usuarios veterinario;
+	
+	@NotNull(message="Debe introducir una fecha para su cita")
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	@Column(name="fecha",nullable=false)
 	private Date fecha;
 	
+	@NotNull(message="Debe escribir un motivo para su cita")
+	@Size(min=1,max=100,message="Su motivo no debe tener más de 100 caracteres")
+	@Pattern(regexp="^[A-Z]{1}[a-z].+$",message="El motivo de la cita debe empezar por mayúsculas")
 	@Column(name="motivo",nullable=false,length=100)
 	private String motivo;
 	
+	@NotNull(message="Debe redactar un informe para su cita")
+	@Size(min=1,max=100,message="Su informe no debe tener más de 100 caracteres")
+	@Pattern(regexp="^[A-Z]{1}[a-z].+$",message="El informe de la cita debe empezar por mayúsculas")
 	@Column(name="informe",nullable=false,length=100)
 	private String informe;
 	
@@ -43,14 +56,16 @@ public class Citas {
 	
 	public Citas() {
 		
-	}	
+	}
 
-	public Citas(int id, Mascotas idMascota, Usuarios idVeterinario, Date fecha, String motivo, String informe,
+	public Citas(int id, Mascotas mascota, Usuarios veterinario, @NotNull(message = "Debe introducir una fecha para su cita") Date fecha,
+			@NotNull(message = "Debe escribir un motivo para su cita") @Size(min = 1, max = 100, message = "Su motivo no debe tener más de 100 caracteres") @Pattern(regexp = "^[A-Z]{1}[a-z].+$", message = "El motivo de la cita debe empezar por mayúsculas") String motivo,
+			@NotNull(message = "Debe redactar un informe para su cita") @Size(min = 1, max = 100, message = "Su informe no debe tener más de 100 caracteres") @Pattern(regexp = "^[A-Z]{1}[a-z].+$", message = "El informe de la cita debe empezar por mayúsculas") String informe,
 			boolean realizada) {
 		super();
 		this.id = id;
-		this.idMascota = idMascota;
-		this.idVeterinario = idVeterinario;
+		this.mascota = mascota;
+		this.veterinario = veterinario;
 		this.fecha = fecha;
 		this.motivo = motivo;
 		this.informe = informe;
@@ -64,22 +79,22 @@ public class Citas {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public Mascotas getIdMascota() {
-		return idMascota;
-	}
-
-	public void setIdMascota(Mascotas idMascota) {
-		this.idMascota = idMascota;
 	}	
 
-	public Usuarios getIdVeterinario() {
-		return idVeterinario;
+	public Mascotas getMascota() {
+		return mascota;
 	}
 
-	public void setIdVeterinario(Usuarios idVeterinario) {
-		this.idVeterinario = idVeterinario;
+	public void setMascota(Mascotas mascota) {
+		this.mascota = mascota;
+	}	
+
+	public Usuarios getVeterinario() {
+		return veterinario;
+	}
+
+	public void setVeterinario(Usuarios veterinario) {
+		this.veterinario = veterinario;
 	}
 
 	public Date getFecha() {

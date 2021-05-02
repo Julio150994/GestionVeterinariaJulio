@@ -1,5 +1,6 @@
 package com.veterinaria.entidades;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -57,16 +58,16 @@ public class Usuarios {
 	@Column(name="rol",nullable=false,length=20)
 	private String rol;
 	
-	@OneToMany(mappedBy="idCliente",cascade=CascadeType.ALL)
-	private List<Mascotas> mascotas;
+	@OneToMany(mappedBy="cliente",cascade=CascadeType.ALL)
+	private List<Mascotas> mascotas = new ArrayList<Mascotas>();
 	
-	@OneToMany(mappedBy="idVeterinario",cascade=CascadeType.ALL)
-	private List<Citas> citas;
+	@OneToMany(mappedBy="veterinario",cascade=CascadeType.ALL)
+	private List<Citas> citas = new ArrayList<Citas>();
 	
 	
 	public Usuarios() {
 		
-	}
+	}	
 
 	public Usuarios(int id, @NotEmpty(message = "Debe introducir un nombre simple o compuesto") @Pattern(regexp = "^\\D{1,30}$", message = "El nombre simple o compuesto no puede contener números, también debe empezar en mayúscula y seguir todo en minúsculas") @Size(min = 1, max = 30, message = "El nombre debe tener entre 1 y 30 caracteres de longitud máxima") String nombre,
 			@NotEmpty(message = "Debe introducir dos apellidos") @Pattern(regexp = "^\\D{1,50}$", message = "Debe ser dos apellidos que no pueden contener números, también debe empezar en mayúscula y seguir todo en minúsculas") @Size(min = 1, max = 50, message = "Entre los dos apellidos debe haber entre 1 y 50 caracteres de longitud máxima") String apellidos,
@@ -86,7 +87,7 @@ public class Usuarios {
 		this.mascotas = mascotas;
 		this.citas = citas;
 	}
-	
+
 
 	public int getId() {
 		return id;

@@ -22,48 +22,59 @@
 
 	<body>		
 		<div sec:authorize="hasRole('ROLE_CLIENTE')" class="container" id="formCita">
-			<div class="alert alert-success" th:if="${citaPedida != null}" th:text="${citaPedida}"></div>
-		
+			<div class="card mt-5 col-lg-6 offset-lg-3 col-md-4 offset-md-3 col-12 alert alert-success" th:if="${citaPedida != null}" th:text="${citaPedida}"></div>
+			<div class="card mt-5 col-lg-6 offset-lg-3 col-md-4 offset-md-3 col-12 alert alert-warning" th:if="${citaCancelada != null}" th:text="${citaCancelada}"></div>
+			
+			
 			<div class="card mt-5 col-lg-6 offset-lg-3 col-md-4 offset-md-3 col-12">
 				<div class="card-body">
 					<form class="form-signin" action="#" th:action="@{/citas/saveCita}" th:object="${cita}" method="post">			
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-						<h3 class="text-center">CITA PARA CLIENTE <span th:text="${cliente}"></span></h3>
+						<h3 class="text-center">CITA PARA CLIENTE <span th:text="${clienteActual}"></span></h3>
 						<input type="hidden" name="id" th:field="*{id}"/>
 						
 						<div class="form-label-group">
-							<select class="form-control" id="datoCita">
+							<!-- th:if="${mascota.cliente.id == usuario}" -->
+							<select class="form-control" name="mascota" id="datoCita">
 								<option value="">Seleccione una mascota</option>
-								<!-- th:each="mascota: ${mascotas}" th:value="${mascota.id}" th:text="${mascota.nombre}" -->
-								<option></option>
+								<option th:each="mascota: ${mascotas}"
+									th:text="${mascota.nombre}" th:value="${mascota.id}" th:field="*{mascota}">
+								</option>
 							</select>
-							<div class="text-danger" th:if="${#fields.hasErrors('idMascota')}" th:errors="*{idMascota}">Error producido en idMascota</div>
+							<!--<input type="hidden" name="idMascota" th:value="${mascota.id}" th:field="*{mascota}"/>-->
+							<div class="text-danger" th:if="${#fields.hasErrors('mascota')}" th:errors="*{mascota}">Error producido en mascota</div>
 						</div>
 						<div class="form-label-group">
-							<select class="form-control" id="datoCita">
+							<select class="form-control" name="veterinario" id="datoCita">
 								<option value="">Seleccione un veterinario</option>
-								<!-- th:each="usuario: ${veterinarios}" th:if="${usuario.rol == 'ROLE_VETERINARIO'}" th:value="${usuario.id}" th:text="${usuario.username}" -->
-								<option></option>
+								<option th:each="veterinario: ${veterinarios}" th:if="${veterinario.rol == 'ROLE_VETERINARIO'}"
+									th:text="${veterinario.username}" th:value="${veterinario.id}" th:field="*{veterinario}">
+								</option>
 							</select>
-							<div class="text-danger" th:if="${#fields.hasErrors('idVeterinario')}" th:errors="*{idVeterinario}">Error producido en idVeterinario</div>
+							<!--<input type="hidden" name="idVeterinario" th:value="${veterinario.id}" th:field="*{veterinario}"/>-->
+							<div class="text-danger" th:if="${#fields.hasErrors('veterinario')}" th:errors="*{veterinario}">Error producido en veterinario</div>
+						</div>
+						
+						<div class="form-label-group">
+							<input type="date" th:field="*{fecha}" class="form-control" placeholder="Fecha de cita" name="fecha" id="datoCita"/>
+							<div class="text-danger" th:if="${#fields.hasErrors('fecha')}" th:errors="*{fecha}">Error producido en la fecha</div>
 						</div>
 						<div class="form-label-group">
-							<input type="date" th:field="*{fecha}" class="form-control" placeholder="Fecha" name="fecha" id="datoCita"/>
-							<div class="text-danger" th:if="${#fields.hasErrors('fecha')}" th:errors="*{fecha}">Error producido en idMascota</div>
-						</div>
-						<div class="form-label-group">
-							<input type="text" th:field="*{motivo}" class="form-control" placeholder="Motivo" name="motivo" id="datoCita"/>
+							<input type="text" th:field="*{motivo}" class="form-control" placeholder="Motivo de la cita" name="motivo" id="datoCita"/>
 							<div class="text-danger" th:if="${#fields.hasErrors('motivo')}" th:errors="*{motivo}">Error producido en el motivo</div>
 						</div>
 						<div class="form-label-group">
-							<input type="text" th:field="*{informe}" class="form-control" placeholder="Informe" name="informe" id="datoCita"/>
+							<input type="text" th:field="*{informe}" class="form-control" placeholder="Informe para la cita" name="informe" id="datoCita"/>
 							<div class="text-danger" th:if="${#fields.hasErrors('informe')}" th:errors="*{informe}">Error producido en el informe</div>
 						</div>
 						
+						<div class="alert alert-danger" th:if="${errorCita}" th:text="${errorCita}" id="datoCita"></div>
+						
 						<div class="card-footer" id="panelCita">
+												
 							<a th:href="@{/}" class="btn btn-secondary"><i class="fa fa-arrow-circle-left"></i> Volver al menú</a>
 										
-							<button type="submit" class="btn btn-info"><i class="fa fa-user-plus"></i> Pedir cita</button>
+							<button type="submit" class="btn btn-info"><i class="fa fa-plus-circle"></i> Pedir cita</button>
 						</div>
 					</form>
 				</div>
