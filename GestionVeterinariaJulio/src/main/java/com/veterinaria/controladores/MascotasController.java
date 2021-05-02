@@ -145,9 +145,10 @@ public class MascotasController {
 	@PostMapping("/mascotas/saveMascota")
 	public String saveMascota(@Valid @ModelAttribute("mascota") ModeloMascotas modeloMascota, BindingResult validaMascota,
 			@ModelAttribute("cliente") ModeloUsuarios modeloCliente, RedirectAttributes mensajeFlash, Model cliente, @RequestParam(name="foto",required=false) MultipartFile foto,
-			@RequestParam(name="idCliente",required=false) Integer idCliente, @RequestParam(name="id",required=false) int id) {
+			@RequestParam(name="cliente",required=false) Usuarios idCliente, @RequestParam(name="id",required=false) int id) {
 		
 		if(modeloMascota.getId() == 0) {
+			
 			modeloMascota = mascotas.aniadirMascota(modeloMascota);
 			
 			if(!foto.isEmpty()) {
@@ -163,6 +164,7 @@ public class MascotasController {
 			mensajeFlash.addFlashAttribute("insertado",txtMascota);
 		}
 		else {
+			
 			if(!foto.isEmpty()) {
 				Mascotas mascota = mascotasRepository.findById(id).orElse(null);
 				

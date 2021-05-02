@@ -41,7 +41,6 @@
 									th:text="${mascota.nombre}" th:value="${mascota.id}" th:field="*{mascota}">
 								</option>
 							</select>
-							<!--<input type="hidden" name="idMascota" th:value="${mascota.id}" th:field="*{mascota}"/>-->
 							<div class="text-danger" th:if="${#fields.hasErrors('mascota')}" th:errors="*{mascota}">Error producido en mascota</div>
 						</div>
 						<div class="form-label-group">
@@ -51,7 +50,6 @@
 									th:text="${veterinario.username}" th:value="${veterinario.id}" th:field="*{veterinario}">
 								</option>
 							</select>
-							<!--<input type="hidden" name="idVeterinario" th:value="${veterinario.id}" th:field="*{veterinario}"/>-->
 							<div class="text-danger" th:if="${#fields.hasErrors('veterinario')}" th:errors="*{veterinario}">Error producido en veterinario</div>
 						</div>
 						

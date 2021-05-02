@@ -51,8 +51,9 @@
 							<div class="text-danger" th:if="${#fields.hasErrors('foto')}" th:errors="*{foto}">Error producido al subir la foto</div>
 						</div>
 						<div class="form-label-group">
-							<input type="text" class="form-control" name="cliente" id="datoMascota" th:value="${cliente}" readonly/>
+							<input type="text" class="form-control" name="idCliente" id="datoMascota" th:value="${cliente}" readonly/>
 							<div class="text-danger" th:if="${#fields.hasErrors('cliente')}" th:errors="*{cliente}">Error producido en el cliente</div>
+							<input type="hidden" name="idCliente" th:field="${cliente}"/>
 						</div>
 						
 						<div class="card-footer" id="panelMascota">

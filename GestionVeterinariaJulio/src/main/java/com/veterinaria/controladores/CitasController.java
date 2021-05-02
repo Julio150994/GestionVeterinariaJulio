@@ -28,6 +28,7 @@ import com.veterinaria.repositorios.UsuariosRepository;
 import com.veterinaria.servicios.Impl.CitasImpl;
 import com.veterinaria.servicios.Impl.MascotasImpl;
 import com.veterinaria.servicios.Impl.UsuariosImpl;
+import com.veterinaria.servicios.Impl.VeterinariosImpl;
 
 
 @Controller
@@ -48,6 +49,10 @@ public class CitasController {
 	@Autowired
 	@Qualifier("usuariosImpl")
 	private UsuariosImpl veterinarios;
+	
+	@Autowired
+	@Qualifier("veterinariosImpl")
+	private VeterinariosImpl veterinariosImpl;
 	
 	@Autowired
 	@Qualifier("usuariosRepository")
