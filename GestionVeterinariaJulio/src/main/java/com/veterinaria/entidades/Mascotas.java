@@ -33,13 +33,11 @@ public class Mascotas {
 	
 	@NotNull(message="Debe introducir un tipo para la mascota")
 	@Size(min=1,max=30,message="El tipo de mascota no debe tener más de 30 caracteres")
-	@Pattern(regexp="^[a-zA-Z]+{0,29}$",message="El tipo debe empezar por mayúscula")
 	@Column(name="tipo",nullable=false,length=30)
 	private String tipo;
 	
 	@NotNull(message = "Debe introducir una raza para la mascota")
 	@Size(min=1,max=30,message="La raza no debe tener más de 30 caracteres")
-	@Pattern(regexp="^[a-zA-Z]+{0,29}$",message="La raza debe empezar por mayúscula")
 	@Column(name="raza",nullable=false,length=30)
 	private String raza;
 	
@@ -61,8 +59,8 @@ public class Mascotas {
 	}
 
 	public Mascotas(int id, @NotNull(message = "Debe introducir un nombre para la mascota") @Size(min = 1, max = 30, message = "El nombre de la mascota no debe tener más de 30 caracteres") @Pattern(regexp = "^[A-Z]{1}[a-z]+{0,29}$", message = "El nombre debe empezar por mayúscula") String nombre,
-			@NotNull(message = "Debe introducir un tipo para la mascota") @Size(min = 1, max = 30, message = "El tipo de mascota no debe tener más de 30 caracteres") @Pattern(regexp = "^[a-zA-Z]+{0,29}$", message = "El tipo debe empezar por mayúscula") String tipo,
-			@NotNull(message = "Debe introducir una raza para la mascota") @Size(min = 1, max = 30, message = "La raza no debe tener más de 30 caracteres") @Pattern(regexp = "^[a-zA-Z]+{0,29}$", message = "La raza debe empezar por mayúscula") String raza,
+			@NotNull(message = "Debe introducir un tipo para la mascota") @Size(min = 1, max = 30, message = "El tipo de mascota no debe tener más de 30 caracteres") String tipo,
+			@NotNull(message = "Debe introducir una raza para la mascota") @Size(min = 1, max = 30, message = "La raza no debe tener más de 30 caracteres") String raza,
 			@NotNull(message = "Debe especificar una fecha de nacimiento para la mascota") Date fechaNacimiento,
 			String foto, Usuarios cliente) {
 		super();
@@ -74,8 +72,6 @@ public class Mascotas {
 		this.foto = foto;
 		this.cliente = cliente;
 	}
-
-
 
 
 	public int getId() {
