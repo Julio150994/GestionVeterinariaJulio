@@ -53,6 +53,18 @@ public class CitasImpl implements CitasService {
 	}
 	
 	@Override
+	public ModeloCitas realizarCita(ModeloCitas cita, int id) {
+		cita = convertirCitas(citas.findById(id).orElse(null));
+		
+		if(cita.isRealizada() == false)
+			cita.setRealizada(true);
+		else
+			cita.setRealizada(false);
+		
+		return dozerCitas.map(citas.save(convertirCitas(cita)), ModeloCitas.class);
+	}
+	
+	@Override
 	public ModeloCitas pedirCita(ModeloCitas modeloCita) {		
 		modeloCita.setRealizada(false);// establecemos la cita para saber que inicialmente no se ha realizado
 		return dozerCitas.map(citas.save(convertirCitas(modeloCita)), ModeloCitas.class);

@@ -1,7 +1,6 @@
 package com.veterinaria.controladores;
 
 import java.sql.Date;
-
 import javax.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,7 +41,7 @@ import com.veterinaria.servicios.Impl.VeterinariosImpl;
 public class CitasController {
 	private static final Log LOG_VETERINARIA = LogFactory.getLog(CitasController.class);
 	private static final String formCita = "/citas/formCita", historialCitas = "/citas/listadoCitas",
-			fechasCitas = "/citas/citasPendientes";
+			fechasCitas = "/citas/citasPendientes", historialMascota = "/citas/historialMascota";
 	private String txtCita;
 	
 	@Autowired
@@ -206,5 +206,50 @@ public class CitasController {
 			mavCitas.addObject("citas",citasRepository.fetchFechasCita(usuario.getId(),realizada));
 		}
 		return mavCitas;
+	}
+	
+	/*------------------Métodos para el veterinario---------------------------*/
+	
+	@PreAuthorize("hasRole('ROLE_VETERINARIO')")
+	@GetMapping("/citas/historialMascota/{id}")
+	public ModelAndView verHistorialMascota(@ModelAttribute("cita") ModeloCitas cita,
+			@RequestParam(name="nombre",required=false) String nombreMascota) {
+		LOG_VETERINARIA.info("Historial de mascota seleccionada");
+		
+		UserDetails usuarioVeterinarioActual = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		ModelAndView mavCitas = new ModelAndView(historialMascota);
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth.getPrincipal() != "anonymousUser") {
+			Usuarios usuario = usuariosRepository.findByUsername(auth.getName());
+			
+			mavCitas.addObject("veterinarioActual",usuarioVeterinarioActual.getUsername().toUpperCase());
+			mavCitas.addObject("citasTxt","No existen citas para "+nombreMascota);
+			mavCitas.addObject("citas",citasRepository.findByIdVeterinario(usuario.getId()));
+		}
+		
+		return mavCitas;
+	}
+	
+	@PreAuthorize("hasRole('ROLE_VETERINARIO')")
+	@PostMapping("/realizada/{id}")
+	public String realizarCita(@ModelAttribute("cita") ModeloCitas cita, @RequestParam(name="fecha",required=false) Date fecha, @PathVariable("id") int id,
+			@RequestParam(name="realizada",required=false) boolean realizada, BindingResult clienteValido, RedirectAttributes mensajeFlash) {
+		LOG_VETERINARIA.info("Historial de mascota seleccionada");
+		
+		if(realizada == false) {
+			txtCita = "Cita para la fecha "+fecha+" realizada correctamente";
+			LOG_VETERINARIA.info(txtCita);
+			mensajeFlash.addFlashAttribute("realizada",txtCita);
+		}
+		else {
+			txtCita = "Cita para la fecha "+fecha+" anulada correctamente";
+			LOG_VETERINARIA.info(txtCita);
+			mensajeFlash.addFlashAttribute("anulada",txtCita);
+		}
+		
+		citas.realizarCita(cita, id);
+		return "redirect:"+historialMascota;
 	}
 }

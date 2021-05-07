@@ -151,7 +151,6 @@
 						</tr>
 					</thead>
 					
-					<!-- th:if="${mascota.cliente.id == usuario}" -->
 					<tbody class="table table-light" th:each="mascota: ${mascotas}">
 						<tr>
 							<td class="border" th:text="${mascota.nombre}"></td>
@@ -167,6 +166,7 @@
 								</button>
 							</td>
 							<td class="border"><a th:href="@{/mascotas/mostrarMascota/}+${mascota.id}" class="btn btn-secondary"><i class="fa fa-eye"></i> Ver mascota</a></td>
+							<td class="border"><a th:href="@{/mascotas/historialMascota/}+${mascota.id}" class="btn btn-secondary"><i class=""></i> Historial de mascota</a></td>
 						</tr>
 					</tbody>
 				</table>

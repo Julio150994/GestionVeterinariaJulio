@@ -15,6 +15,7 @@ public interface CitasService {
 	
 	public abstract ModeloCitas pedirCita(ModeloCitas cita);
 	public abstract Page<Citas> paginacionCitas(Pageable cita);
+	public abstract ModeloCitas realizarCita(ModeloCitas cita, int idCita);
 	
 	public abstract List<ModeloUsuarios> listarVeterinarios(ModeloCitas cita);
 	public abstract List<ModeloMascotas> listarMascotas(ModeloCitas cita);

@@ -71,7 +71,7 @@ public class Citas {
 		this.informe = informe;
 		this.realizada = realizada;
 	}
-	
+
 	
 	public int getId() {
 		return id;
