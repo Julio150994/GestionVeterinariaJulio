@@ -14,7 +14,7 @@ public interface MascotasService {
 	public abstract Page<Mascotas> paginacionMascotas(Pageable mascota);
 	
 	public abstract ModeloMascotas buscarIdMascota(int id);
-	public abstract ModeloMascotas aniadirMascota(ModeloMascotas mascota);
+	public abstract ModeloMascotas aniadirMascota(ModeloMascotas mascota, int idCliente);
 	public abstract ModeloMascotas editarMascota(ModeloMascotas mascota);
 	public abstract void eliminarMascota(int id);
 	

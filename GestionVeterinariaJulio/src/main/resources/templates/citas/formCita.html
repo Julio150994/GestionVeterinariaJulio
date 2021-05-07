@@ -34,11 +34,10 @@
 						<input type="hidden" name="id" th:field="*{id}"/>
 						
 						<div class="form-label-group">
-							<!-- th:if="${mascota.cliente.id == usuario}" -->
 							<select class="form-control" name="mascota" id="datoCita">
 								<option value="">Seleccione una mascota</option>
-								<option th:each="mascota: ${mascotas}"
-									th:text="${mascota.nombre}" th:value="${mascota.id}" th:field="*{mascota}">
+								<option th:each="mascota: ${mascotas}" th:value="${mascota.id}"
+									th:text="${mascota.nombre}">
 								</option>
 							</select>
 							<div class="text-danger" th:if="${#fields.hasErrors('mascota')}" th:errors="*{mascota}">Error producido en mascota</div>
@@ -47,22 +46,22 @@
 							<select class="form-control" name="veterinario" id="datoCita">
 								<option value="">Seleccione un veterinario</option>
 								<option th:each="veterinario: ${veterinarios}" th:if="${veterinario.rol == 'ROLE_VETERINARIO'}"
-									th:text="${veterinario.username}" th:value="${veterinario.id}" th:field="*{veterinario}">
+									th:value="${veterinario.id}" th:text="${veterinario.username}">
 								</option>
 							</select>
 							<div class="text-danger" th:if="${#fields.hasErrors('veterinario')}" th:errors="*{veterinario}">Error producido en veterinario</div>
 						</div>
 						
 						<div class="form-label-group">
-							<input type="date" th:field="*{fecha}" class="form-control" placeholder="Fecha de cita" name="fecha" id="datoCita"/>
+							<input type="date" class="form-control" placeholder="Fecha de cita" name="fecha" id="datoCita"/>
 							<div class="text-danger" th:if="${#fields.hasErrors('fecha')}" th:errors="*{fecha}">Error producido en la fecha</div>
 						</div>
 						<div class="form-label-group">
-							<input type="text" th:field="*{motivo}" class="form-control" placeholder="Motivo de la cita" name="motivo" id="datoCita"/>
+							<input type="text" class="form-control" placeholder="Motivo de la cita" name="motivo" id="datoCita"/>
 							<div class="text-danger" th:if="${#fields.hasErrors('motivo')}" th:errors="*{motivo}">Error producido en el motivo</div>
 						</div>
 						<div class="form-label-group">
-							<input type="text" th:field="*{informe}" class="form-control" placeholder="Informe para la cita" name="informe" id="datoCita"/>
+							<input type="text" class="form-control" placeholder="Informe para la cita" name="informe" id="datoCita"/>
 							<div class="text-danger" th:if="${#fields.hasErrors('informe')}" th:errors="*{informe}">Error producido en el informe</div>
 						</div>
 						

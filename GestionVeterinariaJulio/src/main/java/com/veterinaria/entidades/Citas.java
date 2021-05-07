@@ -14,7 +14,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
 import org.springframework.format.annotation.DateTimeFormat;
 
 
@@ -27,11 +26,11 @@ public class Citas {
 	private int id;
 	
 	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-	@JoinColumn(name="idMascota")
+	@JoinColumn(name="idMascota",nullable=false)
 	private Mascotas mascota;
 	
 	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-	@JoinColumn(name="idVeterinario")
+	@JoinColumn(name="idVeterinario",nullable=false)
 	private Usuarios veterinario;
 	
 	@NotNull(message="Debe introducir una fecha para su cita")

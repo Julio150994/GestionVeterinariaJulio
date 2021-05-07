@@ -12,6 +12,7 @@ import com.veterinaria.conversiones.MascotasConverter;
 import com.veterinaria.entidades.Mascotas;
 import com.veterinaria.modelos.ModeloMascotas;
 import com.veterinaria.modelos.ModeloUsuarios;
+import com.veterinaria.repositorios.ClientesRepository;
 import com.veterinaria.repositorios.MascotasRepository;
 import com.veterinaria.servicios.MascotasService;
 import com.veterinaria.storage.StorageService;
@@ -25,8 +26,13 @@ public class MascotasImpl implements MascotasService {
 	private MascotasRepository mascotas;
 	
 	@Autowired
+	@Qualifier("clientesRepository")
+	private ClientesRepository clientes;
+	
+	@Autowired
 	@Qualifier("mascotasConverter")
 	private MascotasConverter conversorMascotas;
+	
 	
 	@Autowired
 	private DozerBeanMapper dozerMascotas;
@@ -51,16 +57,18 @@ public class MascotasImpl implements MascotasService {
 	}
 	
 	@Override
-	public ModeloMascotas aniadirMascota(ModeloMascotas modeloMascota) {
+	public ModeloMascotas aniadirMascota(ModeloMascotas modeloMascota, int idCliente) {		
 		modeloMascota.setFoto(modeloMascota.getFoto());
-		modeloMascota.setCliente(modeloMascota.getCliente());
+		modeloMascota.setIdCliente(idCliente);
+		
 		return dozerMascotas.map(mascotas.save(convertirMascotas(modeloMascota)),ModeloMascotas.class);
 	}
 
 	@Override
 	public ModeloMascotas editarMascota(ModeloMascotas modeloMascota) {
 		modeloMascota.setFoto(modeloMascota.getFoto());
-		modeloMascota.setCliente(modeloMascota.getCliente());
+		//modeloMascota.setCliente(modeloMascota.getCliente());
+		
 		return dozerMascotas.map(mascotas.save(convertirMascotas(modeloMascota)),ModeloMascotas.class);
 	}
 

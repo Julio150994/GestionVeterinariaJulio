@@ -11,9 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
 import org.springframework.format.annotation.DateTimeFormat;
 
 
@@ -27,7 +25,6 @@ public class Mascotas {
 	
 	@NotNull(message="Debe introducir un nombre para la mascota")
 	@Size(min=1,max=30,message="El nombre de la mascota no debe tener más de 30 caracteres")
-	@Pattern(regexp="^[A-Z]{1}[a-z]+{0,29}$",message="El nombre debe empezar por mayúscula")
 	@Column(name="nombre",nullable=false,length=30)
 	private String nombre;
 	
@@ -50,15 +47,16 @@ public class Mascotas {
 	private String foto;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="idCliente")
+	@JoinColumn(name="idCliente",nullable=false)
 	private Usuarios cliente;
 	
 	
 	public Mascotas() {
 		
 	}
-
-	public Mascotas(int id, @NotNull(message = "Debe introducir un nombre para la mascota") @Size(min = 1, max = 30, message = "El nombre de la mascota no debe tener más de 30 caracteres") @Pattern(regexp = "^[A-Z]{1}[a-z]+{0,29}$", message = "El nombre debe empezar por mayúscula") String nombre,
+	
+	
+	public Mascotas(int id, @NotNull(message = "Debe introducir un nombre para la mascota") @Size(min = 1, max = 30, message = "El nombre de la mascota no debe tener más de 30 caracteres") String nombre,
 			@NotNull(message = "Debe introducir un tipo para la mascota") @Size(min = 1, max = 30, message = "El tipo de mascota no debe tener más de 30 caracteres") String tipo,
 			@NotNull(message = "Debe introducir una raza para la mascota") @Size(min = 1, max = 30, message = "La raza no debe tener más de 30 caracteres") String raza,
 			@NotNull(message = "Debe especificar una fecha de nacimiento para la mascota") Date fechaNacimiento,
@@ -122,9 +120,11 @@ public class Mascotas {
 		this.foto = foto;
 	}
 
+
 	public Usuarios getCliente() {
 		return cliente;
 	}
+
 
 	public void setCliente(Usuarios cliente) {
 		this.cliente = cliente;

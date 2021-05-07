@@ -75,6 +75,12 @@
                       	<a class="dropdown-item" th:href="@{/citas/formCita}"><i class="fa fa-link pull-left"></i> Pedir cita</a>
                       </li>
                       <li sec:authorize="hasRole('ROLE_CLIENTE')">
+                      	<a class="dropdown-item" th:href="@{/citas/listadoCitas}"> <i class="fa fa-link pull-left"></i> Historial de citas</a>
+                      </li>
+                      <li sec:authorize="hasRole('ROLE_CLIENTE')">
+                      	<a class="dropdown-item" th:href="@{/citas/citasPendientes}"> <i class="fa fa-link pull-left"></i> Calendario de citas</a>
+                      </li>
+                      <li sec:authorize="hasRole('ROLE_CLIENTE')">
                       	<a class="dropdown-item" th:href="@{/perfil_cliente/}+${usuario}"><i class="fa fa-link pull-left"></i> Perfil de usuario</a>
                       </li>
                     </ul>
@@ -166,8 +172,6 @@
 				</table>
 				
 				<!-- Mostramos paginaciones para los clientes -->
-				<!-- SELECT COUNT(*) FROM mascotas WHERE idCliente = 2; -->
-				
 				<div class="panel panel-body col-sm-2" th:if="${!mascotas.empty}">
 					<div class="col-md-2"></div>
 					<div class="col-md-8">

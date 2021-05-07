@@ -21,7 +21,7 @@ public class MascotasConverter {
 		mascota.setRaza(modeloMascota.getRaza());
 		mascota.setFechaNacimiento(modeloMascota.getFechaNacimiento());
 		mascota.setFoto(modeloMascota.getFoto());
-		mascota.setCliente(usuario);
+		//mascota.setIdCliente(usuario);
 		return mascota;
 	}
 	
@@ -34,7 +34,7 @@ public class MascotasConverter {
 		modeloMascota.setRaza(mascota.getRaza());
 		modeloMascota.setFechaNacimiento(mascota.getFechaNacimiento());
 		modeloMascota.setFoto(mascota.getFoto());
-		modeloMascota.setCliente(modeloUsuario);
+		//modeloMascota.setIdCliente(modeloUsuario);
 		return modeloMascota;
 	}
 }

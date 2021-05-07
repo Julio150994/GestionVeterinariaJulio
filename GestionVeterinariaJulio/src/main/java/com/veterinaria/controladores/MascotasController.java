@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import javax.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,8 +73,8 @@ public class MascotasController {
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/mascotas/listadoMascotas")
-	public ModelAndView listarMascotas(@ModelAttribute("mascota") ModeloMascotas modeloMascota, @RequestParam Map<String,Object> paginas,
-			@ModelAttribute("usuario") ModeloUsuarios modeloUsuario) {
+	public ModelAndView listarMascotas(ModeloMascotas modeloMascota, @RequestParam Map<String,Object> paginas,
+			@ModelAttribute("usuario") Usuarios modeloUsuario) {
 		LOG_VETERINARIA.info("Vista de listado de mascotas");
 		UserDetails usuarioClienteActual = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
@@ -89,7 +88,6 @@ public class MascotasController {
 			mavMascotas.addObject("clienteActual",usuarioClienteActual.getUsername().toUpperCase());
 			
 			mavMascotas.addObject("mascotasTxt",usuarioClienteActual.getUsername()+" no tiene mascotas registradas en la base de datos");
-			mavMascotas.addObject("mascotas",mascotas.listarMascotas());
 			
 			/* Realizamos paginación para las mascotas */
 			int numPaginas = paginas.get("pagina") != null ? (Integer.valueOf(paginas.get("pagina").toString()) - 1) : 0;
@@ -103,9 +101,10 @@ public class MascotasController {
 				/* Para empezar desde la 1ª paginación hasta el final de las páginas */
 				List<Integer> listadoMascotas = IntStream.rangeClosed(1,totalMascotas).boxed().collect(Collectors.toList());
 				mavMascotas.addObject("paginas",listadoMascotas);
-			}
+			}			
 			
-			mavMascotas.addObject("mascotas",paginasMascota.getContent());
+			mavMascotas.addObject("mascotas",mascotasRepository.findByIdCliente(usuario));
+			
 			
 			mavMascotas.addObject("anterior",numPaginas);
 			mavMascotas.addObject("actual",numPaginas + 1);
@@ -119,7 +118,7 @@ public class MascotasController {
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping({"/mascotas/formMascota","/mascotas/formMascota/{id}"})
 	public String formularioMascota(@PathVariable(name="id",required=false) Integer id, Model modeloMascota,
-			@ModelAttribute("usuario") ModeloUsuarios modeloUsuario) {
+			@ModelAttribute("cliente") ModeloUsuarios modeloUsuario) {
 		
 		LOG_VETERINARIA.info("Formulario de mascota");
 		
@@ -128,9 +127,10 @@ public class MascotasController {
 						
 		if(authCliente.getPrincipal() != "anonymousUser") {
 			Usuarios cliente = usuariosRepository.findByUsername(authCliente.getName());
-			modeloMascota.addAttribute("cliente",cliente.getId());
 			
 			modeloMascota.addAttribute("clienteActual",cliente.getUsername().toUpperCase());
+			
+			modeloMascota.addAttribute("cliente",cliente.getId());
 			
 			if(id == null)
 				modeloMascota.addAttribute("mascota",new ModeloMascotas());
@@ -143,48 +143,54 @@ public class MascotasController {
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@PostMapping("/mascotas/saveMascota")
-	public String saveMascota(@Valid @ModelAttribute("mascota") ModeloMascotas modeloMascota, BindingResult validaMascota,
+	public String saveMascota(@ModelAttribute("mascota") ModeloMascotas modeloMascota, BindingResult validaMascota,
 			@ModelAttribute("cliente") ModeloUsuarios modeloCliente, RedirectAttributes mensajeFlash, Model cliente, @RequestParam(name="foto",required=false) MultipartFile foto,
-			@RequestParam(name="cliente",required=false) Usuarios idCliente, @RequestParam(name="id",required=false) int id) {
+			@RequestParam(name="id",required=false) Integer id) {
 		
-		if(modeloMascota.getId() == 0) {
+		Authentication authCliente = SecurityContextHolder.getContext().getAuthentication();
+		
+		if(authCliente.getPrincipal() != "anonymousUser") {
+			Usuarios usuario = usuariosRepository.findByUsername(authCliente.getName());
 			
-			modeloMascota = mascotas.aniadirMascota(modeloMascota);
 			
-			if(!foto.isEmpty()) {
-				String fotoMascota = storage.store(foto);
-				modeloMascota.setFoto(MvcUriComponentsBuilder.fromMethodName(FotoMascotaController.class,"servidorMascota", fotoMascota).
-						build().toUriString());
+			if(modeloMascota.getId() == 0) {
+				modeloMascota = mascotas.aniadirMascota(modeloMascota,usuario.getId());
 				
-				mascotas.editarMascota(modeloMascota);
-			}
-			
-			txtMascota = "Mascota "+modeloMascota.getNombre()+" añadida correctamente";
-			LOG_VETERINARIA.info(txtMascota);
-			mensajeFlash.addFlashAttribute("insertado",txtMascota);
-		}
-		else {
-			
-			if(!foto.isEmpty()) {
-				Mascotas mascota = mascotasRepository.findById(id).orElse(null);
+				if(!foto.isEmpty()) {
+					String fotoMascota = storage.store(foto);
+					modeloMascota.setFoto(MvcUriComponentsBuilder.fromMethodName(FotoMascotaController.class,"servidorMascota", fotoMascota).
+							build().toUriString());
+					
+					mascotas.editarMascota(modeloMascota);
+				}
 				
-				if(mascota.getFoto() != null)
-					storage.delete(mascota.getFoto());
-				
-				String fotoMascota = storage.store(foto);
-				modeloMascota.setFoto(MvcUriComponentsBuilder.fromMethodName(FotoMascotaController.class,"servidorMascota", fotoMascota).
-						build().toUriString());
+				txtMascota = "Mascota "+modeloMascota.getNombre()+" añadida correctamente";
+				LOG_VETERINARIA.info(txtMascota);
+				mensajeFlash.addFlashAttribute("insertado",txtMascota);
 			}
 			else {
-				ModeloMascotas mascotaAnterior = mascotas.buscarIdMascota(modeloMascota.getId());
-				modeloMascota.setFoto(mascotaAnterior.getFoto());
+				
+				if(!foto.isEmpty()) {
+					Mascotas mascota = mascotasRepository.findById(id).orElse(null);
+					
+					if(mascota.getFoto() != null)
+						storage.delete(mascota.getFoto());
+					
+					String fotoMascota = storage.store(foto);
+					modeloMascota.setFoto(MvcUriComponentsBuilder.fromMethodName(FotoMascotaController.class,"servidorMascota", fotoMascota).
+							build().toUriString());
+				}
+				else {
+					ModeloMascotas mascotaAnterior = mascotas.buscarIdMascota(modeloMascota.getId());
+					modeloMascota.setFoto(mascotaAnterior.getFoto());
+				}
+				
+				mascotas.editarMascota(modeloMascota);
+				
+				txtMascota = "Mascota "+modeloMascota.getNombre()+" editada correctamente";
+				LOG_VETERINARIA.info(txtMascota);
+				mensajeFlash.addFlashAttribute("editado",txtMascota);
 			}
-			
-			mascotas.editarMascota(modeloMascota);
-			
-			txtMascota = "Mascota "+modeloMascota.getNombre()+" editada correctamente";
-			LOG_VETERINARIA.info(txtMascota);
-			mensajeFlash.addFlashAttribute("editado",txtMascota);
 		}
 		
 		return "redirect:"+vista_mascotas;
@@ -197,6 +203,7 @@ public class MascotasController {
 			@RequestParam(name="nombre",required=false) String nombreMascota, RedirectAttributes mensajeFlash) {
 		
 		mascotas.eliminarMascota(id);
+		
 		return "redirect:"+vista_mascotas;
 	}
 	
@@ -204,7 +211,8 @@ public class MascotasController {
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/mascotas/mostrarMascota/{id}")
 	public String mostrarDatosMascota(@PathVariable int id, Model modeloMascota) {
-		LOG_VETERINARIA.info("Vista de mostrar datos de mascota");
+		LOG_VETERINARIA.info("Vista de mostrar datos de mascota");		
+		
 		modeloMascota.addAttribute("mascota",mascotas.buscarIdMascota(id));
 		return datosMascota;
 	}

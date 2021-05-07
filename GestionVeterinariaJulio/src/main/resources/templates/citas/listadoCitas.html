@@ -6,7 +6,7 @@
     	<meta charset="utf-8">
     	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Datos de la mascota</title>
+		<title>Listado de citas</title>
 		
 		<!-- Bootstrap -->
     	<link th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
@@ -17,7 +17,7 @@
 
     	<!-- Custom Theme Style -->
     	<link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
-    	<link type="text/css" th:href="@{/css/mascotas.css}" rel="stylesheet"/>
+    	<link type="text/css" th:href="@{/css/citas.css}" rel="stylesheet"/>
 	</head>
 
 	<body class="nav-md">
@@ -60,7 +60,7 @@
                       <li sec:authorize="hasRole('ROLE_ADMIN')">
                       	<a class="dropdown-item" th:href="@{/clientes/listadoClientes}"> <i class="fa fa-link pull-left"></i> Listado de clientes</a>
                       </li>
-                      <li sec:authorize="hasRole('ROLE_ADMIN')">
+                       <li sec:authorize="hasRole('ROLE_ADMIN')">
                       	<a class="dropdown-item" th:href="@{/veterinarios/listadoVeterinarios}"> <i class="fa fa-link pull-left"></i> Listado de veterinarios</a>
                       </li>
                       <li sec:authorize="hasRole('ROLE_CLIENTE')">
@@ -120,21 +120,69 @@
               </div>
             </div>
             
-            <div sec:authorize="hasRole('ROLE_CLIENTE')" class="container col-sm-8 mt-5">
-            	<div class="card-header text-center"> <h3>DATOS DE MASCOTA ID (<span th:text="${mascota.id}"></span>)</h3></div>
-            	
-            	<div class="container mt-4">
-           			<ul class="list-group">
-           				<li class="list-group-item" id="datoUsuario"><span class="text-left"><strong>Nombre:</strong></span> <span th:text="${mascota.nombre}" class="text-right"></span></li>
-           				<li class="list-group-item" id="datoUsuario"><span class="text-left"><strong>Tipo:</strong></span> <span th:text="${mascota.tipo}" class="text-right"></span></li>
-           				<li class="list-group-item" id="datoUsuario"><span class="text-left"><strong>Raza:</strong></span> <span th:text="${mascota.raza}" class="text-right"></span></li>
-           				<li class="list-group-item" id="datoUsuario"><span class="text-left"><strong>Fecha de nacimiento:</strong></span> <span th:text="${#dates.format(mascota.fechaNacimiento,'dd/MM/yyyy')}" class="text-right"></span></li>
-           				<li class="list-group-item" id="datoUsuario"><span class="text-left"><strong>Foto:</strong></span> <img th:src="${#strings.isEmpty(mascota.foto)} ? '/mascotasImg/image.png': ${mascota.foto}"
-								 th:alt="${mascota.foto}" class="center-block" id="imagenMascota"/></li>
-           			</ul>
-           		</div>
-			</div>
+            <div sec:authorize="hasRole('ROLE_CLIENTE')" class="container mt-4">
 
+			<div class="card-headert mt-5 text-center"> <h3>HISTORIAL DE CITAS PARA (<span class="text-secondary" th:text="${clienteActual}"></span>)</h3> </div>
+			
+			<div class="card-body mt-5">
+				<form action="#" th:action="@{/citas/citasMascota}" th:object="${cita}" method="POST">
+					<select name="nombre" class="form-control col-md-3">
+						<option value="">Seleccione una mascota</option>
+						<option th:each="mascota: ${mascotas}" th:value="${mascota.nombre}" th:text="${mascota.nombre}"></option>
+					</select>
+					
+					<button type="submit" class="btn btn-primary" id="send"><i class="fa fa-search"></i> Buscar</button>
+				</form>
+			</div>
+			
+			<div class="card-body">
+			
+				<table class="table table-bordered text-center" id="historialCitas">
+					<thead class="table table-dark">
+						<tr>
+							<th>Mascota</th>
+							<th>Veterinario</th>
+							<th>Fecha de cita</th>
+							<th>Motivo de cita</th>
+							<th>Informe de cita</th>
+						</tr>
+					</thead>
+					
+					<tbody class="table table-light" th:each="cita: ${citas}">
+						<tr>
+							<td class="border" th:text="${cita.mascota.nombre}"></td>
+							<td class="border" th:text="${cita.veterinario.username}"></td>
+							<td class="border" th:text="${#dates.format(cita.fecha,'dd/MM/yyyy')}"></td>
+							<td class="border" th:text="${cita.motivo}"></td>
+							<td class="border" th:text="${cita.informe}"></td>
+						</tr>
+					</tbody>
+				</table>
+				
+				<!-- Mostramos paginaciones para las citas -->
+				<!-- th:if="${!citas.empty}" -->
+				<div class="panel panel-body col-sm-2">
+					<div class="col-md-2"></div>
+					<div class="col-md-8">
+						<nav aria-label="Page clientes">
+							<ul class="pagination justify-content-center">
+								 <li class="page-item" th:classappend="${anterior == 0 ? 'disabled': ''}">
+      								<a class="page-link" th:href="@{|/citas/listadoCitas/?pagina=${anterior}|}">Anterior</a>
+    							</li>
+    							<li class="page-item" th:each="pagina: ${paginas}" th:classappend="${actual == pagina ? 'active': ''}">
+      								<a th:href="@{|/citas/listadoCitas/?pagina=${pagina}|}" class="page-link" th:text="${pagina}"></a>
+    							</li>
+    							<li class="page-item" th:classappend="${actual == ultima ? 'disabled': ''}">
+      								<a class="page-link" th:href="@{|/citas/listadoCitas/?pagina=${siguiente}|}">Siguiente</a>
+    							</li>
+  							</ul>
+						</nav>
+					</div>
+					<div class="col-md-2"></div>
+				</div>
+			</div>
+		</div>
+			
             <div class="clearfix"></div>
           </div>
         </div>

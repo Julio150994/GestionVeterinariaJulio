@@ -1,5 +1,7 @@
 package com.veterinaria.controladores;
 
+import java.sql.Date;
+
 import javax.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,14 +18,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.veterinaria.entidades.Citas;
+import com.veterinaria.entidades.Mascotas;
 import com.veterinaria.entidades.Usuarios;
 import com.veterinaria.modelos.ModeloCitas;
 import com.veterinaria.modelos.ModeloMascotas;
 import com.veterinaria.modelos.ModeloUsuarios;
 import com.veterinaria.repositorios.CitasRepository;
+import com.veterinaria.repositorios.MascotasRepository;
 import com.veterinaria.repositorios.UsuariosRepository;
 import com.veterinaria.servicios.Impl.CitasImpl;
 import com.veterinaria.servicios.Impl.MascotasImpl;
@@ -35,7 +40,8 @@ import com.veterinaria.servicios.Impl.VeterinariosImpl;
 @RequestMapping("/")
 public class CitasController {
 	private static final Log LOG_VETERINARIA = LogFactory.getLog(CitasController.class);
-	private static final String formCita = "/citas/formCita";
+	private static final String formCita = "/citas/formCita", historialCitas = "/citas/listadoCitas",
+			fechasCitas = "/citas/citasPendientes";
 	private String txtCita;
 	
 	@Autowired
@@ -61,6 +67,10 @@ public class CitasController {
 	@Autowired
 	@Qualifier("citasRepository")
 	private CitasRepository citasRepository;
+	
+	@Autowired
+	@Qualifier("mascotasRepository")
+	private MascotasRepository mascotasRepository;
 	
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
@@ -98,7 +108,7 @@ public class CitasController {
 			}
 			else {
 				LOG_VETERINARIA.info("Mascotas listadas");
-				mavCita.addObject("mascotas",mascotas.listarMascotas());
+				mavCita.addObject("mascotas",mascotasRepository.findByIdCliente(clienteActual));
 			}
 		}
 		
@@ -129,5 +139,72 @@ public class CitasController {
 		}
 		
 		return "redirect:"+formCita;
+	}
+	
+	@PreAuthorize("hasRole('ROLE_CLIENTE')")
+	@GetMapping("/citas/listadoCitas")
+	public ModelAndView historialCitasMascota(@ModelAttribute("cita") ModeloCitas modeloCita, @ModelAttribute("usuario") ModeloUsuarios modeloUsuario) {
+		LOG_VETERINARIA.info("Vista de historial para mascota");
+		
+		UserDetails usuarioClienteActual = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		ModelAndView mavCitas = new ModelAndView(historialCitas);
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth.getPrincipal() != "anonymousUser") {
+			Usuarios usuario = usuariosRepository.findByUsername(auth.getName());
+			mavCitas.addObject("usuario",usuario.getId());
+			
+			mavCitas.addObject("clienteActual",usuarioClienteActual.getUsername().toUpperCase());
+			
+			mavCitas.addObject("mascotas",mascotasRepository.findByIdCliente(usuario));
+		}
+		
+		return mavCitas;
+	}
+	
+	/* Método para mostrar las citas pendientes o no de una determinada mascota */
+	@PreAuthorize("hasRole('ROLE_CLIENTE')")
+	@PostMapping("/citas/citasMascota")
+	public String buscarIdMascota(@ModelAttribute("cita") ModeloCitas modeloCita, @RequestParam(name="nombre",required=false) String nombre, Model cita) {
+		UserDetails usuarioClienteActual = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth.getPrincipal() != "anonymousUser") {
+			Usuarios usuario = usuariosRepository.findByUsername(auth.getName());
+			cita.addAttribute("usuario",usuario.getId());
+			
+			cita.addAttribute("mascotas",mascotasRepository.findByIdCliente(usuario));
+			
+			cita.addAttribute("clienteActual",usuarioClienteActual.getUsername().toUpperCase());
+			cita.addAttribute("citas",citasRepository.fetchByCitasWithNombre(nombre));
+		}
+		
+		return historialCitas;
+	}
+	
+	
+	@PreAuthorize("hasRole('ROLE_CLIENTE')")
+	@GetMapping("/citas/citasPendientes")
+	public ModelAndView calendarioCitas(@ModelAttribute("cita") ModeloCitas modeloCita, Mascotas mascota,
+			@RequestParam(name="fecha",required=false) Date fecha, @RequestParam(name="realizada",required=false) boolean realizada) {
+		LOG_VETERINARIA.info("Vista de calendario con citas pendientes");
+		
+		UserDetails usuarioClienteActual = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		ModelAndView mavCitas = new ModelAndView(fechasCitas);
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth.getPrincipal() != "anonymousUser") {
+			Usuarios usuario = usuariosRepository.findByUsername(auth.getName());
+			mavCitas.addObject("usuario",usuario.getId());
+			
+			mavCitas.addObject("citasTxt",usuarioClienteActual.getUsername()+" no tiene citas pendientes");
+			
+			mavCitas.addObject("clienteActual",usuarioClienteActual.getUsername().toUpperCase());
+			
+			mavCitas.addObject("citas",citasRepository.fetchFechasCita(usuario.getId(),realizada));
+		}
+		return mavCitas;
 	}
 }
