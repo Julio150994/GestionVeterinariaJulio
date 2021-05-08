@@ -234,9 +234,11 @@ public class CitasController {
 	
 	@PreAuthorize("hasRole('ROLE_VETERINARIO')")
 	@PostMapping("/realizada/{id}")
-	public String realizarCita(@ModelAttribute("cita") ModeloCitas cita, @RequestParam(name="fecha",required=false) Date fecha, @PathVariable("id") int id,
-			@RequestParam(name="realizada",required=false) boolean realizada, BindingResult clienteValido, RedirectAttributes mensajeFlash) {
+	public String realizarCita(@ModelAttribute("cita") ModeloCitas cita, @RequestParam(name="fecha",required=false) Date fecha, 
+			@PathVariable("id") int id, @RequestParam(name="realizada",required=false) boolean realizada, BindingResult clienteValido, RedirectAttributes mensajeFlash) {
 		LOG_VETERINARIA.info("Historial de mascota seleccionada");
+		
+		citas.realizarCita(cita, id);
 		
 		if(realizada == false) {
 			txtCita = "Cita para la fecha "+fecha+" realizada correctamente";
@@ -249,7 +251,6 @@ public class CitasController {
 			mensajeFlash.addFlashAttribute("anulada",txtCita);
 		}
 		
-		citas.realizarCita(cita, id);
 		return "redirect:"+historialMascota;
 	}
 }

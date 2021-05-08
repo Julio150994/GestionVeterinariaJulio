@@ -118,7 +118,7 @@ public class MascotasController {
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping({"/mascotas/formMascota","/mascotas/formMascota/{id}"})
 	public String formularioMascota(@PathVariable(name="id",required=false) Integer id, Model modeloMascota,
-			@ModelAttribute("cliente") ModeloUsuarios modeloUsuario) {
+			@ModelAttribute("cliente") ModeloUsuarios modeloUsuario, @ModelAttribute("mascota") ModeloMascotas mascota) {
 		
 		LOG_VETERINARIA.info("Formulario de mascota");
 		
@@ -130,7 +130,7 @@ public class MascotasController {
 			
 			modeloMascota.addAttribute("clienteActual",cliente.getUsername().toUpperCase());
 			
-			modeloMascota.addAttribute("cliente",cliente.getId());
+			modeloMascota.addAttribute("cliente",cliente);
 			
 			if(id == null)
 				modeloMascota.addAttribute("mascota",new ModeloMascotas());
@@ -145,52 +145,46 @@ public class MascotasController {
 	@PostMapping("/mascotas/saveMascota")
 	public String saveMascota(@ModelAttribute("mascota") ModeloMascotas modeloMascota, BindingResult validaMascota,
 			@ModelAttribute("cliente") ModeloUsuarios modeloCliente, RedirectAttributes mensajeFlash, Model cliente, @RequestParam(name="foto",required=false) MultipartFile foto,
-			@RequestParam(name="id",required=false) Integer id) {
+			@RequestParam(name="id",required=false) int id) {
 		
-		Authentication authCliente = SecurityContextHolder.getContext().getAuthentication();
-		
-		if(authCliente.getPrincipal() != "anonymousUser") {
-			Usuarios usuario = usuariosRepository.findByUsername(authCliente.getName());
+		if(modeloMascota.getId() == 0) {
 			
+			modeloMascota = mascotas.aniadirMascota(modeloMascota);
 			
-			if(modeloMascota.getId() == 0) {
-				modeloMascota = mascotas.aniadirMascota(modeloMascota,usuario.getId());
-				
-				if(!foto.isEmpty()) {
-					String fotoMascota = storage.store(foto);
-					modeloMascota.setFoto(MvcUriComponentsBuilder.fromMethodName(FotoMascotaController.class,"servidorMascota", fotoMascota).
-							build().toUriString());
-					
-					mascotas.editarMascota(modeloMascota);
-				}
-				
-				txtMascota = "Mascota "+modeloMascota.getNombre()+" añadida correctamente";
-				LOG_VETERINARIA.info(txtMascota);
-				mensajeFlash.addFlashAttribute("insertado",txtMascota);
-			}
-			else {
-				
-				if(!foto.isEmpty()) {
-					Mascotas mascota = mascotasRepository.findById(id).orElse(null);
-					
-					if(mascota.getFoto() != null)
-						storage.delete(mascota.getFoto());
-					
-					String fotoMascota = storage.store(foto);
-					modeloMascota.setFoto(MvcUriComponentsBuilder.fromMethodName(FotoMascotaController.class,"servidorMascota", fotoMascota).
-							build().toUriString());
-				}
-				else {
-					ModeloMascotas mascotaAnterior = mascotas.buscarIdMascota(modeloMascota.getId());
-					modeloMascota.setFoto(mascotaAnterior.getFoto());
-				}
+			if(!foto.isEmpty()) {
+				String fotoMascota = storage.store(foto);
+				modeloMascota.setFoto(MvcUriComponentsBuilder.fromMethodName(FotoMascotaController.class,"servidorMascota", fotoMascota).
+						build().toUriString());
 				
 				mascotas.editarMascota(modeloMascota);
-				
-				txtMascota = "Mascota "+modeloMascota.getNombre()+" editada correctamente";
-				LOG_VETERINARIA.info(txtMascota);
-				mensajeFlash.addFlashAttribute("editado",txtMascota);
 			}
+			
+			txtMascota = "Mascota "+modeloMascota.getNombre()+" añadida correctamente";
+			LOG_VETERINARIA.info(txtMascota);
+			mensajeFlash.addFlashAttribute("insertado",txtMascota);
+		}
+		else {
+			
+			if(!foto.isEmpty()) {
+				Mascotas mascota = mascotasRepository.findById(id).orElse(null);
+				
+				if(mascota.getFoto() != null)
+					storage.delete(mascota.getFoto());
+				
+				String fotoMascota = storage.store(foto);
+				modeloMascota.setFoto(MvcUriComponentsBuilder.fromMethodName(FotoMascotaController.class,"servidorMascota", fotoMascota).
+						build().toUriString());
+			}
+			else {
+				ModeloMascotas mascotaAnterior = mascotas.buscarIdMascota(modeloMascota.getId());
+				modeloMascota.setFoto(mascotaAnterior.getFoto());
+			}
+			
+			mascotas.editarMascota(modeloMascota);
+			
+			txtMascota = "Mascota "+modeloMascota.getNombre()+" editada correctamente";
+			LOG_VETERINARIA.info(txtMascota);
+			mensajeFlash.addFlashAttribute("editado",txtMascota);
 		}
 		
 		return "redirect:"+vista_mascotas;

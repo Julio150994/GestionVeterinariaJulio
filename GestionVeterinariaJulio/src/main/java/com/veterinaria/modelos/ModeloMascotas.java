@@ -7,7 +7,7 @@ public class ModeloMascotas {
 	private String nombre,tipo,raza;
 	private Date fechaNacimiento;
 	private String foto;
-	private int cliente;
+	private ModeloUsuarios cliente;
 	
 	
 	public ModeloMascotas() {
@@ -15,7 +15,7 @@ public class ModeloMascotas {
 	}
 
 	public ModeloMascotas(int id, String nombre, String tipo, String raza, Date fechaNacimiento, String foto,
-			int cliente) {
+			ModeloUsuarios cliente) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -24,8 +24,9 @@ public class ModeloMascotas {
 		this.fechaNacimiento = fechaNacimiento;
 		this.foto = foto;
 		this.cliente = cliente;
-	}
-
+	}	
+	
+	
 	public int getId() {
 		return id;
 	}
@@ -74,11 +75,11 @@ public class ModeloMascotas {
 		this.foto = foto;
 	}
 
-	public int getIdCliente() {
+	public ModeloUsuarios getCliente() {
 		return cliente;
 	}
 
-	public void setIdCliente(int cliente) {
+	public void setCliente(ModeloUsuarios cliente) {
 		this.cliente = cliente;
 	}
 }
