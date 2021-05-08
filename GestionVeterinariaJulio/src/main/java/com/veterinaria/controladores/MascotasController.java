@@ -130,7 +130,7 @@ public class MascotasController {
 			
 			modeloMascota.addAttribute("clienteActual",cliente.getUsername().toUpperCase());
 			
-			modeloMascota.addAttribute("cliente",cliente);
+			modeloMascota.addAttribute("cliente",cliente.getId());
 			
 			if(id == null)
 				modeloMascota.addAttribute("mascota",new ModeloMascotas());
