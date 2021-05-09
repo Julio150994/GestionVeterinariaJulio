@@ -18,6 +18,7 @@
     	<!-- Custom Theme Style -->
     	<link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
     	<link type="text/css" th:href="@{/css/citas.css}" rel="stylesheet"/>
+    	<link type="text/css" th:href="@{/css/mascotas.css}" rel="stylesheet"/>
 	</head>
 
 	<body class="nav-md">
@@ -122,7 +123,7 @@
             
             <div sec:authorize="hasRole('ROLE_CLIENTE')" class="container mt-4">
 
-			<div class="card-headert mt-5 text-center"> <h3>HISTORIAL DE CITAS PARA (<span class="text-secondary" th:text="${clienteActual}"></span>)</h3> </div>
+			<div class="card-headert mt-5 text-center"> <h3>HISTORIAL DE CITAS DE (<span class="text-secondary" th:text="${clienteActual}"></span>)</h3> </div>
 			
 			<div class="card-body mt-5">
 				<form action="#" th:action="@{/citas/citasMascota}" th:object="${cita}" method="POST">
@@ -140,7 +141,10 @@
 				<table class="table table-bordered text-center" id="historialCitas">
 					<thead class="table table-dark">
 						<tr>
-							<th>Mascota</th>
+							<th>Nombre de mascota</th>
+							<th>Tipo de mascota</th>
+							<th>Raza de mascota</th>
+							<th>Foto de mascota</th>
 							<th>Veterinario</th>
 							<th>Fecha de cita</th>
 							<th>Motivo de cita</th>
@@ -151,35 +155,17 @@
 					<tbody class="table table-light" th:each="cita: ${citas}">
 						<tr>
 							<td class="border" th:text="${cita.mascota.nombre}"></td>
-							<td class="border" th:text="${cita.veterinario.username}"></td>
+							<td class="border" th:text="${cita.mascota.tipo}"></td>
+							<td class="border" th:text="${cita.mascota.raza}"></td>
+							<td class="border"><img th:src="${#strings.isEmpty(cita.mascota.foto)} ? '/mascotasImg/image.png': ${cita.mascota.foto}"
+								 th:alt="${cita.mascota.foto}" class="center-block" id="imagenMascota"/></td>
+							<td class="border" th:text="${cita.usuario.username}"></td>
 							<td class="border" th:text="${#dates.format(cita.fecha,'dd/MM/yyyy')}"></td>
 							<td class="border" th:text="${cita.motivo}"></td>
 							<td class="border" th:text="${cita.informe}"></td>
 						</tr>
 					</tbody>
 				</table>
-				
-				<!-- Mostramos paginaciones para las citas -->
-				<!-- th:if="${!citas.empty}" -->
-				<div class="panel panel-body col-sm-2">
-					<div class="col-md-2"></div>
-					<div class="col-md-8">
-						<nav aria-label="Page clientes">
-							<ul class="pagination justify-content-center">
-								 <li class="page-item" th:classappend="${anterior == 0 ? 'disabled': ''}">
-      								<a class="page-link" th:href="@{|/citas/listadoCitas/?pagina=${anterior}|}">Anterior</a>
-    							</li>
-    							<li class="page-item" th:each="pagina: ${paginas}" th:classappend="${actual == pagina ? 'active': ''}">
-      								<a th:href="@{|/citas/listadoCitas/?pagina=${pagina}|}" class="page-link" th:text="${pagina}"></a>
-    							</li>
-    							<li class="page-item" th:classappend="${actual == ultima ? 'disabled': ''}">
-      								<a class="page-link" th:href="@{|/citas/listadoCitas/?pagina=${siguiente}|}">Siguiente</a>
-    							</li>
-  							</ul>
-						</nav>
-					</div>
-					<div class="col-md-2"></div>
-				</div>
 			</div>
 		</div>
 			

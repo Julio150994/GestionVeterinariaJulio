@@ -18,6 +18,7 @@
     	<!-- Custom Theme Style -->
     	<link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
     	<link type="text/css" th:href="@{/css/citas.css}" rel="stylesheet"/>
+    	<link type="text/css" th:href="@{/css/mascotas.css}" rel="stylesheet"/>
 	</head>
 
 	<body class="nav-md">
@@ -125,16 +126,28 @@
             
             <div sec:authorize="hasRole('ROLE_VETERINARIO')" class="container mt-4">
 			
-			<div class="card-headert mt-5 text-center"> <h3>HISTORIAL DE MASCOTAS CON VETERINARIO <span th:text="${veterinarioActual}"></span> </h3> </div>
+			<div class="card-headert mt-5 text-center"> <h3>HISTORIAL DE MASCOTA DE VETERINARIO </h3> </div>
 			
-			<!--<div class="panel panel-body alert alert-warning" th:if="${citas.empty}" th:text="${citasTxt}"></div>-->
+			<div class="card-body mt-5">
+				<form action="#" th:action="@{/citas/consulta}" th:object="${cita}" method="POST">
+					<select name="nombre" class="form-control col-md-3">
+						<option value="">Seleccione una mascota</option>
+						<option th:each="cita: ${citas}" th:value="${cita.mascota.id}" th:text="${cita.mascota.nombre}"></option>
+					</select>
+					
+					<button type="submit" class="btn btn-primary" id="send"><i class="fa fa-search"></i> Buscar</button>
+				</form>
+			</div>
 			
 			<div class="card-body">
 			
 				<table class="table table-bordered text-center" id="historialCitas">
 					<thead class="table table-dark">
 						<tr>
-							<th>Mascota</th>
+							<th>Nombre de mascota</th>
+							<th>Tipo de mascota</th>
+							<th>Raza de mascota</th>
+							<th>Foto de mascota</th>
 							<th>Fecha de cita</th>
 							<th>Motivo de cita</th>
 							<th>Informe de cita</th>
@@ -142,9 +155,13 @@
 						</tr>
 					</thead>
 					
-					<tbody class="table table-light" th:each="cita: ${citas}">
+					<tbody class="table table-light" th:each="cita: ${fechas}">
 						<tr>
 							<td class="border" th:text="${cita.mascota.nombre}"></td>
+							<td class="border" th:text="${cita.mascota.tipo}"></td>
+							<td class="border" th:text="${cita.mascota.raza}"></td>
+							<td class="border"><img th:src="${#strings.isEmpty(cita.mascota.foto)} ? '/mascotasImg/image.png': ${cita.mascota.foto}"
+								 th:alt="${cita.mascota.foto}" class="center-block" id="imagenMascota"/></td>
 							<td class="border" th:text="${#dates.format(cita.fecha,'dd/MM/yyyy')}"></td>
 							<td class="border" th:text="${cita.motivo}"></td>
 							<td class="border" th:text="${cita.informe}"></td>

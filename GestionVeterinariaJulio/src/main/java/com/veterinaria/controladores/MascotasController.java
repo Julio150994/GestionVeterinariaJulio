@@ -30,7 +30,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.veterinaria.entidades.Mascotas;
 import com.veterinaria.entidades.Usuarios;
 import com.veterinaria.modelos.ModeloMascotas;
-import com.veterinaria.modelos.ModeloUsuarios;
 import com.veterinaria.repositorios.MascotasRepository;
 import com.veterinaria.repositorios.UsuariosRepository;
 import com.veterinaria.servicios.Impl.ClientesImpl;
@@ -103,7 +102,7 @@ public class MascotasController {
 				mavMascotas.addObject("paginas",listadoMascotas);
 			}			
 			
-			mavMascotas.addObject("mascotas",mascotasRepository.findByIdCliente(usuario));
+			mavMascotas.addObject("mascotas",mascotasRepository.findByIdUsuario(usuario));
 			
 			
 			mavMascotas.addObject("anterior",numPaginas);
@@ -118,7 +117,7 @@ public class MascotasController {
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping({"/mascotas/formMascota","/mascotas/formMascota/{id}"})
 	public String formularioMascota(@PathVariable(name="id",required=false) Integer id, Model modeloMascota,
-			@ModelAttribute("cliente") ModeloUsuarios modeloUsuario, @ModelAttribute("mascota") ModeloMascotas mascota) {
+			@ModelAttribute("mascota") ModeloMascotas mascota) {
 		
 		LOG_VETERINARIA.info("Formulario de mascota");
 		
@@ -130,7 +129,7 @@ public class MascotasController {
 			
 			modeloMascota.addAttribute("clienteActual",cliente.getUsername().toUpperCase());
 			
-			modeloMascota.addAttribute("cliente",cliente.getId());
+			modeloMascota.addAttribute("usuarios",cliente.getId());
 			
 			if(id == null)
 				modeloMascota.addAttribute("mascota",new ModeloMascotas());
@@ -144,11 +143,10 @@ public class MascotasController {
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@PostMapping("/mascotas/saveMascota")
 	public String saveMascota(@ModelAttribute("mascota") ModeloMascotas modeloMascota, BindingResult validaMascota,
-			@ModelAttribute("cliente") ModeloUsuarios modeloCliente, RedirectAttributes mensajeFlash, Model cliente, @RequestParam(name="foto",required=false) MultipartFile foto,
+			RedirectAttributes mensajeFlash, Model cliente, @RequestParam(name="foto",required=false) MultipartFile foto,
 			@RequestParam(name="id",required=false) int id) {
 		
 		if(modeloMascota.getId() == 0) {
-			
 			modeloMascota = mascotas.aniadirMascota(modeloMascota);
 			
 			if(!foto.isEmpty()) {

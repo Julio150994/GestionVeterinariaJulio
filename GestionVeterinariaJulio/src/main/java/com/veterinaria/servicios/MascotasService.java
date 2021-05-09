@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import com.veterinaria.entidades.Mascotas;
 import com.veterinaria.modelos.ModeloMascotas;
 
-
 public interface MascotasService {
 	
 	public abstract List<ModeloMascotas> listarMascotas();
@@ -15,6 +14,7 @@ public interface MascotasService {
 	public abstract ModeloMascotas buscarIdMascota(int id);
 	public abstract ModeloMascotas aniadirMascota(ModeloMascotas mascota);
 	public abstract ModeloMascotas editarMascota(ModeloMascotas mascota);
+	
 	public abstract void eliminarMascota(int id);
 	
 	public abstract Mascotas convertirMascotas(ModeloMascotas modeloMascota);

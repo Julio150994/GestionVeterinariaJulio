@@ -75,7 +75,7 @@ public class CitasController {
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/citas/formCita")
-	public ModelAndView formularioCita(@ModelAttribute("veterinario") ModeloUsuarios modeloVeterinario,
+	public ModelAndView formularioCita(@ModelAttribute("usuario") ModeloUsuarios modeloVeterinario,
 			@ModelAttribute("mascota") ModeloMascotas modeloMascota) {
 		LOG_VETERINARIA.info("Formulario para pedir la cita");
 		UserDetails usuario = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -91,25 +91,11 @@ public class CitasController {
 			mavCita.addObject("cita", new Citas());
 			mavCita.addObject("clienteActual",usuario.getUsername().toUpperCase());
 			
-			if(modeloVeterinario == null) {
-				txtCita = "Veterinarios no encontrados";
-				LOG_VETERINARIA.info(txtCita);
-				mavCita.addObject("veterinario",txtCita);
-			}
-			else {
-				LOG_VETERINARIA.info("Veterinarios listados");
-				mavCita.addObject("veterinarios",veterinarios.listarUsuarios());
-			}
+			LOG_VETERINARIA.info("Veterinarios listados");
+			mavCita.addObject("usuarios",veterinarios.listarUsuarios());
 			
-			if(modeloMascota == null) {
-				txtCita = "Mascotas no encontradas";
-				LOG_VETERINARIA.info(txtCita);
-				mavCita.addObject("mascota",txtCita);
-			}
-			else {
-				LOG_VETERINARIA.info("Mascotas listadas");
-				mavCita.addObject("mascotas",mascotasRepository.findByIdCliente(clienteActual));
-			}
+			LOG_VETERINARIA.info("Mascotas listadas");
+			mavCita.addObject("mascotas",mascotasRepository.findByIdUsuario(clienteActual));
 		}
 		
 		return mavCita;
@@ -117,8 +103,7 @@ public class CitasController {
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@PostMapping("/citas/saveCita")
-	public String pedirCita(@Valid @ModelAttribute("cita") ModeloCitas cita, BindingResult validarCita, ModeloMascotas mascota,
-			ModeloUsuarios veterinario, RedirectAttributes mensajeFlash, Model modeloCita) {
+	public String pedirCita(@Valid @ModelAttribute("cita") ModeloCitas cita, BindingResult validarCita, RedirectAttributes mensajeFlash, Model modeloCita) {
 		
 		UserDetails usuario = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
@@ -157,7 +142,7 @@ public class CitasController {
 			
 			mavCitas.addObject("clienteActual",usuarioClienteActual.getUsername().toUpperCase());
 			
-			mavCitas.addObject("mascotas",mascotasRepository.findByIdCliente(usuario));
+			mavCitas.addObject("mascotas",mascotasRepository.findByIdUsuario(usuario));
 		}
 		
 		return mavCitas;
@@ -174,7 +159,7 @@ public class CitasController {
 			Usuarios usuario = usuariosRepository.findByUsername(auth.getName());
 			cita.addAttribute("usuario",usuario.getId());
 			
-			cita.addAttribute("mascotas",mascotasRepository.findByIdCliente(usuario));
+			cita.addAttribute("mascotas",mascotasRepository.findByIdUsuario(usuario));
 			
 			cita.addAttribute("clienteActual",usuarioClienteActual.getUsername().toUpperCase());
 			cita.addAttribute("citas",citasRepository.fetchByCitasWithNombre(nombre));
@@ -208,7 +193,7 @@ public class CitasController {
 		return mavCitas;
 	}
 	
-	/*------------------Métodos para el veterinario---------------------------*/
+	/*----------------------Métodos para ROLE_VETERINARIO-------------------------------*/
 	
 	@PreAuthorize("hasRole('ROLE_VETERINARIO')")
 	@GetMapping("/citas/historialMascota/{id}")
@@ -216,21 +201,38 @@ public class CitasController {
 			@RequestParam(name="nombre",required=false) String nombreMascota) {
 		LOG_VETERINARIA.info("Historial de mascota seleccionada");
 		
-		UserDetails usuarioVeterinarioActual = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		
 		ModelAndView mavCitas = new ModelAndView(historialMascota);
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth.getPrincipal() != "anonymousUser") {
 			Usuarios usuario = usuariosRepository.findByUsername(auth.getName());
 			
-			mavCitas.addObject("veterinarioActual",usuarioVeterinarioActual.getUsername().toUpperCase());
+			mavCitas.addObject("citas",mascotasRepository.findByIdUsuario(usuario));
+			
 			mavCitas.addObject("citasTxt","No existen citas para "+nombreMascota);
 			mavCitas.addObject("citas",citasRepository.findByIdVeterinario(usuario.getId()));
 		}
 		
 		return mavCitas;
-	}
+	}	
+	
+	@PreAuthorize("hasRole('ROLE_VETERINARIO')")
+	@PostMapping("/citas/consulta")
+	public String consultarHistorialMascota(@ModelAttribute("cita") ModeloCitas modeloCita,
+			@RequestParam(name="idVeterinario",required=false) Integer id, Model cita) {
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth.getPrincipal() != "anonymousUser") {
+			Usuarios usuario = usuariosRepository.findByUsername(auth.getName());
+			cita.addAttribute("usuario",usuario.getId());
+			
+			cita.addAttribute("mascotas",mascotasRepository.findByIdUsuario(usuario));
+			
+			cita.addAttribute("citas",citasRepository.findByIdVeterinario(id));
+		}
+		
+		return historialCitas;
+	}	
 	
 	@PreAuthorize("hasRole('ROLE_VETERINARIO')")
 	@PostMapping("/realizada/{id}")

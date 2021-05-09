@@ -3,7 +3,6 @@ package com.veterinaria.entidades;
 import java.sql.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -43,13 +42,12 @@ public class Mascotas {
 	@Column(name="fechaNacimiento",nullable=false)
 	private Date fechaNacimiento;
 	
-	@Column(name="foto",length=100)
+	@Column(name="foto",length=100, unique=true)
 	private String foto;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="idCliente",nullable=false)
-	private Usuarios cliente;
-	
+	private Usuarios usuario;
 	
 	public Mascotas() {
 		
@@ -60,7 +58,7 @@ public class Mascotas {
 			@NotNull(message = "Debe introducir un tipo para la mascota") @Size(min = 1, max = 30, message = "El tipo de mascota no debe tener más de 30 caracteres") String tipo,
 			@NotNull(message = "Debe introducir una raza para la mascota") @Size(min = 1, max = 30, message = "La raza no debe tener más de 30 caracteres") String raza,
 			@NotNull(message = "Debe especificar una fecha de nacimiento para la mascota") Date fechaNacimiento,
-			String foto, Usuarios cliente) {
+			String foto, Usuarios usuario) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -68,7 +66,7 @@ public class Mascotas {
 		this.raza = raza;
 		this.fechaNacimiento = fechaNacimiento;
 		this.foto = foto;
-		this.cliente = cliente;
+		this.usuario = usuario;
 	}
 
 
@@ -121,12 +119,12 @@ public class Mascotas {
 	}
 
 
-	public Usuarios getCliente() {
-		return cliente;
+	public Usuarios getUsuario() {
+		return usuario;
 	}
 
 
-	public void setCliente(Usuarios cliente) {
-		this.cliente = cliente;
+	public void setUsuario(Usuarios usuario) {
+		this.usuario = usuario;
 	}
 }

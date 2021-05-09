@@ -31,8 +31,8 @@ public class ModeloUsuarios {
 		this.mascotas = mascotas;
 		this.citas = citas;
 	}
-
-
+	
+	
 	public int getId() {
 		return id;
 	}
@@ -95,7 +95,7 @@ public class ModeloUsuarios {
 
 	public void setRol(String rol) {
 		this.rol = rol;
-	}
+	}	
 
 	public List<ModeloMascotas> getMascotas() {
 		return mascotas;

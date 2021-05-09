@@ -27,7 +27,6 @@ public class MascotasImpl implements MascotasService {
 	@Qualifier("clientesRepository")
 	private ClientesRepository clientes;
 	
-	
 	@Autowired
 	private DozerBeanMapper dozerMascotas;
 	
@@ -51,17 +50,17 @@ public class MascotasImpl implements MascotasService {
 	}
 	
 	@Override
-	public ModeloMascotas aniadirMascota(ModeloMascotas modeloMascota) {		
+	public ModeloMascotas aniadirMascota(ModeloMascotas modeloMascota) {
 		modeloMascota.setFoto(modeloMascota.getFoto());
-		modeloMascota.setCliente(modeloMascota.getCliente());
-		
+		modeloMascota.setUsuarios(modeloMascota.getUsuarios());
+
 		return dozerMascotas.map(mascotas.save(convertirMascotas(modeloMascota)),ModeloMascotas.class);
 	}
 
 	@Override
 	public ModeloMascotas editarMascota(ModeloMascotas modeloMascota) {
 		modeloMascota.setFoto(modeloMascota.getFoto());
-		modeloMascota.setCliente(modeloMascota.getCliente());
+		modeloMascota.setUsuarios(modeloMascota.getUsuarios());
 		
 		return dozerMascotas.map(mascotas.save(convertirMascotas(modeloMascota)),ModeloMascotas.class);
 	}

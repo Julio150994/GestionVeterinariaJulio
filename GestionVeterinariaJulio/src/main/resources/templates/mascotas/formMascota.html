@@ -27,22 +27,22 @@
 					<form class="form-signin" action="#" th:action="@{/mascotas/saveMascota}" th:object="${mascota}" method="post" id="formMascota" enctype="multipart/form-data">
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 					<div class="card-header text-center"> <h3 th:text="${mascota.id != 0} ? 'FORMULARIO EDITAR MASCOTA DE': 'FORMULARIO AÑADIR MASCOTA DE'"></h3> <h3 th:text="${clienteActual}"></h3></div>
-						<input type="hidden" name="id" th:field="*{id}"/>
+						<input type="hidden" name="id" th:field="*{id}"/>						
 						
 						<div class="form-label-group">
-							<input type="text" placeholder="Nombre" class="form-control" name="nombre" id="datoMascota"/>
+							<input type="text" placeholder="Nombre" class="form-control" name="nombre" id="datoMascota" th:value="*{nombre}"/>
 							<div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error producido en el nombre</div>
 						</div>
 						<div class="form-label-group">
-							<input type="text" placeholder="Tipo" class="form-control" name="tipo" id="datoMascota"/>
+							<input type="text" placeholder="Tipo" class="form-control" name="tipo" id="datoMascota" th:value="*{tipo}"/>
 							<div class="text-danger" th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}">Error producido en el tipo</div>
 						</div>
 						<div class="form-label-group">
-							<input type="text" placeholder="Raza" class="form-control" name="raza" id="datoMascota"/>
+							<input type="text" placeholder="Raza" class="form-control" name="raza" id="datoMascota" th:value="*{raza}"/>
 							<div class="text-danger" th:if="${#fields.hasErrors('raza')}" th:errors="*{raza}">Error producido en la raza</div>
 						</div>
 						<div class="form-label-group">
-							<input type="date" class="form-control" placeholder="Fecha de nacimiento" name="fechaNacimiento" id="datoMascota"/>
+							<input type="date" class="form-control" placeholder="Fecha de nacimiento" name="fechaNacimiento" id="datoMascota" th:value="*{fechaNacimiento}"/>
 							<div class="text-danger" th:if="${#fields.hasErrors('fechaNacimiento')}" th:errors="*{fechaNacimiento}">Error producido en la fecha de nacimiento</div>
 						</div>
 						<div class="form-label-group">
@@ -50,7 +50,7 @@
 							<div class="text-danger" th:if="${#fields.hasErrors('foto')}" th:errors="*{foto}">Error producido al subir la foto</div>
 						</div>
 						<div class="form-label-group">
-							<input type="hidden" class="form-control" name="cliente" id="datoMascota" th:value="${cliente}" readonly/>
+							<input type="hidden" class="form-control" name="idCliente" th:value="${usuarios}" id="datoMascota" readonly/>
 						</div>
 						
 						<div class="card-footer" id="panelMascota">

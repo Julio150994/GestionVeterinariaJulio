@@ -1,11 +1,8 @@
 package com.veterinaria.entidades;
 
 import java.sql.Date;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,13 +23,13 @@ public class Citas {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	
-	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="idMascota",nullable=false)
 	private Mascotas mascota;
 	
-	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="idVeterinario",nullable=false)
-	private Usuarios veterinario;
+	private Usuarios usuario;
 	
 	@NotNull(message="Debe introducir una fecha para su cita")
 	@DateTimeFormat(pattern="yyyy-MM-dd")
@@ -59,21 +56,21 @@ public class Citas {
 		
 	}
 
-	public Citas(int id, Mascotas mascota, Usuarios veterinario, @NotNull(message = "Debe introducir una fecha para su cita") Date fecha,
+	public Citas(int id, Mascotas mascota, Usuarios usuario, @NotNull(message = "Debe introducir una fecha para su cita") Date fecha,
 			@NotNull(message = "Debe escribir un motivo para su cita") @Size(min = 1, max = 100, message = "Su motivo no debe tener más de 100 caracteres") @Pattern(regexp = "^[A-Z]{1}[a-z].+$", message = "El motivo de la cita debe empezar por mayúsculas") String motivo,
 			@NotNull(message = "Debe redactar un informe para su cita") @Size(min = 1, max = 100, message = "Su informe no debe tener más de 100 caracteres") @Pattern(regexp = "^[A-Z]{1}[a-z].+$", message = "El informe de la cita debe empezar por mayúsculas") String informe,
 			boolean realizada) {
 		super();
 		this.id = id;
 		this.mascota = mascota;
-		this.veterinario = veterinario;
+		this.usuario = usuario;
 		this.fecha = fecha;
 		this.motivo = motivo;
 		this.informe = informe;
 		this.realizada = realizada;
 	}
 
-	
+
 	public int getId() {
 		return id;
 	}
@@ -88,14 +85,14 @@ public class Citas {
 
 	public void setMascota(Mascotas mascota) {
 		this.mascota = mascota;
-	}	
-
-	public Usuarios getVeterinario() {
-		return veterinario;
 	}
 
-	public void setVeterinario(Usuarios veterinario) {
-		this.veterinario = veterinario;
+	public Usuarios getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuarios usuario) {
+		this.usuario = usuario;
 	}
 
 	public Date getFecha() {

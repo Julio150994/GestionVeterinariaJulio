@@ -34,22 +34,22 @@
 						<input type="hidden" name="id" th:field="*{id}"/>
 						
 						<div class="form-label-group">
-							<select class="form-control" name="mascota" id="datoCita">
+							<select class="form-control" name="mascotas" id="datoCita">
 								<option value="">Seleccione una mascota</option>
-								<option th:each="mascota: ${mascotas}" th:value="${mascota.id}"
+								<option th:each="mascota: ${mascotas}" th:value="${mascota.foto}"
 									th:text="${mascota.nombre}">
 								</option>
 							</select>
 							<div class="text-danger" th:if="${#fields.hasErrors('mascota')}" th:errors="*{mascota}">Error producido en mascota</div>
 						</div>
 						<div class="form-label-group">
-							<select class="form-control" name="veterinario" id="datoCita">
+							<select class="form-control" name="usuarios" id="datoCita">
 								<option value="">Seleccione un veterinario</option>
-								<option th:each="veterinario: ${veterinarios}" th:if="${veterinario.rol == 'ROLE_VETERINARIO'}"
-									th:value="${veterinario.id}" th:text="${veterinario.username}">
+								<option th:each="veterinario: ${usuarios}" th:if="${veterinario.rol == 'ROLE_VETERINARIO'}"
+									th:value="${veterinario.apellidos}" th:text="${veterinario.username}">
 								</option>
 							</select>
-							<div class="text-danger" th:if="${#fields.hasErrors('veterinario')}" th:errors="*{veterinario}">Error producido en veterinario</div>
+							<div class="text-danger" th:if="${#fields.hasErrors('usuario')}" th:errors="*{usuario}">Error producido en veterinario</div>
 						</div>
 						
 						<div class="form-label-group">
