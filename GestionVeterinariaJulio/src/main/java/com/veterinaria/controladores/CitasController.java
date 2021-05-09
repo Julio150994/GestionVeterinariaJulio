@@ -210,7 +210,6 @@ public class CitasController {
 			mavCitas.addObject("citas",mascotasRepository.findByIdUsuario(usuario));
 			
 			mavCitas.addObject("citasTxt","No existen citas para "+nombreMascota);
-			mavCitas.addObject("citas",citasRepository.findByIdVeterinario(usuario.getId()));
 		}
 		
 		return mavCitas;
@@ -219,7 +218,7 @@ public class CitasController {
 	@PreAuthorize("hasRole('ROLE_VETERINARIO')")
 	@PostMapping("/citas/consulta")
 	public String consultarHistorialMascota(@ModelAttribute("cita") ModeloCitas modeloCita,
-			@RequestParam(name="idVeterinario",required=false) Integer id, Model cita) {
+			@RequestParam(name="nombre",required=false) String nombre, Model cita) {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth.getPrincipal() != "anonymousUser") {
@@ -228,10 +227,10 @@ public class CitasController {
 			
 			cita.addAttribute("mascotas",mascotasRepository.findByIdUsuario(usuario));
 			
-			cita.addAttribute("citas",citasRepository.findByIdVeterinario(id));
+			cita.addAttribute("citas",citasRepository.findByIdVeterinario(usuario.getId()));
 		}
 		
-		return historialCitas;
+		return "redirect:"+historialMascota;
 	}	
 	
 	@PreAuthorize("hasRole('ROLE_VETERINARIO')")
