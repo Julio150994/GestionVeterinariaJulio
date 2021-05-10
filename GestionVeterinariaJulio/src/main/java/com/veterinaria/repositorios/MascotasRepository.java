@@ -12,8 +12,8 @@ import com.veterinaria.entidades.Usuarios;
 
 @Repository("mascotasRepository")
 public interface MascotasRepository extends JpaRepository<Mascotas, Serializable> {
-	public abstract List<Usuarios> findByUsuario(Mascotas mascota);
+	public abstract List<Usuarios> findByUsuarios(Mascotas mascota);
 	
-	@Query("select m from Mascotas m where m.usuario =  :usuario")
-	public abstract List<Mascotas> findByIdUsuario(@Param("usuario") Usuarios usuario);
+	@Query("select m from Mascotas m where m.usuarios =  :usuarios")
+	public abstract List<Mascotas> findByIdUsuarios(@Param("usuarios") Usuarios usuario);
 }

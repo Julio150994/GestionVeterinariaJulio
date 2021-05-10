@@ -56,10 +56,10 @@ public class Usuarios {
 	@Column(name="rol",nullable=false,length=20)
 	private String rol;
 	
-	@OneToMany(mappedBy="usuario")
+	@OneToMany(mappedBy="usuarios")
 	private List<Mascotas> mascotas = new ArrayList<Mascotas>();
 	
-	@OneToMany(mappedBy="usuario")
+	@OneToMany(mappedBy="usuarios")
 	private List<Citas> citas = new ArrayList<Citas>();
 	
 	

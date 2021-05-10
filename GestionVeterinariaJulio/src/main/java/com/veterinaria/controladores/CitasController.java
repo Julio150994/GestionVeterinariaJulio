@@ -95,7 +95,7 @@ public class CitasController {
 			mavCita.addObject("usuarios",veterinarios.listarUsuarios());
 			
 			LOG_VETERINARIA.info("Mascotas listadas");
-			mavCita.addObject("mascotas",mascotasRepository.findByIdUsuario(clienteActual));
+			mavCita.addObject("mascotas",mascotasRepository.findByIdUsuarios(clienteActual));
 		}
 		
 		return mavCita;
@@ -142,7 +142,7 @@ public class CitasController {
 			
 			mavCitas.addObject("clienteActual",usuarioClienteActual.getUsername().toUpperCase());
 			
-			mavCitas.addObject("mascotas",mascotasRepository.findByIdUsuario(usuario));
+			mavCitas.addObject("mascotas",mascotasRepository.findByIdUsuarios(usuario));
 		}
 		
 		return mavCitas;
@@ -159,7 +159,7 @@ public class CitasController {
 			Usuarios usuario = usuariosRepository.findByUsername(auth.getName());
 			cita.addAttribute("usuario",usuario.getId());
 			
-			cita.addAttribute("mascotas",mascotasRepository.findByIdUsuario(usuario));
+			cita.addAttribute("mascotas",mascotasRepository.findByIdUsuarios(usuario));
 			
 			cita.addAttribute("clienteActual",usuarioClienteActual.getUsername().toUpperCase());
 			cita.addAttribute("citas",citasRepository.fetchByCitasWithNombre(nombre));

@@ -25,11 +25,11 @@ public class Citas {
 	
 	@ManyToOne
 	@JoinColumn(name="idMascota",nullable=false)
-	private Mascotas mascota;
+	private Mascotas mascotas;
 	
 	@ManyToOne
 	@JoinColumn(name="idVeterinario",nullable=false)
-	private Usuarios usuario;
+	private Usuarios usuarios;
 	
 	@NotNull(message="Debe introducir una fecha para su cita")
 	@DateTimeFormat(pattern="yyyy-MM-dd")
@@ -56,14 +56,15 @@ public class Citas {
 		
 	}
 
-	public Citas(int id, Mascotas mascota, Usuarios usuario, @NotNull(message = "Debe introducir una fecha para su cita") Date fecha,
+	public Citas(int id, Mascotas mascotas, Usuarios usuarios,
+			@NotNull(message = "Debe introducir una fecha para su cita") Date fecha,
 			@NotNull(message = "Debe escribir un motivo para su cita") @Size(min = 1, max = 100, message = "Su motivo no debe tener más de 100 caracteres") @Pattern(regexp = "^[A-Z]{1}[a-z].+$", message = "El motivo de la cita debe empezar por mayúsculas") String motivo,
 			@NotNull(message = "Debe redactar un informe para su cita") @Size(min = 1, max = 100, message = "Su informe no debe tener más de 100 caracteres") @Pattern(regexp = "^[A-Z]{1}[a-z].+$", message = "El informe de la cita debe empezar por mayúsculas") String informe,
 			boolean realizada) {
 		super();
 		this.id = id;
-		this.mascota = mascota;
-		this.usuario = usuario;
+		this.mascotas = mascotas;
+		this.usuarios = usuarios;
 		this.fecha = fecha;
 		this.motivo = motivo;
 		this.informe = informe;
@@ -79,20 +80,20 @@ public class Citas {
 		this.id = id;
 	}	
 
-	public Mascotas getMascota() {
-		return mascota;
+	public Mascotas getMascotas() {
+		return mascotas;
 	}
 
-	public void setMascota(Mascotas mascota) {
-		this.mascota = mascota;
+	public void setMascotas(Mascotas mascotas) {
+		this.mascotas = mascotas;
 	}
 
-	public Usuarios getUsuario() {
-		return usuario;
+	public Usuarios getUsuarios() {
+		return usuarios;
 	}
 
-	public void setUsuario(Usuarios usuario) {
-		this.usuario = usuario;
+	public void setUsuarios(Usuarios usuarios) {
+		this.usuarios = usuarios;
 	}
 
 	public Date getFecha() {

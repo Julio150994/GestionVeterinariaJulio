@@ -102,7 +102,7 @@ public class MascotasController {
 				mavMascotas.addObject("paginas",listadoMascotas);
 			}			
 			
-			mavMascotas.addObject("mascotas",mascotasRepository.findByIdUsuario(usuario));
+			mavMascotas.addObject("mascotas",mascotasRepository.findByIdUsuarios(usuario));
 			
 			
 			mavMascotas.addObject("anterior",numPaginas);

@@ -47,7 +47,7 @@ public class Mascotas {
 	
 	@ManyToOne
 	@JoinColumn(name="idCliente",nullable=false)
-	private Usuarios usuario;
+	private Usuarios usuarios;
 	
 	public Mascotas() {
 		
@@ -58,7 +58,7 @@ public class Mascotas {
 			@NotNull(message = "Debe introducir un tipo para la mascota") @Size(min = 1, max = 30, message = "El tipo de mascota no debe tener más de 30 caracteres") String tipo,
 			@NotNull(message = "Debe introducir una raza para la mascota") @Size(min = 1, max = 30, message = "La raza no debe tener más de 30 caracteres") String raza,
 			@NotNull(message = "Debe especificar una fecha de nacimiento para la mascota") Date fechaNacimiento,
-			String foto, Usuarios usuario) {
+			String foto, Usuarios usuarios) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -66,7 +66,7 @@ public class Mascotas {
 		this.raza = raza;
 		this.fechaNacimiento = fechaNacimiento;
 		this.foto = foto;
-		this.usuario = usuario;
+		this.usuarios = usuarios;
 	}
 
 
@@ -119,12 +119,12 @@ public class Mascotas {
 	}
 
 
-	public Usuarios getUsuario() {
-		return usuario;
+	public Usuarios getUsuarios() {
+		return usuarios;
 	}
 
 
-	public void setUsuario(Usuarios usuario) {
-		this.usuario = usuario;
+	public void setUsuarios(Usuarios usuarios) {
+		this.usuarios = usuarios;
 	}
 }
