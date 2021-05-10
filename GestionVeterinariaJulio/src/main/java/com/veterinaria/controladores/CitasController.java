@@ -233,23 +233,24 @@ public class CitasController {
 	
 	@PreAuthorize("hasRole('ROLE_VETERINARIO')")
 	@PostMapping("/realizada/{id}")
-	public String realizarCita(@ModelAttribute("cita") ModeloCitas cita, @RequestParam(name="fecha",required=false) Date fecha, 
-			@PathVariable("id") int id, @RequestParam(name="realizada",required=false) boolean realizada, BindingResult clienteValido, RedirectAttributes mensajeFlash) {
+	public String realizarCita(@ModelAttribute("cita") ModeloCitas modeloCita, Model cita, ModeloMascotas modeloMascota, @PathVariable("id") int id,
+			@RequestParam(name="realizada",required=false) boolean realizada, BindingResult clienteValido, RedirectAttributes mensajeFlash, @RequestParam(name="fecha",required=false) Date fecha,
+			@RequestParam(name="nombre",required=false) String nombreMascota) {
 		LOG_VETERINARIA.info("Historial de mascota seleccionada");
 		
-		citas.realizarCita(cita, id);
-		
-		if(realizada == false) {
-			txtCita = "Cita para la fecha "+fecha+" realizada correctamente";
-			LOG_VETERINARIA.info(txtCita);
-			mensajeFlash.addFlashAttribute("realizada",txtCita);
-		}
-		else {
-			txtCita = "Cita para la fecha "+fecha+" anulada correctamente";
-			LOG_VETERINARIA.info(txtCita);
-			mensajeFlash.addFlashAttribute("anulada",txtCita);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth.getPrincipal() != "anonymousUser") {
+			Usuarios usuario = usuariosRepository.findByUsername(auth.getName());
+			
+			cita.addAttribute("citas",citasRepository.findMascotasByVeterinario(usuario.getId()));// recargamos de nuevo las mascotas que tiene el veterinario
 		}
 		
-		return "redirect:"+historialMascota;
+		txtCita = "Cita de mascota "+nombreMascota+", correspondiente a la fecha "+fecha+" realizada correctamente";
+		LOG_VETERINARIA.info(txtCita);
+		cita.addAttribute("realizada",txtCita);
+		
+		cita.addAttribute("fechas",citas.realizarCita(modeloCita,id));
+		
+		return historialMascota;
 	}
 }

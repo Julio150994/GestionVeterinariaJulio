@@ -51,8 +51,6 @@ public class CitasImpl implements CitasService {
 		
 		if(cita.isRealizada() == false)
 			cita.setRealizada(true);
-		else
-			cita.setRealizada(false);
 		
 		return dozerCitas.map(citas.save(convertirCitas(cita)), ModeloCitas.class);
 	}
