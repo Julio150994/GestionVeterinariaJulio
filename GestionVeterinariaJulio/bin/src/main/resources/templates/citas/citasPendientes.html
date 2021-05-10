@@ -1,27 +1,28 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thyemeleaf.org" xmlns:sec="http://www.thyemeleaf.org/extras/spring-security">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <!-- Meta, title, CSS, favicons, etc. -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-	
-    <title>Gestión Veterinaria</title>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    	<!-- Meta, title, CSS, favicons, etc. -->
+    	<meta charset="utf-8">
+    	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Calendario de citas</title>
+		
+		<!-- Bootstrap -->
+    	<link th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
+    	<!-- Font Awesome -->
+    	<link th:href="@{/vendors/fontawesome/css/font-awesome.min.css}" rel="stylesheet">
+    	<!-- NProgress -->
+    	<link th:href="@{/vendors/nprogress/nprogress.css}" rel="stylesheet">
 
-    <!-- Bootstrap -->
-    <link th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link th:href="@{/vendors/fontawesome/css/font-awesome.min.css}" rel="stylesheet">
-    <!-- NProgress -->
-    <link th:href="@{/vendors/nprogress/nprogress.css}" rel="stylesheet">
+    	<!-- Custom Theme Style -->
+    	<link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
+    	<link type="text/css" th:href="@{/css/citas.css}" rel="stylesheet"/>
+    	<link type="text/css" th:href="@{/css/mascotas.css}" rel="stylesheet"/>
+	</head>
 
-    <!-- Custom Theme Style -->
-    <link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
-  </head>
-
-  <body class="nav-md">
-    <div class="container body" th:fragment="frontend">
+	<body class="nav-md">
+	  <div class="container body">
       <div class="main_container">
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
@@ -32,7 +33,7 @@
             <div class="clearfix"></div>
 
             <!-- menu profile quick info -->
-            <div sec:authorize="isAuthenticated()" class="profile clearfix">
+            <div sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENTE') or hasRole('ROLE_VETERINARIO')" class="profile clearfix">
               <div class="profile_pic">
                 <img th:src="@{/images/img.png}" alt="..." class="img-circle profile_img">
               </div>
@@ -52,15 +53,15 @@
                 <ul class="nav side-menu">
                   <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li sec:authorize="!isAuthenticated()"><a th:href="@{/auth/login}"><i class="fa fa-user pull-left"></i> Login</a></li>
-                      <li sec:authorize="!isAuthenticated()"><a th:href="@{/registrarCliente}"><i class="fa fa-user pull-left"></i> Registrar cliente</a></li>
+                      <li sec:authorize="!isAuthenticated()"><a th:href="@{/auth/login}"><i class="fa fa-link pull-left"></i> Login</a></li>
+                      <li sec:authorize="!isAuthenticated()"><a th:href="@{/registrarCliente}"><i class="fa fa-link pull-left"></i> Registrar cliente</a></li>
                       <li sec:authorize="hasRole('ROLE_ADMIN')">
                       	<a class="dropdown-item" th:href="@{/}"><i class="fa fa-link pull-left"></i> <span>Volver al menú</span></a>
                       </li>
                       <li sec:authorize="hasRole('ROLE_ADMIN')">
                       	<a class="dropdown-item" th:href="@{/clientes/listadoClientes}"> <i class="fa fa-link pull-left"></i> Listado de clientes</a>
                       </li>
-                      <li sec:authorize="hasRole('ROLE_ADMIN')">
+                       <li sec:authorize="hasRole('ROLE_ADMIN')">
                       	<a class="dropdown-item" th:href="@{/veterinarios/listadoVeterinarios}"> <i class="fa fa-link pull-left"></i> Listado de veterinarios</a>
                       </li>
                       <li sec:authorize="hasRole('ROLE_CLIENTE')">
@@ -77,9 +78,6 @@
                       </li>
                       <li sec:authorize="hasRole('ROLE_CLIENTE')">
                       	<a class="dropdown-item" th:href="@{/perfil_cliente/}+${usuario}"><i class="fa fa-link pull-left"></i> Perfil de usuario</a>
-                      </li>
-                      <li sec:authorize="hasRole('ROLE_VETERINARIO')">
-                      	<a class="dropdown-item" th:href="@{/citas/historialMascota/}+${usuario}"><i class="fa fa-link pull-left"></i> Historial de mascota</a>
                       </li>
                     </ul>
                   </li>
@@ -99,15 +97,13 @@
                 <nav class="nav navbar-nav">
                 <ul class=" navbar-right">
                   <li sec:authorize="!isAuthenticated()" class="text-secondary">Debe iniciar sesión para mostrar a un usuario</li>
-                  <li sec:authorize="isAuthenticated()" class="nav-item dropdown open" style="padding-left: 15px;">
+                  <li sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENTE') or hasRole('ROLE_VETERINARIO')" class="nav-item dropdown open" style="padding-left: 15px;">
                     <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
                       <img th:src="@{/images/img.png}" alt=""> <span th:text="${#authentication.name}"></span>
                     </a>
                     <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
                       <a sec:authorize="hasRole('ROLE_CLIENTE')" class="dropdown-item" th:href="@{/perfil_cliente/}+${usuario}"><i class="fa fa-user pull-left"></i> Perfil de usuario</a>
-                      <form sec:authorize="isAuthenticated()" th:action="@{/logout_user}" method="post">
-                      	  <button class="dropdown-item" type="submit"><i class="fa fa-sign-out pull-left"></i> Logout</button>
-                      </form>
+                      <a sec:authorize="isAuthenticated()" class="dropdown-item"  th:href="@{/auth/login?logout_user}"><i class="fa fa-sign-out pull-left"></i> Logout</a>
                     </div>
                   </li>
                 </ul>
@@ -119,22 +115,51 @@
         <!-- page content -->
         <div class="right_col" role="main">
           <div class="panel panel-body">
-            <div class="page-title">              
-              <div class="title_left">
-              	<div class="alert alert-success" th:if="${registrar != null}" th:text="${registrar}"> </div>
-              	<div class="alert alert-info" th:if="${login != null}" role="alert" th:text="${login}"> </div>	
-               	
-               	<div sec:authorize="hasRole('ROLE_CLIENTE')" class="alert alert-info text-white" th:if="${editado!=null}">
-               		<span th:text="${editado}"></span>
-               	</div>
-              	
+            <div class="page-title">
+              <div class="title_left">              	
                 <h3 sec:authorize="!isAuthenticated()">Página de inicio</h3>
-                <h3 sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENTE') or hasRole('ROLE_VETERINARIO')">
-                	Web de clínica DAM
-                </h3>
               </div>
             </div>
-
+            
+            <div sec:authorize="hasRole('ROLE_CLIENTE')" class="container mt-4">
+			
+			<div class="card-headert mt-5 text-center"> <h3>CITAS PENDIENTES DE (<span th:text="${clienteActual}"></span>)</h3> </div>
+			
+			<div class="panel panel-body alert alert-warning" th:if="${citas.empty}" th:text="${citasTxt}"></div>
+			
+			<div class="card-body">
+			
+				<table class="table table-bordered text-center" id="historialCitas">
+					<thead class="table table-dark">
+						<tr>
+							<th>Nombre de mascota</th>
+							<th>Tipo de mascota</th>
+							<th>Raza de mascota</th>
+							<th>Foto de mascota</th>
+							<th>Veterinario</th>
+							<th>Fecha de cita</th>
+							<th>Motivo de cita</th>
+							<th>Informe de cita</th>
+						</tr>
+					</thead>
+					
+					<tbody class="table table-light" th:each="cita: ${citas}">
+						<tr>
+							<td class="border" th:text="${cita.mascota.nombre}"></td>
+							<td class="border" th:text="${cita.mascota.tipo}"></td>
+							<td class="border" th:text="${cita.mascota.raza}"></td>
+								<td class="border"><img th:src="${#strings.isEmpty(cita.mascota.foto)} ? '/mascotasImg/image.png': ${cita.mascota.foto}"
+								 th:alt="${cita.mascota.foto}" class="center-block" id="imagenMascota"/></td>
+							<td class="border" th:text="${cita.usuario.username}"></td>
+							<td class="border" th:text="${#dates.format(cita.fecha,'dd/MM/yyyy')}"></td>
+							<td class="border" th:text="${cita.motivo}"></td>
+							<td class="border" th:text="${cita.informe}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+			
             <div class="clearfix"></div>
           </div>
         </div>
@@ -148,19 +173,19 @@
           <div class="clearfix"></div>
         </footer>
         <!-- /footer content -->
-      </div>
-    </div>
-
-    <!-- jQuery -->
-    <script th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
-    <!-- Bootstrap -->
-   <script th:src="@{/vendors/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
-    <!-- FastClick -->
-    <script th:src="@{/vendors/fastclick/lib/fastclick.js}"></script>
-    <!-- NProgress -->
-    <script th:src="@{/vendors/nprogress/nprogress.js}"></script>
+      	</div>
+       </div>
+		
+		<!-- jQuery -->
+    	<script th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
+    	<!-- Bootstrap -->
+   		<script th:src="@{/vendors/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
+    	<!-- FastClick -->
+    	<script th:src="@{/vendors/fastclick/lib/fastclick.js}"></script>
+    	<!-- NProgress -->
+    	<script th:src="@{/vendors/nprogress/nprogress.js}"></script>
     
-    <!-- Custom Theme Scripts -->
-    <script th:src="@{/build/js/custom.min.js}"></script>
-  </body>
+    	<!-- Custom Theme Scripts -->
+    	<script th:src="@{/build/js/custom.min.js}"></script>
+	</body>
 </html>

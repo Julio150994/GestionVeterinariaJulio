@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thyemeleaf.org" xmlns:sec="http://www.thyemeleaf.org/extras/spring-security">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    	<!-- Meta, title, CSS, favicons, etc. -->
+    	<meta charset="utf-8">
+    	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Formulario de pedir cita</title>
+		
+		<!-- Bootstrap -->
+    	<link th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
+    	<!-- Font Awesome -->
+    	<link th:href="@{/vendors/fontawesome/css/font-awesome.min.css}" rel="stylesheet">
+    	<!-- NProgress -->
+    	<link th:href="@{/vendors/nprogress/nprogress.css}" rel="stylesheet">
+
+    	<!-- Custom Theme Style -->
+    	<link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
+		<link type="text/css" th:href="@{/css/citas.css}" rel="stylesheet">
+	</head>
+
+	<body>		
+		<div sec:authorize="hasRole('ROLE_CLIENTE')" class="container" id="formCita">
+			<div class="card mt-5 col-lg-6 offset-lg-3 col-md-4 offset-md-3 col-12 alert alert-success" th:if="${citaPedida != null}" th:text="${citaPedida}"></div>
+			<div class="card mt-5 col-lg-6 offset-lg-3 col-md-4 offset-md-3 col-12 alert alert-warning" th:if="${citaCancelada != null}" th:text="${citaCancelada}"></div>
+			
+			
+			<div class="card mt-5 col-lg-6 offset-lg-3 col-md-4 offset-md-3 col-12">
+				<div class="card-body">
+					<form class="form-signin" action="#" th:action="@{/citas/saveCita}" th:object="${cita}" method="post">			
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+						<h3 class="text-center">CITA PARA CLIENTE <span th:text="${clienteActual}"></span></h3>
+						<input type="hidden" name="id" th:field="*{id}"/>
+						
+						<div class="form-label-group">
+							<select class="form-control" name="mascotas" id="datoCita">
+								<option value="">Seleccione una mascota</option>
+								<option th:each="mascota: ${mascotas}" th:value="${mascota.foto}"
+									th:text="${mascota.nombre}">
+								</option>
+							</select>
+							<div class="text-danger" th:if="${#fields.hasErrors('mascota')}" th:errors="*{mascota}">Error producido en mascota</div>
+						</div>
+						<div class="form-label-group">
+							<select class="form-control" name="usuarios" id="datoCita">
+								<option value="">Seleccione un veterinario</option>
+								<option th:each="veterinario: ${usuarios}" th:if="${veterinario.rol == 'ROLE_VETERINARIO'}"
+									th:value="${veterinario.apellidos}" th:text="${veterinario.username}">
+								</option>
+							</select>
+							<div class="text-danger" th:if="${#fields.hasErrors('usuario')}" th:errors="*{usuario}">Error producido en veterinario</div>
+						</div>
+						
+						<div class="form-label-group">
+							<input type="date" class="form-control" placeholder="Fecha de cita" name="fecha" id="datoCita"/>
+							<div class="text-danger" th:if="${#fields.hasErrors('fecha')}" th:errors="*{fecha}">Error producido en la fecha</div>
+						</div>
+						<div class="form-label-group">
+							<input type="text" class="form-control" placeholder="Motivo de la cita" name="motivo" id="datoCita"/>
+							<div class="text-danger" th:if="${#fields.hasErrors('motivo')}" th:errors="*{motivo}">Error producido en el motivo</div>
+						</div>
+						<div class="form-label-group">
+							<input type="text" class="form-control" placeholder="Informe para la cita" name="informe" id="datoCita"/>
+							<div class="text-danger" th:if="${#fields.hasErrors('informe')}" th:errors="*{informe}">Error producido en el informe</div>
+						</div>
+						
+						<div class="alert alert-danger" th:if="${errorCita}" th:text="${errorCita}" id="datoCita"></div>
+						
+						<div class="card-footer" id="panelCita">
+												
+							<a th:href="@{/}" class="btn btn-secondary"><i class="fa fa-arrow-circle-left"></i> Volver al menú</a>
+										
+							<button type="submit" class="btn btn-info"><i class="fa fa-plus-circle"></i> Pedir cita</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		
+		<!-- jQuery -->
+    	<script th:src="@{/vendors/jquery/dist/jquery.min.js}"></script>
+    	<!-- Bootstrap -->
+   		<script th:src="@{/vendors/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
+    	<!-- FastClick -->
+    	<script th:src="@{/vendors/fastclick/lib/fastclick.js}"></script>
+    	<!-- NProgress -->
+    	<script th:src="@{/vendors/nprogress/nprogress.js}"></script>
+    
+    	<!-- Custom Theme Scripts -->
+    	<script th:src="@{/build/js/custom.min.js}"></script>
+	</body>
+</html>

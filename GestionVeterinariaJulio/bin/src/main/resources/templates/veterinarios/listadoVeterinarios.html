@@ -6,7 +6,7 @@
     	<meta charset="utf-8">
     	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Listado de clientes</title>
+		<title>Listado de veterinarios</title>
 		
 		<!-- Bootstrap -->
     	<link th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
@@ -66,6 +66,12 @@
                       </li>
                       <li sec:authorize="hasRole('ROLE_CLIENTE')">
                       	<a class="dropdown-item" th:href="@{/mascotas/listadoMascotas}"> <i class="fa fa-link pull-left"></i> Listado de mascotas</a>
+                      </li>
+                      <li sec:authorize="hasRole('ROLE_CLIENTE')">
+                      	<a class="dropdown-item" th:href="@{/citas/formCita}"><i class="fa fa-link pull-left"></i> Pedir cita</a>
+                      </li>
+                      <li sec:authorize="hasRole('ROLE_CLIENTE')">
+                      	<a class="dropdown-item" th:href="@{/perfil_cliente/}+${usuario}"><i class="fa fa-link pull-left"></i> Perfil de usuario</a>
                       </li>
                     </ul>
                   </li>

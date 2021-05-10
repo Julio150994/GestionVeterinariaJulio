@@ -66,6 +66,12 @@
                       <li sec:authorize="hasRole('ROLE_CLIENTE')">
                       	<a class="dropdown-item" th:href="@{/mascotas/listadoMascotas}"> <i class="fa fa-link pull-left"></i> Listado de mascotas</a>
                       </li>
+                      <li sec:authorize="hasRole('ROLE_CLIENTE')">
+                      	<a class="dropdown-item" th:href="@{/citas/formCita}"><i class="fa fa-link pull-left"></i> Pedir cita</a>
+                      </li>
+                      <li sec:authorize="hasRole('ROLE_CLIENTE')">
+                      	<a class="dropdown-item" th:href="@{/perfil_cliente/}+${usuario}"><i class="fa fa-link pull-left"></i> Perfil de usuario</a>
+                      </li>
                     </ul>
                   </li>
                 </ul>
@@ -89,6 +95,7 @@
                       <img th:src="@{/images/img.png}" alt=""> <span th:text="${#authentication.name}"></span>
                     </a>
                     <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+                      <a sec:authorize="hasRole('ROLE_CLIENTE')" class="dropdown-item" th:href="@{/perfil_cliente/}+${usuario}"><i class="fa fa-user pull-left"></i> Perfil de usuario</a>
                       <a sec:authorize="isAuthenticated()" class="dropdown-item"  th:href="@{/auth/login?logout_user}"><i class="fa fa-sign-out pull-left"></i> Logout</a>
                     </div>
                   </li>

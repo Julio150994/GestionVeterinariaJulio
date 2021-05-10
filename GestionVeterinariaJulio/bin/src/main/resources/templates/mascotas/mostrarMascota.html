@@ -66,6 +66,18 @@
                       <li sec:authorize="hasRole('ROLE_CLIENTE')">
                       	<a class="dropdown-item" th:href="@{/mascotas/listadoMascotas}"> <i class="fa fa-link pull-left"></i> Listado de mascotas</a>
                       </li>
+                      <li sec:authorize="hasRole('ROLE_CLIENTE')">
+                      	<a class="dropdown-item" th:href="@{/citas/formCita}"><i class="fa fa-link pull-left"></i> Pedir cita</a>
+                      </li>
+                      <li sec:authorize="hasRole('ROLE_CLIENTE')">
+                      	<a class="dropdown-item" th:href="@{/citas/listadoCitas}"> <i class="fa fa-link pull-left"></i> Historial de citas</a>
+                      </li>
+                      <li sec:authorize="hasRole('ROLE_CLIENTE')">
+                      	<a class="dropdown-item" th:href="@{/citas/citasPendientes}"> <i class="fa fa-link pull-left"></i> Calendario de citas</a>
+                      </li>
+                      <li sec:authorize="hasRole('ROLE_CLIENTE')">
+                      	<a class="dropdown-item" th:href="@{/perfil_cliente/}+${usuario}"><i class="fa fa-link pull-left"></i> Perfil de usuario</a>
+                      </li>
                     </ul>
                   </li>
                 </ul>
@@ -108,7 +120,7 @@
               </div>
             </div>
             
-            <div sec:authorize="hasRole('ROLE_ADMIN')" class="container col-sm-8 mt-5">
+            <div sec:authorize="hasRole('ROLE_CLIENTE')" class="container col-sm-8 mt-5">
             	<div class="card-header text-center"> <h3>DATOS DE MASCOTA ID (<span th:text="${mascota.id}"></span>)</h3></div>
             	
             	<div class="container mt-4">
@@ -116,9 +128,9 @@
            				<li class="list-group-item" id="datoUsuario"><span class="text-left"><strong>Nombre:</strong></span> <span th:text="${mascota.nombre}" class="text-right"></span></li>
            				<li class="list-group-item" id="datoUsuario"><span class="text-left"><strong>Tipo:</strong></span> <span th:text="${mascota.tipo}" class="text-right"></span></li>
            				<li class="list-group-item" id="datoUsuario"><span class="text-left"><strong>Raza:</strong></span> <span th:text="${mascota.raza}" class="text-right"></span></li>
-           				<li class="list-group-item" id="datoUsuario"><span class="text-left"><strong>Fecha de nacimiento:</strong></span> <span th:text="${mascota.fechaNacimiento}" class="text-right"></span></li>
-           				<li class="list-group-item" id="datoUsuario"><span class="text-left"><strong>Foto:</strong></span> <span th:text="${mascota.foto}" class="text-right"></span></li>
-           				<li class="list-group-item bg-success text-white" id="datoUsuario"><span class="text-left"><strong>Cliente:</strong></span> <span th:text="${mascota.usuario.username}" class="text-right"></span></li>
+           				<li class="list-group-item" id="datoUsuario"><span class="text-left"><strong>Fecha de nacimiento:</strong></span> <span th:text="${#dates.format(mascota.fechaNacimiento,'dd/MM/yyyy')}" class="text-right"></span></li>
+           				<li class="list-group-item" id="datoUsuario"><span class="text-left"><strong>Foto:</strong></span> <img th:src="${#strings.isEmpty(mascota.foto)} ? '/mascotasImg/image.png': ${mascota.foto}"
+								 th:alt="${mascota.foto}" class="center-block" id="imagenMascota"/></li>
            			</ul>
            		</div>
 			</div>
