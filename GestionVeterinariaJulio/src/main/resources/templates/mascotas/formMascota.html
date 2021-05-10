@@ -27,7 +27,8 @@
 					<form class="form-signin" action="#" th:action="@{/mascotas/saveMascota}" th:object="${mascota}" method="post" id="formMascota" enctype="multipart/form-data">
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 					<div class="card-header text-center"> <h3 th:text="${mascota.id != 0} ? 'FORMULARIO EDITAR MASCOTA DE': 'FORMULARIO AÑADIR MASCOTA DE'"></h3> <h3 th:text="${clienteActual}"></h3></div>
-						<input type="hidden" name="id" th:field="*{id}"/>						
+						<input type="hidden" name="id" th:value="${mascota.id}"/>
+						<input type="hidden" name="usuarios" th:value="${mascota.usuarios}"/>					
 						
 						<div class="form-label-group">
 							<input type="text" placeholder="Nombre" class="form-control" name="nombre" id="datoMascota" th:value="*{nombre}"/>
@@ -50,7 +51,7 @@
 							<div class="text-danger" th:if="${#fields.hasErrors('foto')}" th:errors="*{foto}">Error producido al subir la foto</div>
 						</div>
 						<div class="form-label-group">
-							<input type="hidden" class="form-control" name="usuarios" th:value="${usuarios}" id="datoMascota" readonly/>
+							<input type="text" class="form-control" name="usuarios" th:value="${usuarios.id}" id="datoMascota" readonly/>
 						</div>
 						
 						<div class="card-footer" id="panelMascota">
