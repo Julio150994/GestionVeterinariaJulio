@@ -1,6 +1,5 @@
 package com.veterinaria.repositorios;
 
-import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,7 +12,7 @@ import com.veterinaria.entidades.Usuarios;
 
 
 @Repository("citasRepository")
-public interface CitasRepository extends JpaRepository<Citas, Serializable> {
+public interface CitasRepository extends JpaRepository<Citas, Integer> {
 	public abstract List<Mascotas> findByMascotas(Citas cita);
 	public abstract List<Usuarios> findByUsuarios(Citas cita);
 	
