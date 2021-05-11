@@ -19,9 +19,6 @@
     	<link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
     	<link type="text/css" th:href="@{/css/citas.css}" rel="stylesheet"/>
     	<link type="text/css" th:href="@{/css/mascotas.css}" rel="stylesheet"/>
-    	
-    	<!-- Custom JS para el checkbox -->
-    	<script type="text/javascript" th:src="@{/js/citas.js}"></script>
 	</head>
 
 	<body class="nav-md">
@@ -85,6 +82,9 @@
                       <li sec:authorize="hasRole('ROLE_VETERINARIO')">
                       	<a class="dropdown-item" th:href="@{/citas/historialMascota/}+${usuario}"><i class="fa fa-link pull-left"></i> Historial de mascota</a>
                       </li>
+                      <li sec:authorize="hasRole('ROLE_VETERINARIO')">
+                      	<a class="dropdown-item" th:href="@{/citas/citasDiarias/}+${usuario}"><i class="fa fa-link pull-left"></i> Realiza citas</a>
+                      </li>
                     </ul>
                   </li>
                 </ul>
@@ -127,7 +127,6 @@
               </div>
             </div>
             
-            <div class="panel panel-body alert alert-info" th:if="${realizada}" role="alert" th:text="${realizada}"></div>
             
             <div sec:authorize="hasRole('ROLE_VETERINARIO')" class="container mt-4">
 			
@@ -156,7 +155,6 @@
 							<th>Fecha de cita</th>
 							<th>Motivo de cita</th>
 							<th>Informe de cita</th>
-							<th>Realizar cita</th>
 						</tr>
 					</thead>
 					
@@ -170,17 +168,6 @@
 							<td class="border" th:text="${#dates.format(cita.fecha,'dd/MM/yyyy')}"></td>
 							<td class="border" th:text="${cita.motivo}"></td>
 							<td class="border" th:text="${cita.informe}"></td>
-							<td class="border">
-								<form class="form-signin" action="#" th:action="@{/realizada/}+${cita.id}" th:object="${cita}" method="post">
-									<input type="hidden" name="id" th:value="${cita.id}"/>
-									<input type="hidden" name="nombre" th:value="${cita.mascotas.nombre}"/>
-									<input type="hidden" name="fecha" th:value="${cita.fecha}"/>
-									<input type="hidden" name="realizada" th:value="${cita.realizada}"/>
-									
-									<input class="form-check-input" type="checkbox" th:value="${realizada}" th:onclick="realizarCita([[${cita.id}]])" name="realizada" id="checkCita">
-  									<label class="form-check-label" for="checkCita"></label>
-								</form>
-							</td>
 						</tr>
 					</tbody>
 				</table>

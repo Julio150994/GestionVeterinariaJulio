@@ -1,6 +1,8 @@
 package com.veterinaria.controladores;
 
 import java.sql.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import javax.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -41,9 +43,14 @@ import com.veterinaria.servicios.Impl.VeterinariosImpl;
 public class CitasController {
 	private static final Log LOG_VETERINARIA = LogFactory.getLog(CitasController.class);
 	private static final String formCita = "/citas/formCita", historialCitas = "/citas/listadoCitas",
-			fechasCitas = "/citas/citasPendientes", historialMascota = "/citas/historialMascota";
+			fechasCitas = "/citas/citasPendientes", historialMascota = "/citas/historialMascota", citasDiaActual = "/citas/citasDiarias";
 	private String txtCita;
+	private Calendar fecha = new GregorianCalendar();// para poder obtener el día actual
+	private int dia = fecha.get(Calendar.DAY_OF_MONTH);
+    private int mes = fecha.get(Calendar.MONTH);
+    private int anio = fecha.get(Calendar.YEAR);
 	
+    
 	@Autowired
 	@Qualifier("citasImpl")
 	private CitasImpl citas;
@@ -148,8 +155,8 @@ public class CitasController {
 		return mavCitas;
 	}
 	
-	/* Método para mostrar las citas pendientes o no de una determinada mascota */
-	@PreAuthorize("hasRole('ROLE_CLIENTE')")
+	
+	@PreAuthorize("hasRole('ROLE_CLIENTE')") // Método para mostrar las citas pendientes o no de una determinada mascota
 	@PostMapping("/citas/citasMascota")
 	public String buscarIdMascota(@ModelAttribute("cita") ModeloCitas modeloCita, @RequestParam(name="nombre",required=false) String nombre, Model cita) {
 		UserDetails usuarioClienteActual = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -193,7 +200,7 @@ public class CitasController {
 		return mavCitas;
 	}
 	
-	/*----------------------Métodos para ROLE_VETERINARIO-------------------------------*/
+	/*----------------------------Métodos para ROLE_VETERINARIO---------------------------------------*/
 	
 	@PreAuthorize("hasRole('ROLE_VETERINARIO')")
 	@GetMapping("/citas/historialMascota/{id}")
@@ -206,9 +213,10 @@ public class CitasController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth.getPrincipal() != "anonymousUser") {
 			Usuarios usuario = usuariosRepository.findByUsername(auth.getName());
+			mavCitas.addObject("usuario",usuario.getId());
+			
 			
 			mavCitas.addObject("citas",citasRepository.findMascotasByVeterinario(usuario.getId()));
-			
 			mavCitas.addObject("citasTxt","No existen citas para "+nombreMascota);
 		}
 		
@@ -222,6 +230,7 @@ public class CitasController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth.getPrincipal() != "anonymousUser") {
 			Usuarios usuario = usuariosRepository.findByUsername(auth.getName());
+			cita.addAttribute("usuario",usuario.getId());
 			
 			cita.addAttribute("citas",citasRepository.findMascotasByVeterinario(usuario.getId()));// recargamos de nuevo las mascotas que tiene el veterinario
 			
@@ -229,7 +238,30 @@ public class CitasController {
 		}
 		
 		return historialMascota;
-	}	
+	}
+	
+	@PreAuthorize("hasRole('ROLE_VETERINARIO')")
+	@GetMapping("/citas/citasDiarias/{id}")
+	public ModelAndView verCitasDiariasVeterinario(@ModelAttribute("cita") ModeloCitas cita) {
+		LOG_VETERINARIA.info("Vista de las citas del día actual");
+		
+		ModelAndView mavCitas = new ModelAndView(citasDiaActual);
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth.getPrincipal() != "anonymousUser") {
+			Usuarios usuario = usuariosRepository.findByUsername(auth.getName());
+			mavCitas.addObject("usuario",usuario.getId());
+		    
+		    String fechaActual = anio+"-"+(mes+1)+"-"+dia;
+		    Date diaActual = Date.valueOf(fechaActual);// convertimos a fecha para la base de datos
+		    
+			mavCitas.addObject("citasTxt","No existen citas para el día "+fechaActual);
+		
+			mavCitas.addObject("citas",citasRepository.listarCitasDiaActual(diaActual,usuario.getId()));
+		}
+		
+		return mavCitas;
+	}
 	
 	@PreAuthorize("hasRole('ROLE_VETERINARIO')")
 	@PostMapping("/realizada/{id}")
@@ -241,8 +273,12 @@ public class CitasController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth.getPrincipal() != "anonymousUser") {
 			Usuarios usuario = usuariosRepository.findByUsername(auth.getName());
+			cita.addAttribute("usuario",usuario.getId());
 			
-			cita.addAttribute("citas",citasRepository.findMascotasByVeterinario(usuario.getId()));// recargamos de nuevo las mascotas que tiene el veterinario
+		    String fechaActual = anio+"-"+(mes+1)+"-"+dia;
+		    Date diaActual = Date.valueOf(fechaActual);// convertimos a fecha para la base de datos
+			
+			cita.addAttribute("citas",citasRepository.listarCitasDiaActual(diaActual,usuario.getId()));
 		}
 		
 		txtCita = "Cita de mascota "+nombreMascota+", correspondiente a la fecha "+fecha+" realizada correctamente";
@@ -251,6 +287,6 @@ public class CitasController {
 		
 		cita.addAttribute("fechas",citas.realizarCita(modeloCita,id));
 		
-		return historialMascota;
+		return citasDiaActual;
 	}
 }
