@@ -149,7 +149,7 @@
 							<th>Foto de mascota</th>
 							<th>Motivo de cita</th>
 							<th>Informe de cita</th>
-							<th>Realizar cita</th>
+							<th>Cita</th>
 						</tr>
 					</thead>
 					
@@ -173,11 +173,11 @@
   									<label class="form-check-label" for="checkCita"></label>-->
   									
   									<button class="btn btn-info text-white" th:field="*{realizada}" type="submit" th:if="${cita.realizada}">
-										<i class="fa fa-check-square"></i>
+										<i class="fa fa-check-square"></i> Realizada
 									</button>
 										
-									<button class="btn btn-info text-white" th:field="*{realizada}" type="submit" th:unless="${cita.realizada}">
-										<i class="fa fa-square"></i>
+									<button class="btn btn-warning text-white" th:field="*{realizada}" type="submit" th:unless="${cita.realizada}">
+										<i class="fa fa-square"></i> No realizada
 									</button>
 								</form>
 							</td>

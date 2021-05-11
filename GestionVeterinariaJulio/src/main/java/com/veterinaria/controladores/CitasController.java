@@ -111,7 +111,8 @@ public class CitasController {
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@PostMapping("/citas/saveCita")
-	public String pedirCita(@Valid @ModelAttribute("cita") ModeloCitas cita, BindingResult validarCita, RedirectAttributes mensajeFlash, Model modeloCita) {
+	public String pedirCita(@Valid @ModelAttribute("cita") ModeloCitas cita, BindingResult validarCita, RedirectAttributes mensajeFlash, Model modeloCita,
+			@ModelAttribute("mascotas") ModeloMascotas mascota, @ModelAttribute("usuarios") ModeloUsuarios veterinario) {
 		
 		UserDetails usuario = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
@@ -119,7 +120,7 @@ public class CitasController {
 		LOG_VETERINARIA.info("Nº de citas con la fecha introducida: "+countCitas);
 		
 		if(countCitas < 3) {
-			citas.pedirCita(cita);
+			citas.pedirCita(cita,mascota,veterinario);
 			
 			txtCita = usuario.getUsername()+", has pedido tu cita correctamente";
 			LOG_VETERINARIA.info(txtCita);
@@ -160,7 +161,8 @@ public class CitasController {
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')") // Método para mostrar las citas pendientes o no de una determinada mascota
 	@PostMapping("/citas/citasMascota")
-	public String buscarIdMascota(@ModelAttribute("cita") ModeloCitas modeloCita, @RequestParam(name="nombre",required=false) String nombre, Model cita) {
+	public String buscarIdMascota(@ModelAttribute("cita") ModeloCitas modeloCita, @RequestParam(name="nombre",required=false) String nombre, Model cita,
+			ModeloMascotas modeloMascota) {
 		UserDetails usuarioClienteActual = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -172,6 +174,10 @@ public class CitasController {
 			
 			cita.addAttribute("clienteActual",usuarioClienteActual.getUsername().toUpperCase());
 			cita.addAttribute("citas",citasRepository.fetchByCitasWithNombre(nombre));
+			
+			/* Para mostrar en la leyenda cuantas citas se han realizado y cuantas no */
+			cita.addAttribute("realizada",citasRepository.countByCitaRealizada(modeloMascota.getId(),false));
+			cita.addAttribute("pendiente",citasRepository.countByCitaRealizada(modeloMascota.getId(),true));
 		}
 		
 		return historialCitas;
@@ -234,9 +240,9 @@ public class CitasController {
 			cita.addAttribute("usuario",usuario.getId());
 			
 			cita.addAttribute("citas",citasRepository.findMascotasByVeterinario(usuario.getId()));// recargamos de nuevo las mascotas que tiene el veterinario
-			
-			cita.addAttribute("fechas",citasRepository.listHistorialCitasMascota(usuario.getId(),modeloMascota.getNombre()));
 		}
+		
+		cita.addAttribute("fechas",citasRepository.listHistorialCitasMascota(modeloMascota.getNombre()));
 		
 		return historialMascota;
 	}

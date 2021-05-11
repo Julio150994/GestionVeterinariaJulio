@@ -30,6 +30,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.veterinaria.entidades.Mascotas;
 import com.veterinaria.entidades.Usuarios;
 import com.veterinaria.modelos.ModeloMascotas;
+import com.veterinaria.modelos.ModeloUsuarios;
 import com.veterinaria.repositorios.MascotasRepository;
 import com.veterinaria.repositorios.UsuariosRepository;
 import com.veterinaria.servicios.Impl.ClientesImpl;
@@ -144,7 +145,7 @@ public class MascotasController {
 	@PostMapping("/mascotas/saveMascota")
 	public String saveMascota(@ModelAttribute("mascota") ModeloMascotas modeloMascota, BindingResult validaMascota,
 			RedirectAttributes mensajeFlash, Model cliente, @RequestParam(name="foto",required=false) MultipartFile foto,
-			@RequestParam(name="id",required=false) int id) {
+			@RequestParam(name="id",required=false) int id, @ModelAttribute("usuarios") ModeloUsuarios modeloCliente) {
 		
 		if(modeloMascota.getId() == 0) {
 			modeloMascota = mascotas.aniadirMascota(modeloMascota);
