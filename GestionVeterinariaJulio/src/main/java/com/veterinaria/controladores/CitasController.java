@@ -252,7 +252,7 @@ public class CitasController {
 			Usuarios usuario = usuariosRepository.findByUsername(auth.getName());
 			mavCitas.addObject("usuario",usuario.getId());
 		    
-			mavCitas.addObject("veterinarioActual",usuario.getUsername());
+			mavCitas.addObject("veterinarioActual",usuario.getUsername().toUpperCase());
 			
 			
 		    String fechaActual = anio+"-"+(mes+1)+"-"+dia;
