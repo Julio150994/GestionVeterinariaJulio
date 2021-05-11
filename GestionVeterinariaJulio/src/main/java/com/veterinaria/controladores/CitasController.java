@@ -149,6 +149,7 @@ public class CitasController {
 			mavCitas.addObject("usuario",usuario.getId());
 			
 			mavCitas.addObject("clienteActual",usuarioClienteActual.getUsername().toUpperCase());
+			mavCitas.addObject("citasTxt",usuario.getUsername()+" no tiene mascotas registradas en la base de datos");
 			
 			mavCitas.addObject("mascotas",mascotasRepository.findByIdUsuarios(usuario));
 		}

@@ -125,7 +125,9 @@
 
 			<div class="card-headert mt-5 text-center"> <h3>HISTORIAL DE CITAS DE (<span class="text-secondary" th:text="${clienteActual}"></span>)</h3> </div>
 			
-			<div class="card-body mt-5">
+			<div class="panel panel-body alert alert-warning" th:if="${mascotas.empty}" th:text="${citasTxt}"></div>
+			
+			<div class="card-body mt-5" th:if="${!mascotas.empty}">
 				<form action="#" th:action="@{/citas/citasMascota}" th:object="${cita}" method="POST">
 					<select name="nombre" class="form-control col-md-3">
 						<option value="">Seleccione una mascota</option>
