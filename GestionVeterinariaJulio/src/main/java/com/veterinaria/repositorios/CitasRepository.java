@@ -38,7 +38,4 @@ public interface CitasRepository extends JpaRepository<Citas, Serializable> {
 		
 	@Query("select c from Citas c, Usuarios u where c.fecha = :fecha and c.usuarios = u.id and u.id = :id")
 	public abstract List<Citas> listarCitasDiaActual(@Param("fecha") Date fecha, @Param("id") int id);
-	
-	@Query("select count(c) from Citas c, Mascotas m where c.mascotas = m.id and m.id = :id and c.realizada = :realizada")
-	public abstract int countByCitaRealizada(@Param("id") int id, @Param("realizada") boolean realizada);
 }

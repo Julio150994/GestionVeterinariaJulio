@@ -174,10 +174,6 @@ public class CitasController {
 			
 			cita.addAttribute("clienteActual",usuarioClienteActual.getUsername().toUpperCase());
 			cita.addAttribute("citas",citasRepository.fetchByCitasWithNombre(nombre));
-			
-			/* Para mostrar en la leyenda cuantas citas se han realizado y cuantas no */
-			cita.addAttribute("realizada",citasRepository.countByCitaRealizada(modeloMascota.getId(),false));
-			cita.addAttribute("pendiente",citasRepository.countByCitaRealizada(modeloMascota.getId(),true));
 		}
 		
 		return historialCitas;

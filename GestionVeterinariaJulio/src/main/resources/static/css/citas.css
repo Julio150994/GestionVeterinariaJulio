@@ -14,6 +14,18 @@
 
 #realizada { background-color: #DEDEDE; }
 
+#txtRealizada {
+	background-color: #DEDEDE;
+	border-radius: 60%;
+	font-size: 30px;
+}
+
+#txtPendiente {
+	border-radius: 60%;
+	font-size: 30px;
+}
+
+
 /* Para el historial de las mascotas */
 #checkCita {
 	-ms-transform: scale(1.65);
