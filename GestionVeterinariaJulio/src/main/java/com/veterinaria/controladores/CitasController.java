@@ -43,7 +43,7 @@ import com.veterinaria.servicios.Impl.VeterinariosImpl;
 public class CitasController {
 	private static final Log LOG_VETERINARIA = LogFactory.getLog(CitasController.class);
 	private static final String formCita = "/citas/formCita", historialCitas = "/citas/listadoCitas",
-			fechasCitas = "/citas/citasPendientes", historialMascota = "/citas/historialMascota", citasDiaActual = "/citas/diarias";
+			fechasCitas = "/citas/citasPendientes", historialMascota = "/citas/historialMascota", citasDiaActual = "/citas/citaDia";
 	private String txtCita;
 	
 	private Calendar fecha = new GregorianCalendar();
@@ -224,7 +224,7 @@ public class CitasController {
 	}	
 	
 	@PreAuthorize("hasRole('ROLE_VETERINARIO')")
-	@PostMapping("/citas/consulta")
+	@PostMapping("/citas/nombreMascota")
 	public String consultarHistorialMascota(@ModelAttribute("cita") ModeloCitas modeloCita, Model cita, ModeloMascotas modeloMascota) {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -241,7 +241,7 @@ public class CitasController {
 	}
 	
 	@PreAuthorize("hasRole('ROLE_VETERINARIO')")
-	@GetMapping("/citas/diarias/{id}")
+	@GetMapping("/citas/citaDia/{id}")
 	public ModelAndView verCitasDiariasVeterinario(@ModelAttribute("cita") ModeloCitas cita) {
 		LOG_VETERINARIA.info("Vista de las citas del día actual");
 		

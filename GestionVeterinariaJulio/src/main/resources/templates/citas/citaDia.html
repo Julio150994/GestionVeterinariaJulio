@@ -86,7 +86,7 @@
                       	<a class="dropdown-item" th:href="@{/citas/historialMascota/}+${usuario}"><i class="fa fa-link pull-left"></i> Historial de mascota</a>
                       </li>
                         <li sec:authorize="hasRole('ROLE_VETERINARIO')">
-                      	<a class="dropdown-item" th:href="@{/citas/diarias/}+${usuario}"><i class="fa fa-link pull-left"></i> Realizar citas del día</a>
+                      	<a class="dropdown-item" th:href="@{/citas/citaDia/}+${usuario}"><i class="fa fa-link pull-left"></i> Realizar citas del día</a>
                       </li>
                     </ul>
                   </li>
