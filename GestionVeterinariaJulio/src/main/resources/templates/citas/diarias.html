@@ -136,7 +136,7 @@
 			
 			<div class="panel panel-body alert alert-warning" th:if="${citas.empty}" th:text="${citasTxt}"></div>
 			
-			<div class="card-headert mt-5 text-center"> <h3> CITAS DEL DÍA DE <span th:text="${veterinarioActual}"></span></h3> </div>
+			<div class="card-headert mt-5 text-center"> <h3> CITAS DEL DÍA <span th:text="${fechaActual}"></span></h3> </div>
 			
 			<div class="card-body">
 			
@@ -147,7 +147,6 @@
 							<th>Tipo de mascota</th>
 							<th>Raza de mascota</th>
 							<th>Foto de mascota</th>
-							<th>Fecha de cita</th>
 							<th>Motivo de cita</th>
 							<th>Informe de cita</th>
 							<th>Realizar cita</th>
@@ -161,7 +160,6 @@
 							<td class="border" th:text="${cita.mascotas.raza}"></td>
 							<td class="border"><img th:src="${#strings.isEmpty(cita.mascotas.foto)} ? '/mascotasImg/image.png': ${cita.mascotas.foto}"
 								 th:alt="${cita.mascotas.foto}" class="center-block" id="imagenMascota"/></td>
-							<td class="border" th:text="${#dates.format(cita.fecha,'dd/MM/yyyy')}"></td>
 							<td class="border" th:text="${cita.motivo}"></td>
 							<td class="border" th:text="${cita.informe}"></td>
 							<td class="border">
