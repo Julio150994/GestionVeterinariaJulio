@@ -124,6 +124,8 @@
               </div>
             </div>
             
+            <div class="panel panel-body alert alert-info" th:if="${realizada}" role="alert" th:text="${realizada}"></div>
+            
             <div sec:authorize="hasRole('ROLE_VETERINARIO')" class="container mt-4">
 			
 			<div class="card-headert mt-5 text-center"> <h3>HISTORIAL DE CITAS DE MASCOTA </h3> </div>
@@ -132,7 +134,7 @@
 				<form action="#" th:action="@{/citas/consulta}" th:object="${cita}" method="POST">
 					<select name="nombre" class="form-control col-md-3">
 						<option value="">Seleccione una mascota</option>
-						<option th:each="cita: ${citas}" th:value="${cita.mascota.nombre}" th:text="${cita.mascota.nombre}"></option>
+						<option th:each="cita: ${citas}" th:value="${cita.mascotas.nombre}" th:text="${cita.mascotas.nombre}"></option>
 					</select>
 					
 					<button type="submit" class="btn btn-primary" id="send"><i class="fa fa-search"></i> Buscar</button>
@@ -157,17 +159,19 @@
 					
 					<tbody class="table table-light" th:each="cita: ${fechas}">
 						<tr>
-							<td class="border" th:text="${cita.mascota.nombre}"></td>
-							<td class="border" th:text="${cita.mascota.tipo}"></td>
-							<td class="border" th:text="${cita.mascota.raza}"></td>
-							<td class="border"><img th:src="${#strings.isEmpty(cita.mascota.foto)} ? '/mascotasImg/image.png': ${cita.mascota.foto}"
-								 th:alt="${cita.mascota.foto}" class="center-block" id="imagenMascota"/></td>
+							<td class="border" th:text="${cita.mascotas.nombre}"></td>
+							<td class="border" th:text="${cita.mascotas.tipo}"></td>
+							<td class="border" th:text="${cita.mascotas.raza}"></td>
+							<td class="border"><img th:src="${#strings.isEmpty(cita.mascotas.foto)} ? '/mascotasImg/image.png': ${cita.mascotas.foto}"
+								 th:alt="${cita.mascotas.foto}" class="center-block" id="imagenMascota"/></td>
 							<td class="border" th:text="${#dates.format(cita.fecha,'dd/MM/yyyy')}"></td>
 							<td class="border" th:text="${cita.motivo}"></td>
 							<td class="border" th:text="${cita.informe}"></td>
 							<td class="border">
 								<form class="form-signin" action="#" th:action="@{/realizada/}+${cita.id}" th:object="${cita}" method="post">
 									<input type="hidden" name="id" th:value="${cita.id}"/>
+									<input type="hidden" name="nombre" th:value="${cita.mascotas.nombre}"/>
+									<input type="hidden" name="fecha" th:value="${cita.fecha}"/>
 									<input type="hidden" name="realizada" th:value="${cita.realizada}"/>
 									
 									<button class="btn btn-info text-white" th:field="*{realizada}" type="submit" th:if="${cita.realizada}">

@@ -145,12 +145,12 @@
 					
 					<tbody class="table table-light" th:each="cita: ${citas}">
 						<tr>
-							<td class="border" th:text="${cita.mascota.nombre}"></td>
-							<td class="border" th:text="${cita.mascota.tipo}"></td>
-							<td class="border" th:text="${cita.mascota.raza}"></td>
-								<td class="border"><img th:src="${#strings.isEmpty(cita.mascota.foto)} ? '/mascotasImg/image.png': ${cita.mascota.foto}"
-								 th:alt="${cita.mascota.foto}" class="center-block" id="imagenMascota"/></td>
-							<td class="border" th:text="${cita.usuario.username}"></td>
+							<td class="border" th:text="${cita.mascotas.nombre}"></td>
+							<td class="border" th:text="${cita.mascotas.tipo}"></td>
+							<td class="border" th:text="${cita.mascotas.raza}"></td>
+								<td class="border"><img th:src="${#strings.isEmpty(cita.mascotas.foto)} ? '/mascotasImg/image.png': ${cita.mascotas.foto}"
+								 th:alt="${cita.mascotas.foto}" class="center-block" id="imagenMascota"/></td>
+							<td class="border" th:text="${cita.usuarios.username}"></td>
 							<td class="border" th:text="${#dates.format(cita.fecha,'dd/MM/yyyy')}"></td>
 							<td class="border" th:text="${cita.motivo}"></td>
 							<td class="border" th:text="${cita.informe}"></td>

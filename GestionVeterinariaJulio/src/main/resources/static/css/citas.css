@@ -11,3 +11,13 @@
 #historialCitas { margin-top: 2.36%; }
 
 #send { margin-left: 3.26%; }
+
+
+/* Para el historial de las mascotas */
+#checkCita {
+	-ms-transform: scale(1.65);
+  	-moz-transform: scale(1.65);
+  	-webkit-transform: scale(1.65);
+  	-o-transform: scale(1.65);
+  	padding: 18px;
+}

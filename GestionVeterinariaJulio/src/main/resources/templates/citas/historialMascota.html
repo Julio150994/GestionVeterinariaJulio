@@ -19,6 +19,9 @@
     	<link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
     	<link type="text/css" th:href="@{/css/citas.css}" rel="stylesheet"/>
     	<link type="text/css" th:href="@{/css/mascotas.css}" rel="stylesheet"/>
+    	
+    	<!-- Custom JS para el checkbox -->
+    	<script type="text/javascript" th:src="@{/js/citas.js}"></script>
 	</head>
 
 	<body class="nav-md">
@@ -153,7 +156,7 @@
 							<th>Fecha de cita</th>
 							<th>Motivo de cita</th>
 							<th>Informe de cita</th>
-							<th>Realizada s/n</th>
+							<th>Realizar cita</th>
 						</tr>
 					</thead>
 					
@@ -174,13 +177,8 @@
 									<input type="hidden" name="fecha" th:value="${cita.fecha}"/>
 									<input type="hidden" name="realizada" th:value="${cita.realizada}"/>
 									
-									<button class="btn btn-info text-white" th:field="*{realizada}" type="submit" th:if="${cita.realizada}">
-										<i class="fa fa-check-square"></i>
-									</button>
-										
-									<button class="btn btn-info text-white" th:field="*{realizada}" type="submit" th:unless="${cita.realizada}">
-										<i class="fa fa-square"></i>
-									</button>
+									<input class="form-check-input" type="checkbox" th:value="${realizada}" th:onclick="realizarCita([[${cita.id}]])" name="realizada" id="checkCita">
+  									<label class="form-check-label" for="checkCita"></label>
 								</form>
 							</td>
 						</tr>
