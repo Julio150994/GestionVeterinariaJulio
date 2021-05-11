@@ -49,7 +49,7 @@ public class SecurityVeterinaria extends WebSecurityConfigurerAdapter {
 			.antMatchers("/mascotas/formMascota","/mascotas/formMascota/{id}","/mascotas/saveMascota",
 					"/mascotas/eliminarMascota/{id}","/mascotas/mostrarMascota").access("hasRole('ROLE_CLIENTE')")
 			.antMatchers("/citas/formCita","/citas/saveCita","/citas/listadoCitas","/citas/citasMascota","/citas/citasPendientes").access("hasRole('ROLE_CLIENTE')")
-			.antMatchers("/citas/historialMascota/{id}","/citas/consulta","/citas/citasDiarias/{id}","/realizada/{id}").access("hasRole('ROLE_VETERINARIO')")
+			.antMatchers("/citas/historialMascota/{id}","/citas/consulta","/citas/diarias/{id}","/realizada/{id}").access("hasRole('ROLE_VETERINARIO')")
 			.anyRequest().authenticated()
 			.and()
 		.formLogin()

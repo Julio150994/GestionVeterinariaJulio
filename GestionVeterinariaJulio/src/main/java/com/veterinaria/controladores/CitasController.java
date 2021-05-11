@@ -43,9 +43,10 @@ import com.veterinaria.servicios.Impl.VeterinariosImpl;
 public class CitasController {
 	private static final Log LOG_VETERINARIA = LogFactory.getLog(CitasController.class);
 	private static final String formCita = "/citas/formCita", historialCitas = "/citas/listadoCitas",
-			fechasCitas = "/citas/citasPendientes", historialMascota = "/citas/historialMascota", citasDiaActual = "/citas/citasDiarias";
+			fechasCitas = "/citas/citasPendientes", historialMascota = "/citas/historialMascota", citasDiaActual = "/citas/diarias";
 	private String txtCita;
-	private Calendar fecha = new GregorianCalendar();// para poder obtener el día actual
+	
+	private Calendar fecha = new GregorianCalendar();
 	private int dia = fecha.get(Calendar.DAY_OF_MONTH);
     private int mes = fecha.get(Calendar.MONTH);
     private int anio = fecha.get(Calendar.YEAR);
@@ -215,7 +216,6 @@ public class CitasController {
 			Usuarios usuario = usuariosRepository.findByUsername(auth.getName());
 			mavCitas.addObject("usuario",usuario.getId());
 			
-			
 			mavCitas.addObject("citas",citasRepository.findMascotasByVeterinario(usuario.getId()));
 			mavCitas.addObject("citasTxt","No existen citas para "+nombreMascota);
 		}
@@ -241,7 +241,7 @@ public class CitasController {
 	}
 	
 	@PreAuthorize("hasRole('ROLE_VETERINARIO')")
-	@GetMapping("/citas/citasDiarias/{id}")
+	@GetMapping("/citas/diarias/{id}")
 	public ModelAndView verCitasDiariasVeterinario(@ModelAttribute("cita") ModeloCitas cita) {
 		LOG_VETERINARIA.info("Vista de las citas del día actual");
 		
@@ -253,10 +253,14 @@ public class CitasController {
 			mavCitas.addObject("usuario",usuario.getId());
 		    
 		    String fechaActual = anio+"-"+(mes+1)+"-"+dia;
+		    
 		    Date diaActual = Date.valueOf(fechaActual);// convertimos a fecha para la base de datos
 		    
-			mavCitas.addObject("citasTxt","No existen citas para el día "+fechaActual);
-		
+			mavCitas.addObject("citasTxt","No se han encontrado citas");
+			
+			String fechaTxt = dia+"/"+(mes+1)+"/"+anio;
+			mavCitas.addObject("fechaActual",fechaTxt);
+			
 			mavCitas.addObject("citas",citasRepository.listarCitasDiaActual(diaActual,usuario.getId()));
 		}
 		
@@ -278,10 +282,11 @@ public class CitasController {
 		    String fechaActual = anio+"-"+(mes+1)+"-"+dia;
 		    Date diaActual = Date.valueOf(fechaActual);// convertimos a fecha para la base de datos
 			
+		    cita.addAttribute("fechaActual",diaActual);
 			cita.addAttribute("citas",citasRepository.listarCitasDiaActual(diaActual,usuario.getId()));
 		}
 		
-		txtCita = "Cita de mascota "+nombreMascota+", correspondiente a la fecha "+fecha+" realizada correctamente";
+		txtCita = "Cita de mascota "+nombreMascota+" realizada correctamente";
 		LOG_VETERINARIA.info(txtCita);
 		cita.addAttribute("realizada",txtCita);
 		
