@@ -29,8 +29,6 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.veterinaria.entidades.Mascotas;
 import com.veterinaria.entidades.Usuarios;
-import com.veterinaria.modelos.ModeloMascotas;
-import com.veterinaria.modelos.ModeloUsuarios;
 import com.veterinaria.repositorios.MascotasRepository;
 import com.veterinaria.repositorios.UsuariosRepository;
 import com.veterinaria.servicios.Impl.ClientesImpl;
@@ -73,7 +71,7 @@ public class MascotasController {
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/mascotas/listadoMascotas")
-	public ModelAndView listarMascotas(ModeloMascotas modeloMascota, @RequestParam Map<String,Object> paginas,
+	public ModelAndView listarMascotas(Mascotas modeloMascota, @RequestParam Map<String,Object> paginas,
 			@ModelAttribute("usuario") Usuarios modeloUsuario) {
 		LOG_VETERINARIA.info("Vista de listado de mascotas");
 		UserDetails usuarioClienteActual = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -103,7 +101,7 @@ public class MascotasController {
 				mavMascotas.addObject("paginas",listadoMascotas);
 			}			
 			
-			mavMascotas.addObject("mascotas",mascotasRepository.findByIdUsuarios(usuario));
+			mavMascotas.addObject("mascotas",mascotasRepository.findByIdUsuario(usuario));
 			
 			
 			mavMascotas.addObject("anterior",numPaginas);
@@ -118,7 +116,7 @@ public class MascotasController {
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping({"/mascotas/formMascota","/mascotas/formMascota/{id}"})
 	public String formularioMascota(@PathVariable(name="id",required=false) Integer id, Model modeloMascota,
-			@ModelAttribute("mascota") ModeloMascotas mascota) {
+			@ModelAttribute("mascota") Mascotas mascota) {
 		
 		LOG_VETERINARIA.info("Formulario de mascota");
 		
@@ -130,10 +128,10 @@ public class MascotasController {
 			
 			modeloMascota.addAttribute("clienteActual",cliente.getUsername().toUpperCase());
 			
-			modeloMascota.addAttribute("usuarios",cliente.getId());
+			modeloMascota.addAttribute("usuario",cliente.getId());
 			
 			if(id == null)
-				modeloMascota.addAttribute("mascota",new ModeloMascotas());
+				modeloMascota.addAttribute("mascota",new Mascotas());
 			else
 				modeloMascota.addAttribute("mascota",mascotas.buscarIdMascota(id));
 		}
@@ -143,11 +141,11 @@ public class MascotasController {
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@PostMapping("/mascotas/saveMascota")
-	public String saveMascota(@ModelAttribute("mascota") ModeloMascotas modeloMascota, BindingResult validaMascota,
+	public String saveMascota(@ModelAttribute("mascota") Mascotas modeloMascota, BindingResult validaMascota,
 			RedirectAttributes mensajeFlash, Model cliente, @RequestParam(name="foto",required=false) MultipartFile foto,
-			@RequestParam(name="id",required=false) int id, @ModelAttribute("usuarios") ModeloUsuarios modeloCliente) {
+			@RequestParam(name="id",required=false) Integer id) {
 		
-		if(modeloMascota.getId() == 0) {
+		if(modeloMascota.getId() == null) {
 			modeloMascota = mascotas.aniadirMascota(modeloMascota);
 			
 			if(!foto.isEmpty()) {
@@ -175,7 +173,7 @@ public class MascotasController {
 						build().toUriString());
 			}
 			else {
-				ModeloMascotas mascotaAnterior = mascotas.buscarIdMascota(modeloMascota.getId());
+				Mascotas mascotaAnterior = mascotas.buscarIdMascota(modeloMascota.getId());
 				modeloMascota.setFoto(mascotaAnterior.getFoto());
 			}
 			
@@ -192,7 +190,7 @@ public class MascotasController {
 	/* Eliminamos mascota con el uso de formulario modal */
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/mascotas/eliminarMascota/{id}")
-	public String eliminarMascota(@ModelAttribute("mascota") ModeloMascotas modeloMascota, @PathVariable("id") int id,
+	public String eliminarMascota(@ModelAttribute("mascota") Mascotas modeloMascota, @PathVariable("id") Integer id,
 			@RequestParam(name="nombre",required=false) String nombreMascota, RedirectAttributes mensajeFlash) {
 		
 		mascotas.eliminarMascota(id);
@@ -203,7 +201,7 @@ public class MascotasController {
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/mascotas/mostrarMascota/{id}")
-	public String mostrarDatosMascota(@PathVariable int id, Model modeloMascota) {
+	public String mostrarDatosMascota(@PathVariable Integer id, Model modeloMascota) {
 		LOG_VETERINARIA.info("Vista de mostrar datos de mascota");		
 		
 		modeloMascota.addAttribute("mascota",mascotas.buscarIdMascota(id));

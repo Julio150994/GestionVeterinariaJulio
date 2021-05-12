@@ -3,11 +3,11 @@ package com.veterinaria.modelos;
 import java.sql.Date;
 
 public class ModeloMascotas {
-	private int id;
+	private Integer id;
 	private String nombre,tipo,raza;
 	private Date fechaNacimiento;
 	private String foto;
-	private ModeloUsuarios usuarios;
+	private ModeloUsuarios usuario;
 	
 	
 	public ModeloMascotas() {
@@ -15,7 +15,7 @@ public class ModeloMascotas {
 	}
 
 	public ModeloMascotas(int id, String nombre, String tipo, String raza, Date fechaNacimiento, String foto,
-			ModeloUsuarios usuarios) {
+			ModeloUsuarios usuario) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -23,15 +23,15 @@ public class ModeloMascotas {
 		this.raza = raza;
 		this.fechaNacimiento = fechaNacimiento;
 		this.foto = foto;
-		this.usuarios = usuarios;
+		this.usuario = usuario;
 	}	
 	
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -75,11 +75,11 @@ public class ModeloMascotas {
 		this.foto = foto;
 	}
 
-	public ModeloUsuarios getUsuarios() {
-		return usuarios;
+	public ModeloUsuarios getUsuario() {
+		return usuario;
 	}
 
-	public void setUsuarios(ModeloUsuarios usuarios) {
-		this.usuarios = usuarios;
+	public void setUsuario(ModeloUsuarios usuario) {
+		this.usuario = usuario;
 	}
 }

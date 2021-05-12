@@ -1,8 +1,10 @@
 package com.veterinaria.entidades;
 
 import java.sql.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,7 +14,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import org.springframework.format.annotation.DateTimeFormat;
 
 
 @Entity
@@ -21,18 +22,16 @@ public class Citas {
 		
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
+	private Integer id;
 	
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="idMascota",nullable=false)
-	private Mascotas mascotas;
+	private Mascotas mascota;
 	
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="idVeterinario",nullable=false)
-	private Usuarios usuarios;
+	private Usuarios usuario;
 	
-	@NotNull(message="Debe introducir una fecha para su cita")
-	@DateTimeFormat(pattern="yyyy-MM-dd")
 	@Column(name="fecha",nullable=false)
 	private Date fecha;
 	
@@ -54,17 +53,16 @@ public class Citas {
 	
 	public Citas() {
 		
-	}
+	}	
 
-	public Citas(int id, Mascotas mascotas, Usuarios usuarios,
-			@NotNull(message = "Debe introducir una fecha para su cita") Date fecha,
+	public Citas(Integer id, Mascotas mascota, Usuarios usuario, Date fecha,
 			@NotNull(message = "Debe escribir un motivo para su cita") @Size(min = 1, max = 100, message = "Su motivo no debe tener más de 100 caracteres") @Pattern(regexp = "^[A-Z]{1}[a-z].+$", message = "El motivo de la cita debe empezar por mayúsculas") String motivo,
 			@NotNull(message = "Debe redactar un informe para su cita") @Size(min = 1, max = 100, message = "Su informe no debe tener más de 100 caracteres") @Pattern(regexp = "^[A-Z]{1}[a-z].+$", message = "El informe de la cita debe empezar por mayúsculas") String informe,
 			boolean realizada) {
 		super();
 		this.id = id;
-		this.mascotas = mascotas;
-		this.usuarios = usuarios;
+		this.mascota = mascota;
+		this.usuario = usuario;
 		this.fecha = fecha;
 		this.motivo = motivo;
 		this.informe = informe;
@@ -72,28 +70,28 @@ public class Citas {
 	}
 
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
-	}	
-
-	public Mascotas getMascotas() {
-		return mascotas;
 	}
 
-	public void setMascotas(Mascotas mascotas) {
-		this.mascotas = mascotas;
+	public Mascotas getMascota() {
+		return mascota;
 	}
 
-	public Usuarios getUsuarios() {
-		return usuarios;
+	public void setMascota(Mascotas mascota) {
+		this.mascota = mascota;
 	}
 
-	public void setUsuarios(Usuarios usuarios) {
-		this.usuarios = usuarios;
+	public Usuarios getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuarios usuario) {
+		this.usuario = usuario;
 	}
 
 	public Date getFecha() {

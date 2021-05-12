@@ -26,7 +26,7 @@
 				<div class="card-body">
 					<form class="form-signin" action="#" th:action="@{/clientes/saveCliente}" th:object="${usuario}" method="post">			
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-					<div class="card-header text-center"> <h3 th:text="${usuario.id != 0} ? 'FORMULARIO EDITAR CLIENTE': 'FORMULARIO AÑADIR CLIENTE'"> <span th:text="${nombre}"></span></h3> </div>
+					<div class="card-header text-center"> <h3 th:text="${usuario.id == 0} ? 'FORMULARIO AÑADIR CLIENTE': 'FORMULARIO EDITAR CLIENTE'"> <span th:text="${nombre}"></span></h3> </div>
 						<input type="hidden" name="id" th:field="*{id}"/>
 						
 						<div class="form-label-group">

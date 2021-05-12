@@ -149,28 +149,25 @@
 							<th>Foto de mascota</th>
 							<th>Motivo de cita</th>
 							<th>Informe de cita</th>
-							<th>Cita</th>
+							<th>Estado</th>
 						</tr>
 					</thead>
 					
 					<tbody class="table table-light" th:each="cita: ${citas}">
 						<tr>
-							<td class="border" th:text="${cita.mascotas.nombre}"></td>
-							<td class="border" th:text="${cita.mascotas.tipo}"></td>
-							<td class="border" th:text="${cita.mascotas.raza}"></td>
-							<td class="border"><img th:src="${#strings.isEmpty(cita.mascotas.foto)} ? '/mascotasImg/image.png': ${cita.mascotas.foto}"
-								 th:alt="${cita.mascotas.foto}" class="center-block" id="imagenMascota"/></td>
+							<td class="border" th:text="${cita.mascota.nombre}"></td>
+							<td class="border" th:text="${cita.mascota.tipo}"></td>
+							<td class="border" th:text="${cita.mascota.raza}"></td>
+							<td class="border"><img th:src="${#strings.isEmpty(cita.mascota.foto)} ? '/mascotasImg/image.png': ${cita.mascota.foto}"
+								 th:alt="${cita.mascota.foto}" class="center-block" id="imagenMascota"/></td>
 							<td class="border" th:text="${cita.motivo}"></td>
 							<td class="border" th:text="${cita.informe}"></td>
 							<td class="border">
 								<form class="form-signin" action="#" th:action="@{/realizada/}+${cita.id}" th:object="${cita}" method="post">
 									<input type="hidden" name="id" th:value="${cita.id}"/>
-									<input type="hidden" name="nombre" th:value="${cita.mascotas.nombre}"/>
+									<input type="hidden" name="nombre" th:value="${cita.mascota.nombre}"/>
 									<input type="hidden" name="fecha" th:value="${cita.fecha}"/>
 									<input type="hidden" name="realizada" th:value="${cita.realizada}"/>
-									
-									<!--<input class="form-check-input" type="checkbox" th:value="${realizada}" th:onclick="realizarCita([[${cita.id}]])" name="realizada" id="checkCita">
-  									<label class="form-check-label" for="checkCita"></label>-->
   									
   									<button class="btn btn-info text-white" th:field="*{realizada}" type="submit" th:if="${cita.realizada}">
 										<i class="fa fa-check-square"></i> Realizada

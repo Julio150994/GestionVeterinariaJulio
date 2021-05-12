@@ -42,7 +42,7 @@ public class VeterinariosImpl implements VeterinariosService {
 	}
 
 	@Override
-	public void eliminarVeterinario(int id) {
+	public void eliminarVeterinario(Integer id) {
 		veterinarios.deleteById(id);
 	}
 

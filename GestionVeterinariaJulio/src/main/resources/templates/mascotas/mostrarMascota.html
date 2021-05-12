@@ -131,6 +131,7 @@
            				<li class="list-group-item" id="datoUsuario"><span class="text-left"><strong>Fecha de nacimiento:</strong></span> <span th:text="${#dates.format(mascota.fechaNacimiento,'dd/MM/yyyy')}" class="text-right"></span></li>
            				<li class="list-group-item" id="datoUsuario"><span class="text-left"><strong>Foto:</strong></span> <img th:src="${#strings.isEmpty(mascota.foto)} ? '/mascotasImg/image.png': ${mascota.foto}"
 								 th:alt="${mascota.foto}" class="center-block" id="imagenMascota"/></li>
+						<li class="list-group-item bg-success text-white" id="datoUsuario"><span class="text-left"><strong>Cliente:</strong></span> <span th:text="${mascota.usuario.username}" class="text-right"></span></li>
            			</ul>
            		</div>
 			</div>

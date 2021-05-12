@@ -42,7 +42,7 @@ public class ClientesImpl implements ClientesService {
 	}
 
 	@Override
-	public void eliminarCliente(int id) {
+	public void eliminarCliente(Integer id) {
 		clientes.deleteById(id);
 	}
 

@@ -84,7 +84,7 @@ public class ClientesController {
 	/*-------------Métodos visualizados para un solo cliente-------------------------*/
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@RequestMapping(value="/perfil_cliente/{id}",method=RequestMethod.GET)
-	public ModelAndView verPerfilCliente(@ModelAttribute("usuario") ModeloUsuarios cliente, @PathVariable("id") int id) {		
+	public ModelAndView verPerfilCliente(@ModelAttribute("usuario") ModeloUsuarios cliente, @PathVariable("id") Integer id) {		
 		UserDetails usuario = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String username = usuario.getUsername();
 		

@@ -11,8 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.veterinaria.entidades.Citas;
 import com.veterinaria.modelos.ModeloCitas;
-import com.veterinaria.modelos.ModeloMascotas;
-import com.veterinaria.modelos.ModeloUsuarios;
 import com.veterinaria.repositorios.CitasRepository;
 import com.veterinaria.repositorios.MascotasRepository;
 import com.veterinaria.repositorios.VeterinariosRepository;
@@ -48,7 +46,7 @@ public class CitasImpl implements CitasService {
 	}
 	
 	@Override
-	public ModeloCitas realizarCita(ModeloCitas cita, int id) {
+	public ModeloCitas realizarCita(ModeloCitas cita, Integer id) {
 		cita = convertirCitas(citas.findById(id).orElse(null));
 		
 		if(cita.isRealizada() == false)
@@ -58,14 +56,9 @@ public class CitasImpl implements CitasService {
 	}
 	
 	@Override
-	public ModeloCitas pedirCita(ModeloCitas modeloCita, ModeloMascotas modeloMascota, ModeloUsuarios modeloVeterinario) {
+	public Citas pedirCita(Citas modeloCita) {
 		modeloCita.setRealizada(false);// establecemos la cita para saber que inicialmente no se ha realizado
-		modeloCita.setMascotas(modeloMascota);
-		modeloMascota.setUsuarios(modeloVeterinario);
-		
-		String veterinario = modeloMascota.getUsuarios().getApellidos();
-		modeloVeterinario.setApellidos(veterinario);
-		return dozerCitas.map(citas.save(convertirCitas(modeloCita)), ModeloCitas.class);
+		return citas.save(modeloCita);
 	}
 	
 

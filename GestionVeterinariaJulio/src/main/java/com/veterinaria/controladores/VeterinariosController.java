@@ -131,7 +131,7 @@ public class VeterinariosController {
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/eliminarVeterinario/{id}")
-	public String eliminarVeterinario(@ModelAttribute("usuario") ModeloUsuarios veterinario, @PathVariable("id") int id,
+	public String eliminarVeterinario(@ModelAttribute("usuario") ModeloUsuarios veterinario, @PathVariable("id") Integer id,
 			@RequestParam(name="username",required=false) String username, RedirectAttributes mensajeFlash) {
 		
 		veterinarios.eliminarVeterinario(id);
@@ -144,7 +144,7 @@ public class VeterinariosController {
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/mostrarVeterinario/{id}")
-	public String mostrarDatosVeterinario(@PathVariable int id, Model modeloVeterinario) {
+	public String mostrarDatosVeterinario(@PathVariable Integer id, Model modeloVeterinario) {
 		LOG_VETERINARIA.info("Vista de mostrar datos de cliente");
 		modeloVeterinario.addAttribute("usuario",usuarios.buscarId(id));
 		return datosVeterinario;

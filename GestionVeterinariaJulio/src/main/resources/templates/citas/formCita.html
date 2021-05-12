@@ -32,25 +32,24 @@
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 						<h3 class="text-center">CITA PARA CLIENTE <span th:text="${clienteActual}"></span></h3>
 						<input type="hidden" name="id" th:field="*{id}"/>
-						<input type="hidden" name="idMascota" th:value="${cita.mascotas}"/>
 						
 						<div class="form-label-group">
-							<select class="form-control" name="mascotas" id="datoCita">
+							<select class="form-control" name="mascota" id="datoCita">
 								<option value="">Seleccione una mascota</option>
-								<option th:each="mascota: ${mascotas}" th:value="${mascota.foto}"
+								<option th:each="mascota: ${mascotas}" th:value="${mascota.id}"
 									th:text="${mascota.nombre}">
 								</option>
 							</select>
-							<div class="text-danger" th:if="${#fields.hasErrors('mascotas')}" th:errors="*{mascotas}">Error producido en mascota</div>
+							<div class="text-danger" th:if="${#fields.hasErrors('mascota')}" th:errors="*{mascota}">Error producido en mascota</div>
 						</div>
 						<div class="form-label-group">
-							<select class="form-control" name="usuarios" id="datoCita">
+							<select class="form-control" name="usuario" id="datoCita">
 								<option value="">Seleccione un veterinario</option>
 								<option th:each="veterinario: ${usuarios}" th:if="${veterinario.rol == 'ROLE_VETERINARIO'}"
-									th:value="${veterinario.apellidos}" th:text="${veterinario.username}">
+									th:value="${veterinario.id}" th:text="${veterinario.username}">
 								</option>
 							</select>
-							<div class="text-danger" th:if="${#fields.hasErrors('usuarios')}" th:errors="*{usuarios}">Error producido en veterinario</div>
+							<div class="text-danger" th:if="${#fields.hasErrors('usuario')}" th:errors="*{usuario}">Error producido en veterinario</div>
 						</div>
 						
 						<div class="form-label-group">

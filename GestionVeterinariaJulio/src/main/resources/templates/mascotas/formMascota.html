@@ -26,7 +26,7 @@
 				<div class="card-body">
 					<form class="form-signin" action="#" th:action="@{/mascotas/saveMascota}" th:object="${mascota}" method="post" id="formMascota" enctype="multipart/form-data">
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-					<div class="card-header text-center"> <h3 th:text="${mascota.id != 0} ? 'FORMULARIO EDITAR MASCOTA DE': 'FORMULARIO AÑADIR MASCOTA DE'"></h3> <h3 th:text="${clienteActual}"></h3></div>
+					<div class="card-header text-center"> <h3 th:text="${mascota.id == null} ? 'FORMULARIO AÑADIR MASCOTA DE': 'FORMULARIO EDITAR MASCOTA DE'"></h3> <h3 th:text="${clienteActual}"></h3></div>
 						<input type="hidden" name="id" th:field="*{id}"/>			
 						
 						<div class="form-label-group">
@@ -50,14 +50,15 @@
 							<div class="text-danger" th:if="${#fields.hasErrors('foto')}" th:errors="*{foto}">Error producido al subir la foto</div>
 						</div>
 						<div class="form-label-group">
-							<input type="hidden" class="form-control" name="usuarios" id="datoMascota" th:value="${usuarios}" th:field="*{usuarios}" readonly/>
+							<input type="hidden" class="form-control" name="usuario" id="datoMascota" th:value="${usuario}" readonly/>
+							<div class="text-danger" th:if="${#fields.hasErrors('usuario')}" th:errors="*{usuario}">Error producido en cliente</div>
 						</div>
 						
 						<div class="card-footer" id="panelMascota">
 							<a th:href="@{/mascotas/listadoMascotas}" class="btn btn-secondary"><i class="fa fa-arrow-circle-left"></i> Volver a listado de mascotas</a>
 						
-							<button type="submit" th:if="${mascota.id == 0}" class="btn btn-success"><i class="fa fa-plus-circle"></i> Añadir</button>
-							<button type="submit" th:if="${mascota.id != 0}" class="btn btn-primary"><i class="fa fa-edit"></i> Editar </button>
+							<button type="submit" th:if="${mascota.id == null}" class="btn btn-success"><i class="fa fa-plus-circle"></i> Añadir</button>
+							<button type="submit" th:if="${mascota.id != null}" class="btn btn-primary"><i class="fa fa-edit"></i> Editar </button>
 						</div>
 					</form>
 				</div>

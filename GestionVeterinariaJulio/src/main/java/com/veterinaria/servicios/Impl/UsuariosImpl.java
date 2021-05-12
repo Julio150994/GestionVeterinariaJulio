@@ -36,12 +36,12 @@ public class UsuariosImpl implements IUsuariosService {
 	}
 	
 	@Override
-	public ModeloUsuarios buscarId(int id) {
+	public ModeloUsuarios buscarId(Integer id) {
 		return convertirUsuarios(usuarios.findById(id).orElse(null));
 	}
 	
 	@Override
-	public ModeloUsuarios enabledCliente(int id, ModeloUsuarios usuario) {
+	public ModeloUsuarios enabledCliente(Integer id, ModeloUsuarios usuario) {
 		usuario = convertirUsuarios(usuarios.findById(id).orElse(null));
 		
 		if(usuario.isActivado() == false)

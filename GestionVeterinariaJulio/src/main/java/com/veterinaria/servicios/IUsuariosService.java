@@ -12,8 +12,8 @@ public interface IUsuariosService {
 	public abstract List<ModeloUsuarios> listarUsuarios();
 	public abstract Page<Usuarios> paginacionUsuarios(Pageable usuario);
 	
-	public abstract ModeloUsuarios buscarId(int id);
-	public abstract ModeloUsuarios enabledCliente(int id, ModeloUsuarios usuario);
+	public abstract ModeloUsuarios buscarId(Integer id);
+	public abstract ModeloUsuarios enabledCliente(Integer id, ModeloUsuarios usuario);
 	public abstract ModeloUsuarios editarPerfil(ModeloUsuarios usuario);
 	
 	

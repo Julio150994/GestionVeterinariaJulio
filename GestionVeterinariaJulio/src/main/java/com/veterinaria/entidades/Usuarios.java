@@ -21,7 +21,7 @@ public class Usuarios {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
+	private Integer id;
 	
 	@NotEmpty(message="Debe introducir un nombre simple o compuesto")
 	@Pattern(regexp="^\\D{1,30}$",message="El nombre simple o compuesto no puede contener números, también debe empezar en mayúscula y seguir todo en minúsculas")
@@ -56,10 +56,10 @@ public class Usuarios {
 	@Column(name="rol",nullable=false,length=20)
 	private String rol;
 	
-	@OneToMany(mappedBy="usuarios")
+	@OneToMany(mappedBy="usuario")
 	private List<Mascotas> mascotas = new ArrayList<Mascotas>();
 	
-	@OneToMany(mappedBy="usuarios")
+	@OneToMany(mappedBy="usuario")
 	private List<Citas> citas = new ArrayList<Citas>();
 	
 	
@@ -67,7 +67,7 @@ public class Usuarios {
 		
 	}	
 
-	public Usuarios(int id, @NotEmpty(message = "Debe introducir un nombre simple o compuesto") @Pattern(regexp = "^\\D{1,30}$", message = "El nombre simple o compuesto no puede contener números, también debe empezar en mayúscula y seguir todo en minúsculas") @Size(min = 1, max = 30, message = "El nombre debe tener entre 1 y 30 caracteres de longitud máxima") String nombre,
+	public Usuarios(Integer id, @NotEmpty(message = "Debe introducir un nombre simple o compuesto") @Pattern(regexp = "^\\D{1,30}$", message = "El nombre simple o compuesto no puede contener números, también debe empezar en mayúscula y seguir todo en minúsculas") @Size(min = 1, max = 30, message = "El nombre debe tener entre 1 y 30 caracteres de longitud máxima") String nombre,
 			@NotEmpty(message = "Debe introducir dos apellidos") @Pattern(regexp = "^\\D{1,50}$", message = "Debe ser dos apellidos que no pueden contener números, también debe empezar en mayúscula y seguir todo en minúsculas") @Size(min = 1, max = 50, message = "Entre los dos apellidos debe haber entre 1 y 50 caracteres de longitud máxima") String apellidos,
 			@NotEmpty(message = "Debe introducir un número de teléfono") @Pattern(regexp = "^\\d{9,10}$", message = "El teléfono no debe contener letras, espacios en blanco y debe tener entre 9 y 10 caracteres") @Min(value = 9, message = "No debe tener menos de 9 caracteres") String telefono,
 			@NotEmpty(message = "Debe introducir un nombre de usuario") @Pattern(regexp = "^[a-zA-Z]{1}[a-zA-Z0-9]{0,29}$", message = "El nombre de usuario no debe contener espacios en blanco y 30 caracteres de longitud máxima") String username,
@@ -87,12 +87,12 @@ public class Usuarios {
 	}
 
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

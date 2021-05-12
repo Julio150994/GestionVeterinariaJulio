@@ -3,7 +3,9 @@ package com.veterinaria.controladores;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+
 import javax.validation.Valid;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,11 +82,11 @@ public class CitasController {
 	@Qualifier("mascotasRepository")
 	private MascotasRepository mascotasRepository;
 	
+	/*------------------------------Métodos para los clientes (ROLE_CLIENTE)-------------------------------------------*/
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/citas/formCita")
-	public ModelAndView formularioCita(@ModelAttribute("usuario") ModeloUsuarios modeloVeterinario,
-			@ModelAttribute("mascota") ModeloMascotas modeloMascota) {
+	public ModelAndView formularioCita(@ModelAttribute("cita") ModeloCitas modeloCita) {
 		LOG_VETERINARIA.info("Formulario para pedir la cita");
 		UserDetails usuario = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
@@ -103,7 +105,7 @@ public class CitasController {
 			mavCita.addObject("usuarios",veterinarios.listarUsuarios());
 			
 			LOG_VETERINARIA.info("Mascotas listadas");
-			mavCita.addObject("mascotas",mascotasRepository.findByIdUsuarios(clienteActual));
+			mavCita.addObject("mascotas",mascotasRepository.findByIdUsuario(clienteActual));
 		}
 		
 		return mavCita;
@@ -111,8 +113,7 @@ public class CitasController {
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@PostMapping("/citas/saveCita")
-	public String pedirCita(@Valid @ModelAttribute("cita") ModeloCitas cita, BindingResult validarCita, RedirectAttributes mensajeFlash, Model modeloCita,
-			@ModelAttribute("mascotas") ModeloMascotas mascota, @ModelAttribute("usuarios") ModeloUsuarios veterinario) {
+	public String pedirCita(@Valid @ModelAttribute("cita") Citas cita, BindingResult validarCita, RedirectAttributes mensajeFlash, Model modeloCita) {
 		
 		UserDetails usuario = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
@@ -120,7 +121,7 @@ public class CitasController {
 		LOG_VETERINARIA.info("Nº de citas con la fecha introducida: "+countCitas);
 		
 		if(countCitas < 3) {
-			citas.pedirCita(cita,mascota,veterinario);
+			citas.pedirCita(cita);
 			
 			txtCita = usuario.getUsername()+", has pedido tu cita correctamente";
 			LOG_VETERINARIA.info(txtCita);
@@ -152,7 +153,7 @@ public class CitasController {
 			mavCitas.addObject("clienteActual",usuarioClienteActual.getUsername().toUpperCase());
 			mavCitas.addObject("citasTxt",usuario.getUsername()+" no tiene mascotas registradas en la base de datos");
 			
-			mavCitas.addObject("mascotas",mascotasRepository.findByIdUsuarios(usuario));
+			mavCitas.addObject("mascotas",mascotasRepository.findByIdUsuario(usuario));
 		}
 		
 		return mavCitas;
@@ -170,7 +171,7 @@ public class CitasController {
 			Usuarios usuario = usuariosRepository.findByUsername(auth.getName());
 			cita.addAttribute("usuario",usuario.getId());
 			
-			cita.addAttribute("mascotas",mascotasRepository.findByIdUsuarios(usuario));
+			cita.addAttribute("mascotas",mascotasRepository.findByIdUsuario(usuario));
 			
 			cita.addAttribute("clienteActual",usuarioClienteActual.getUsername().toUpperCase());
 			cita.addAttribute("citas",citasRepository.fetchByCitasWithNombre(nombre));
@@ -204,7 +205,7 @@ public class CitasController {
 		return mavCitas;
 	}
 	
-	/*----------------------------Métodos para ROLE_VETERINARIO---------------------------------------*/
+	/*----------------------------Métodos para los veterinarios (ROLE_VETERINARIO)---------------------------------------*/
 	
 	@PreAuthorize("hasRole('ROLE_VETERINARIO')")
 	@GetMapping("/citas/historialMascota/{id}")
@@ -272,7 +273,7 @@ public class CitasController {
 	
 	@PreAuthorize("hasRole('ROLE_VETERINARIO')")
 	@PostMapping("/realizada/{id}")
-	public String realizarCita(@ModelAttribute("cita") ModeloCitas modeloCita, Model cita, ModeloMascotas modeloMascota, @PathVariable("id") int id,
+	public String realizarCita(@ModelAttribute("cita") ModeloCitas modeloCita, Model cita, ModeloMascotas modeloMascota, @PathVariable("id") Integer id,
 			@RequestParam(name="realizada",required=false) boolean realizada, BindingResult clienteValido, RedirectAttributes mensajeFlash, @RequestParam(name="fecha",required=false) Date fecha,
 			@RequestParam(name="nombre",required=false) String nombreMascota) {
 		LOG_VETERINARIA.info("Historial de mascota seleccionada");

@@ -4,9 +4,9 @@ import java.sql.Date;
 
 
 public class ModeloCitas {
-	private int id;
-	private ModeloMascotas mascotas;
-	private ModeloUsuarios usuarios;
+	private Integer id;
+	private ModeloMascotas mascota;
+	private ModeloUsuarios usuario;
 	private Date fecha;
 	private String motivo,informe;
 	private boolean realizada;
@@ -16,12 +16,12 @@ public class ModeloCitas {
 		
 	}
 
-	public ModeloCitas(int id, ModeloMascotas mascotas, ModeloUsuarios usuarios, Date fecha, String motivo,
+	public ModeloCitas(Integer id, ModeloMascotas mascota, ModeloUsuarios usuario, Date fecha, String motivo,
 			String informe, boolean realizada) {
 		super();
 		this.id = id;
-		this.mascotas = mascotas;
-		this.usuarios = usuarios;
+		this.mascota = mascota;
+		this.usuario = usuario;
 		this.fecha = fecha;
 		this.motivo = motivo;
 		this.informe = informe;
@@ -29,28 +29,28 @@ public class ModeloCitas {
 	}
 
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}	
 
-	public ModeloMascotas getMascotas() {
-		return mascotas;
+	public ModeloMascotas getMascota() {
+		return mascota;
 	}
 
-	public void setMascotas(ModeloMascotas mascotas) {
-		this.mascotas = mascotas;
+	public void setMascota(ModeloMascotas mascota) {
+		this.mascota = mascota;
 	}
 
-	public ModeloUsuarios getUsuarios() {
-		return usuarios;
+	public ModeloUsuarios getUsuario() {
+		return usuario;
 	}
 
-	public void setUsuarios(ModeloUsuarios usuarios) {
-		this.usuarios = usuarios;
+	public void setUsuario(ModeloUsuarios usuario) {
+		this.usuario = usuario;
 	}
 
 	public Date getFecha() {

@@ -1,8 +1,10 @@
 package com.veterinaria.entidades;
 
 import java.sql.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,7 +13,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import org.springframework.format.annotation.DateTimeFormat;
 
 
 @Entity
@@ -20,7 +21,7 @@ public class Mascotas {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;	
+	private Integer id;
 	
 	@NotNull(message="Debe introducir un nombre para la mascota")
 	@Size(min=1,max=30,message="El nombre de la mascota no debe tener más de 30 caracteres")
@@ -37,28 +38,25 @@ public class Mascotas {
 	@Column(name="raza",nullable=false,length=30)
 	private String raza;
 	
-	@NotNull(message="Debe especificar una fecha de nacimiento para la mascota")
-	@DateTimeFormat(pattern="yyyy-MM-dd")
 	@Column(name="fechaNacimiento",nullable=false)
 	private Date fechaNacimiento;
 	
-	@Column(name="foto",length=100, unique=true)
+	@Column(name="foto",length=100,unique=true)
 	private String foto;
 	
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="idCliente",nullable=false)
-	private Usuarios usuarios;
+	private Usuarios usuario;
+	
 	
 	public Mascotas() {
 		
 	}
-	
-	
-	public Mascotas(int id, @NotNull(message = "Debe introducir un nombre para la mascota") @Size(min = 1, max = 30, message = "El nombre de la mascota no debe tener más de 30 caracteres") String nombre,
+
+	public Mascotas(Integer id, @NotNull(message = "Debe introducir un nombre para la mascota") @Size(min = 1, max = 30, message = "El nombre de la mascota no debe tener más de 30 caracteres") String nombre,
 			@NotNull(message = "Debe introducir un tipo para la mascota") @Size(min = 1, max = 30, message = "El tipo de mascota no debe tener más de 30 caracteres") String tipo,
 			@NotNull(message = "Debe introducir una raza para la mascota") @Size(min = 1, max = 30, message = "La raza no debe tener más de 30 caracteres") String raza,
-			@NotNull(message = "Debe especificar una fecha de nacimiento para la mascota") Date fechaNacimiento,
-			String foto, Usuarios usuarios) {
+			Date fechaNacimiento, String foto, Usuarios usuario) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -66,15 +64,15 @@ public class Mascotas {
 		this.raza = raza;
 		this.fechaNacimiento = fechaNacimiento;
 		this.foto = foto;
-		this.usuarios = usuarios;
+		this.usuario = usuario;
 	}
 
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -119,12 +117,12 @@ public class Mascotas {
 	}
 
 
-	public Usuarios getUsuarios() {
-		return usuarios;
+	public Usuarios getUsuario() {
+		return usuario;
 	}
 
 
-	public void setUsuarios(Usuarios usuarios) {
-		this.usuarios = usuarios;
+	public void setUsuario(Usuarios usuario) {
+		this.usuario = usuario;
 	}
 }
