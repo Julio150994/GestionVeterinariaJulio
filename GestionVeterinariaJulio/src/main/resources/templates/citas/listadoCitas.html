@@ -129,7 +129,6 @@
 			
 			<div class="card-body mt-5" th:if="${!mascotas.empty}">
 				<form action="#" th:action="@{/citas/citasMascota}" th:object="${cita}" method="POST">
-				
 					<select name="nombre" class="form-control col-md-3">
 						<option value="">Seleccione una mascota</option>
 						<option th:each="mascota: ${mascotas}" th:value="${mascota.nombre}" th:text="${mascota.nombre}"></option>
@@ -145,8 +144,6 @@
 					<thead class="table table-dark">
 						<tr>
 							<th>Nombre de mascota</th>
-							<th>Tipo de mascota</th>
-							<th>Raza de mascota</th>
 							<th>Foto de mascota</th>
 							<th>Veterinario</th>
 							<th>Fecha de cita</th>
@@ -158,8 +155,6 @@
 					<tbody class="table table-light" th:each="cita: ${citas}">
 						<tr id="realizada" th:if="${cita.realizada}">
 							<td class="border" th:text="${cita.mascota.nombre}"></td>
-							<td class="border" th:text="${cita.mascota.tipo}"></td>
-							<td class="border" th:text="${cita.mascota.raza}"></td>
 							<td class="border"><img th:src="${#strings.isEmpty(cita.mascota.foto)} ? '/mascotasImg/image.png': ${cita.mascota.foto}"
 								 th:alt="${cita.mascota.foto}" class="center-block" id="imagenMascota"/></td>
 							<td class="border" th:text="${cita.usuario.username}"></td>
@@ -169,8 +164,6 @@
 						</tr>
 						<tr th:unless="${cita.realizada}">
 							<td class="border" th:text="${cita.mascota.nombre}"></td>
-							<td class="border" th:text="${cita.mascota.tipo}"></td>
-							<td class="border" th:text="${cita.mascota.raza}"></td>
 							<td class="border"><img th:src="${#strings.isEmpty(cita.mascota.foto)} ? '/mascotasImg/image.png': ${cita.mascota.foto}"
 								 th:alt="${cita.mascota.foto}" class="center-block" id="imagenMascota"/></td>
 							<td class="border" th:text="${cita.usuario.username}"></td>

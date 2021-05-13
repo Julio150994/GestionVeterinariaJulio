@@ -133,8 +133,6 @@
 					<thead class="table table-dark">
 						<tr>
 							<th>Nombre de mascota</th>
-							<th>Tipo de mascota</th>
-							<th>Raza de mascota</th>
 							<th>Foto de mascota</th>
 							<th>Veterinario</th>
 							<th>Fecha de cita</th>
@@ -146,8 +144,6 @@
 					<tbody class="table table-light" th:each="cita: ${citas}">
 						<tr>
 							<td class="border" th:text="${cita.mascota.nombre}"></td>
-							<td class="border" th:text="${cita.mascota.tipo}"></td>
-							<td class="border" th:text="${cita.mascota.raza}"></td>
 								<td class="border"><img th:src="${#strings.isEmpty(cita.mascota.foto)} ? '/mascotasImg/image.png': ${cita.mascota.foto}"
 								 th:alt="${cita.mascota.foto}" class="center-block" id="imagenMascota"/></td>
 							<td class="border" th:text="${cita.usuario.username}"></td>
