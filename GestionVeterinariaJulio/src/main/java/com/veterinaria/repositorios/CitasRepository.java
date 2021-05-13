@@ -16,7 +16,9 @@ public interface CitasRepository extends JpaRepository<Citas, Integer> {
 	public abstract List<Mascotas> findByMascota(Citas cita);
 	public abstract List<Usuarios> findByUsuario(Citas cita);
 	
-	public abstract int countByFecha(Date fecha);// realizar el contador por fecha de la cita e idVeterinario
+	// Contador por fecha de la cita, idVeterinario y cita acabada de pedir y sin haberse realizado
+	@Query("select count(c) from Citas c, Usuarios u where c.fecha = :fecha and c.realizada = :realizada and c.usuario = u.id and u.id = :id")
+	public abstract int countByFechaAndVeterinario(@Param("fecha") Date fecha, @Param("realizada") boolean realizada, @Param("id") int idVeterinario);
 	
 	@Query("select c from Citas c, Mascotas m where c.mascota = m.id and m.nombre= :nombre order by c.fecha desc")
 	public abstract List<Citas> fetchByCitasWithNombre(@Param("nombre") String nombre);
