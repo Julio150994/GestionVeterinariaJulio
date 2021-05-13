@@ -117,7 +117,7 @@ public class CitasController {
 		
 		UserDetails usuario = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
-		int countCitas = citasRepository.countByFechaAndVeterinario(cita.getFecha(),cita.isRealizada(),cita.getUsuario().getId());
+		int countCitas = citasRepository.countByCitasPendientesAndVeterinario(cita.getFecha(),cita.isRealizada(),cita.getUsuario().getId());
 		LOG_VETERINARIA.info("Nº de citas con los datos introducidos: "+countCitas);
 		
 		if(countCitas < 3) {
@@ -128,7 +128,7 @@ public class CitasController {
 			mensajeFlash.addFlashAttribute("citaPedida",txtCita);
 		}
 		else {
-			txtCita = usuario.getUsername()+", ya existen más de "+countCitas+" citas disponibles a realizar para la fecha "+cita.getFecha()+" y con el veterinario "+cita.getUsuario().getUsername();
+			txtCita = usuario.getUsername()+", ya existen más de "+countCitas+" citas pendientes para la fecha "+cita.getFecha()+" y con el veterinario "+cita.getUsuario().getUsername();
 			LOG_VETERINARIA.info(txtCita);
 			mensajeFlash.addFlashAttribute("citaCancelada",txtCita);
 		}
