@@ -12,10 +12,11 @@
 
 #send { margin-left: 3.26%; }
 
-#realizada { background-color: #DEDEDE; }
+#realizada { background-color: #AEAEAE; }
 
 #txtRealizada {
-	background-color: #DEDEDE;
+	background-color: #AEAEAE;
+	color: #AEAEAE;
 	border-radius: 60%;
 	font-size: 30px;
 }
