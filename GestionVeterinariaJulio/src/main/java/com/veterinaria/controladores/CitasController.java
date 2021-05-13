@@ -209,7 +209,7 @@ public class CitasController {
 	
 	@PreAuthorize("hasRole('ROLE_VETERINARIO')")
 	@GetMapping("/citas/historialMascota/{id}")
-	public ModelAndView verHistorialMascota(@ModelAttribute("cita") ModeloCitas modeloCita, ModeloMascotas modeloMascota,
+	public ModelAndView verHistorialMascota(@ModelAttribute("cita") ModeloCitas modeloCita,
 			@RequestParam(name="nombre",required=false) String nombreMascota) {
 		LOG_VETERINARIA.info("Historial de mascota seleccionada");
 		
@@ -229,7 +229,8 @@ public class CitasController {
 	
 	@PreAuthorize("hasRole('ROLE_VETERINARIO')")
 	@PostMapping("/citas/nombreMascota")
-	public String consultarHistorialMascota(@ModelAttribute("cita") ModeloCitas modeloCita, Model cita, ModeloMascotas modeloMascota) {
+	public String consultarHistorialMascota(@ModelAttribute("cita") ModeloCitas modeloCita, Model cita, ModeloMascotas modeloMascota,
+			@RequestParam(name="nombre",required=false) String nombreMascota) {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth.getPrincipal() != "anonymousUser") {

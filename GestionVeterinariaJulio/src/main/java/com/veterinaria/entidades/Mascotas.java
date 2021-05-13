@@ -25,7 +25,7 @@ public class Mascotas {
 	
 	@NotNull(message="Debe introducir un nombre para la mascota")
 	@Size(min=1,max=30,message="El nombre de la mascota no debe tener más de 30 caracteres")
-	@Column(name="nombre",nullable=false,length=30)
+	@Column(name="nombre",unique=true,nullable=false,length=30)
 	private String nombre;
 	
 	@NotNull(message="Debe introducir un tipo para la mascota")

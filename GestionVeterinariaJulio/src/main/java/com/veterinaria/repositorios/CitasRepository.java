@@ -28,9 +28,7 @@ public interface CitasRepository extends JpaRepository<Citas, Integer> {
 	
 	public abstract List<Citas> findByFecha(Date fecha);// buscar las citas a través de la fecha seleccionada
 	
-	// SELECT DISTINCT m.nombre FROM citas c, mascotas m, usuarios u WHERE c.idMascota = m.id AND c.idVeterinario = u.id AND u.id = 6
-	
-	@Query("select c from Citas c, Mascotas m, Usuarios u where c.mascota = m.id and c.usuario = u.id and u.id = :id")
+	@Query("select c from Citas c, Mascotas m, Usuarios u where c.mascota = m.id and c.usuario = u.id and u.id = :id group by m.nombre")
 	public abstract List<Citas> findMascotasByVeterinario(@Param("id") int id);
 	
 	@Query("select c from Citas c, Mascotas m where c.mascota = m.id and m.nombre = :nombre")
