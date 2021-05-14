@@ -261,7 +261,7 @@ public class CitasController {
 		    
 		    Date diaActual = Date.valueOf(fechaActual);// convertimos a fecha para la base de datos
 		    
-			mavCitas.addObject("citasTxt","No se han encontrado citas para el día actual");
+			mavCitas.addObject("citasTxt",usuario.getUsername()+" no tiene citas contempladas para el día actual");
 			
 			String fechaTxt = dia+"/"+(mes+1)+"/"+anio;
 			mavCitas.addObject("fechaActual",fechaTxt);

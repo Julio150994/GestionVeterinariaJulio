@@ -166,7 +166,7 @@ public class MascotasController {
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/mascotas/eliminarMascota/{id}")
 	public String eliminarMascota(@ModelAttribute("mascota") Mascotas modeloMascota, @PathVariable("id") Integer id,
-			@RequestParam(name="nombre",required=false) String nombreMascota, RedirectAttributes mensajeFlash) {
+			RedirectAttributes mensajeFlash) {
 		
 		mascotas.eliminarMascota(id);
 		
