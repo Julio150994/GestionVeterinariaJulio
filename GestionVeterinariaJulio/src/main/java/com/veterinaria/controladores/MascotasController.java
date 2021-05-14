@@ -1,15 +1,10 @@
 package com.veterinaria.controladores;
 
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -87,27 +82,7 @@ public class MascotasController {
 			
 			mavMascotas.addObject("mascotasTxt",usuarioClienteActual.getUsername()+" no tiene mascotas registradas en la base de datos");
 			
-			/* Realizamos paginación para las mascotas */
-			int numPaginas = paginas.get("pagina") != null ? (Integer.valueOf(paginas.get("pagina").toString()) - 1) : 0;
-			
-			PageRequest res = PageRequest.of(numPaginas,9);
-			Page<Mascotas> paginasMascota = mascotas.paginacionMascotas(res);
-			
-			int totalMascotas = paginasMascota.getTotalPages();// nº total de mascotas
-			
-			if(totalMascotas > 0) {	
-				/* Para empezar desde la 1ª paginación hasta el final de las páginas */
-				List<Integer> listadoMascotas = IntStream.rangeClosed(1,totalMascotas).boxed().collect(Collectors.toList());
-				mavMascotas.addObject("paginas",listadoMascotas);
-			}			
-			
 			mavMascotas.addObject("mascotas",mascotasRepository.findByIdUsuario(usuario));
-			
-			
-			mavMascotas.addObject("anterior",numPaginas);
-			mavMascotas.addObject("actual",numPaginas + 1);
-			mavMascotas.addObject("siguiente",numPaginas + 2);
-			mavMascotas.addObject("ultima",totalMascotas);
 		}
 		
 		return mavMascotas;
