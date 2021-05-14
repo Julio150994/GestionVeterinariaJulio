@@ -13,6 +13,9 @@ import com.veterinaria.entidades.Usuarios;
 public interface MascotasRepository extends JpaRepository<Mascotas, Integer> {
 	public abstract List<Usuarios> findByUsuario(Mascotas mascota);
 	
+	@Query("select m from Mascotas m where m.usuario =  :usuario group by m.id")
+	public abstract List<Mascotas> findByMascotasIdUsuario(@Param("usuario") Usuarios usuario);
+	
 	@Query("select m from Mascotas m where m.usuario =  :usuario group by m.nombre")
 	public abstract List<Mascotas> findByIdUsuario(@Param("usuario") Usuarios usuario);
 }

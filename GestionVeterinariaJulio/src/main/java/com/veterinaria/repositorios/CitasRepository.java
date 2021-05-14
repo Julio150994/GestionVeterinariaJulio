@@ -20,6 +20,9 @@ public interface CitasRepository extends JpaRepository<Citas, Integer> {
 	@Query("select count(c) from Citas c, Usuarios u where c.fecha = :fecha and c.realizada = :realizada and c.usuario = u.id and u.id = :id")
 	public abstract int countByCitasPendientesAndVeterinario(@Param("fecha") Date fecha, @Param("realizada") boolean realizada, @Param("id") int idVeterinario);
 	
+	@Query("select count(c) from Citas c, Mascotas m where c.mascota = m.id and m.nombre= :nombre order by c.fecha desc")
+	public abstract int countByMascotasWithCita(@Param("nombre") String nombre);
+	
 	@Query("select c from Citas c, Mascotas m where c.mascota = m.id and m.nombre= :nombre order by c.fecha desc")
 	public abstract List<Citas> fetchByCitasWithNombre(@Param("nombre") String nombre);
 	

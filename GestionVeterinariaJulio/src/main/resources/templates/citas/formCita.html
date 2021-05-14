@@ -35,9 +35,9 @@
 						
 						<div class="form-label-group">
 							<select class="form-control" name="mascota" id="datoCita">
-								<option value="">Seleccione una mascota</option>
+								<option value="">Seleccione su mascota</option>
 								<option th:each="mascota: ${mascotas}" th:value="${mascota.id}"
-									th:text="${mascota.nombre}">
+									th:text="${mascota.id}+'. '+${mascota.nombre}">
 								</option>
 							</select>
 							<div class="text-danger" th:if="${#fields.hasErrors('mascota')}" th:errors="*{mascota}">Error producido en mascota</div>

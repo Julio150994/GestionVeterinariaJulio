@@ -21,6 +21,11 @@
 	font-size: 20px;
 }
 
+#nombreMascota {
+	margin-top: 2.1%;
+	margin-bottom: -2%;
+}
+
 #idCita { margin-left: 85%; }
 
 #txtPendiente {

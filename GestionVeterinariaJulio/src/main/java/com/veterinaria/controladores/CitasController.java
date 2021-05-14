@@ -46,7 +46,7 @@ public class CitasController {
 	private static final Log LOG_VETERINARIA = LogFactory.getLog(CitasController.class);
 	private static final String formCita = "/citas/formCita", historialCitas = "/citas/listadoCitas",
 			fechasCitas = "/citas/citasPendientes", historialMascota = "/citas/historialMascota", citasDiaActual = "/citas/citaDia";
-	private String txtCita;
+	private String txtCita, txtFechaActual, fechaFormatoNormal;
 	
 	private Calendar fecha = new GregorianCalendar();
 	private int dia = fecha.get(Calendar.DAY_OF_MONTH);
@@ -105,7 +105,7 @@ public class CitasController {
 			mavCita.addObject("usuarios",veterinarios.listarUsuarios());
 			
 			LOG_VETERINARIA.info("Mascotas listadas");
-			mavCita.addObject("mascotas",mascotasRepository.findByIdUsuario(clienteActual));
+			mavCita.addObject("mascotas",mascotasRepository.findByMascotasIdUsuario(clienteActual));
 		}
 		
 		return mavCita;
@@ -163,7 +163,7 @@ public class CitasController {
 	@PreAuthorize("hasRole('ROLE_CLIENTE')") // Método para mostrar las citas pendientes o no de una determinada mascota
 	@PostMapping("/citas/citasMascota")
 	public String buscarIdMascota(@ModelAttribute("cita") ModeloCitas modeloCita, @RequestParam(name="nombre",required=false) String nombre, Model cita,
-			ModeloMascotas modeloMascota) {
+			ModeloMascotas modeloMascota, RedirectAttributes mensajeFlash) {
 		UserDetails usuarioClienteActual = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -174,7 +174,11 @@ public class CitasController {
 			cita.addAttribute("mascotas",mascotasRepository.findByIdUsuario(usuario));
 			
 			cita.addAttribute("clienteActual",usuarioClienteActual.getUsername().toUpperCase());
-			cita.addAttribute("citas",citasRepository.fetchByCitasWithNombre(nombre));
+			
+			if(citasRepository.countByMascotasWithCita(nombre) == 0)
+				cita.addAttribute("txtCita","La mascota "+nombre+" no tiene citas registradas en la base de datos");
+			else
+				cita.addAttribute("citas",citasRepository.fetchByCitasWithNombre(nombre));
 		}
 		
 		return historialCitas;
@@ -220,8 +224,9 @@ public class CitasController {
 			Usuarios usuario = usuariosRepository.findByUsername(auth.getName());
 			mavCitas.addObject("usuario",usuario.getId());
 			
+			mavCitas.addObject("citasTxt",usuario.getUsername()+" no tiene mascotas en sus citas");
+			
 			mavCitas.addObject("citas",citasRepository.findMascotasByVeterinario(usuario.getId()));
-			mavCitas.addObject("citasTxt","No existen citas para "+nombreMascota);
 		}
 		
 		return mavCitas;
@@ -257,14 +262,14 @@ public class CitasController {
 			Usuarios usuario = usuariosRepository.findByUsername(auth.getName());
 			mavCitas.addObject("usuario",usuario.getId());
 		    
-		    String fechaActual = anio+"-"+(mes+1)+"-"+dia;
+		    txtFechaActual = anio+"-"+(mes+1)+"-"+dia;
+		    fechaFormatoNormal = dia+"/"+(mes+1)+"/"+anio;
 		    
-		    Date diaActual = Date.valueOf(fechaActual);// convertimos a fecha para la base de datos
+		    Date diaActual = Date.valueOf(txtFechaActual);// convertimos a fecha para la base de datos
 		    
 			mavCitas.addObject("citasTxt",usuario.getUsername()+" no tiene citas contempladas para el día actual");
 			
-			String fechaTxt = dia+"/"+(mes+1)+"/"+anio;
-			mavCitas.addObject("fechaActual",fechaTxt);
+			mavCitas.addObject("txtFechaActual",fechaFormatoNormal);
 			
 			mavCitas.addObject("citas",citasRepository.listarCitasDiaActual(diaActual,usuario.getId()));
 		}
@@ -284,18 +289,22 @@ public class CitasController {
 			Usuarios usuario = usuariosRepository.findByUsername(auth.getName());
 			cita.addAttribute("usuario",usuario.getId());
 			
-		    String fechaActual = anio+"-"+(mes+1)+"-"+dia;
-		    Date diaActual = Date.valueOf(fechaActual);// convertimos a fecha para la base de datos
-			
-		    cita.addAttribute("fechaActual",diaActual);
+		    txtFechaActual = anio+"-"+(mes+1)+"-"+dia;
+		    fechaFormatoNormal = dia+"/"+(mes+1)+"/"+anio;
+		    
+		    Date diaActual = Date.valueOf(txtFechaActual);// convertimos a fecha para la base de datos
+		    
 			cita.addAttribute("citas",citasRepository.listarCitasDiaActual(diaActual,usuario.getId()));
 		}
+		
+		cita.addAttribute("fechas",citas.realizarCita(modeloCita,id));
 		
 		txtCita = "Cita de mascota "+nombreMascota+" realizada correctamente";
 		LOG_VETERINARIA.info(txtCita);
 		cita.addAttribute("realizada",txtCita);
 		
-		cita.addAttribute("fechas",citas.realizarCita(modeloCita,id));
+		
+		cita.addAttribute("txtFechaActual",fechaFormatoNormal);
 		
 		return citasDiaActual;
 	}

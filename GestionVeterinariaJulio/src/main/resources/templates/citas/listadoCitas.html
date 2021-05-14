@@ -122,10 +122,10 @@
             </div>
             
             <div sec:authorize="hasRole('ROLE_CLIENTE')" class="container mt-4">
+            
+            <div class="panel panel-body alert alert-warning" th:if="${mascotas.empty}" role="alert" th:text="${citasTxt}"></div>
 
 			<div class="card-headert mt-5 text-center"> <h3>HISTORIAL DE CITAS DE (<span class="text-secondary" th:text="${clienteActual}"></span>)</h3> </div>
-			
-			<div class="panel panel-body alert alert-warning" th:if="${mascotas.empty}" th:text="${citasTxt}"></div>
 			
 			<div class="card-body mt-5" th:if="${!mascotas.empty}">
 				<form action="#" th:action="@{/citas/citasMascota}" th:object="${cita}" method="POST">
@@ -135,6 +135,8 @@
 					</select>
 					
 					<button type="submit" class="btn btn-primary" id="send"><i class="fa fa-search"></i> Buscar</button>
+					
+					<div class="panel panel-body alert alert-warning" th:if="${txtCita}" role="alert" th:text="${txtCita}" id="nombreMascota"></div>
 				</form>
 			</div>
 			

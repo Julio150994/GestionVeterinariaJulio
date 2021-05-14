@@ -2,6 +2,8 @@ package com.veterinaria.entidades;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -56,10 +58,10 @@ public class Usuarios {
 	@Column(name="rol",nullable=false,length=20)
 	private String rol;
 	
-	@OneToMany(mappedBy="usuario")
+	@OneToMany(mappedBy="usuario", cascade=CascadeType.ALL, orphanRemoval=false)
 	private List<Mascotas> mascotas = new ArrayList<Mascotas>();
 	
-	@OneToMany(mappedBy="usuario")
+	@OneToMany(mappedBy="usuario", cascade=CascadeType.ALL, orphanRemoval=false)
 	private List<Citas> citas = new ArrayList<Citas>();
 	
 	

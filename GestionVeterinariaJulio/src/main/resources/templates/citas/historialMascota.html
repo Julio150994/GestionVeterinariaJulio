@@ -143,6 +143,8 @@
 				</form>
 			</div>
 			
+			<div class="panel panel-body alert alert-warning" th:if="${citas.empty}" th:text="${citasTxt}"></div>
+			
 			<div class="card-body">
 			
 				<table class="table table-bordered text-center" id="historialCitas">
