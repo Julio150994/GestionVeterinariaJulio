@@ -238,9 +238,9 @@ public class CitasController {
 			cita.addAttribute("usuario",usuario.getId());
 			
 			cita.addAttribute("citas",citasRepository.findMascotasByVeterinario(usuario.getId()));// recargamos de nuevo las mascotas que tiene el veterinario
-		}
 		
-		cita.addAttribute("fechas",citasRepository.listHistorialCitasMascota(modeloMascota.getNombre()));
+			cita.addAttribute("fechas",citasRepository.listHistorialCitasMascota(usuario.getId(),modeloMascota.getNombre()));
+		}
 		
 		return historialMascota;
 	}
