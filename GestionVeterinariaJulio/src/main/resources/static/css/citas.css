@@ -12,14 +12,16 @@
 
 #send { margin-left: 3.26%; }
 
-#realizada { background-color: #AEAEAE; }
+#realizada { background-color: #D6D6D6; }
 
 #txtRealizada {
-	background-color: #AEAEAE;
-	color: #AEAEAE;
-	border-radius: 60%;
-	font-size: 30px;
+	background-color: #D6D6D6;
+	color: #D6D6D6;
+	border-radius: 25%;
+	font-size: 20px;
 }
+
+#idCita { margin-left: 85%; }
 
 #txtPendiente {
 	border-radius: 60%;
