@@ -33,7 +33,7 @@
 						<h3 class="text-center">CITA PARA CLIENTE <span th:text="${clienteActual}"></span></h3>
 						<input type="hidden" name="id" th:field="*{id}"/>
 						
-						<div class="form-label-group">
+						<div class="form-label-group" th:if="${!mascotas.empty}">
 							<select class="form-control" name="mascota" id="datoCita">
 								<option value="">Seleccione su mascota</option>
 								<option th:each="mascota: ${mascotas}" th:value="${mascota.id}"
@@ -42,6 +42,8 @@
 							</select>
 							<div class="text-danger" th:if="${#fields.hasErrors('mascota')}" th:errors="*{mascota}">Error producido en mascota</div>
 						</div>
+						<div class="alert alert-warning" th:if="${mascotas.empty}" role="alert" th:text="${txtMascota}"></div>
+						
 						<div class="form-label-group">
 							<select class="form-control" name="usuario" id="datoCita">
 								<option value="">Seleccione un veterinario</option>
@@ -51,6 +53,7 @@
 							</select>
 							<div class="text-danger" th:if="${#fields.hasErrors('usuario')}" th:errors="*{usuario}">Error producido en veterinario</div>
 						</div>
+						<div class="alert alert-warning" th:if="${not #lists.isEmpty(veterinario)}" role="alert" th:text="${txtVeterinario}"></div>
 						
 						<div class="form-label-group">
 							<input type="date" class="form-control" placeholder="Fecha de cita" name="fecha" id="datoCita"/>

@@ -101,8 +101,12 @@ public class CitasController {
 			mavCita.addObject("cita", new Citas());
 			mavCita.addObject("clienteActual",usuario.getUsername().toUpperCase());
 			
+			mavCita.addObject("txtVeterinario","Veterinarios no contemplados en la base de datos");
+			
 			LOG_VETERINARIA.info("Veterinarios listados");
 			mavCita.addObject("usuarios",veterinarios.listarUsuarios());
+			
+			mavCita.addObject("txtMascota",clienteActual.getUsername()+" no tiene mascotas registradas en la base de datos");
 			
 			LOG_VETERINARIA.info("Mascotas listadas");
 			mavCita.addObject("mascotas",mascotasRepository.findByMascotasIdUsuario(clienteActual));
