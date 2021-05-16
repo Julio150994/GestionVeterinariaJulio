@@ -1,6 +1,5 @@
 package com.veterinaria.controladores;
 
-import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,8 +65,7 @@ public class MascotasController {
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/mascotas/listadoMascotas")
-	public ModelAndView listarMascotas(Mascotas modeloMascota, @RequestParam Map<String,Object> paginas,
-			@ModelAttribute("usuario") Usuarios modeloUsuario) {
+	public ModelAndView listarMascotas(Mascotas modeloMascota, @ModelAttribute("usuario") Usuarios modeloUsuario) {
 		LOG_VETERINARIA.info("Vista de listado de mascotas");
 		UserDetails usuarioClienteActual = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
