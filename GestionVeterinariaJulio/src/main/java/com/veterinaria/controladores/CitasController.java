@@ -371,7 +371,7 @@ public class CitasController {
 			
 			mavCitas.addObject("txtFechaActual",fechaFormatoNormal);
 			
-			//if(cita.isRealizada() == false)
+			
 			mavCitas.addObject("citas",citasRepository.listarCitasDiasPosteriores(diaActual,cita.isRealizada(),usuario.getId()));
 		}
 		

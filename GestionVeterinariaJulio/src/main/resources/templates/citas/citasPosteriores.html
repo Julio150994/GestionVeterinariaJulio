@@ -132,7 +132,7 @@
             
             <div sec:authorize="hasRole('ROLE_VETERINARIO')" class="container mt-4">
 			
-			<div class="card-headert mt-5 text-center"> <h3>CITAS POSTERIORES DE VETERINARIO (<span th:text="${veterinarioActual}"></span>)</h3> </div>
+			<div class="card-headert mt-5 text-center"> <h3>CITAS PENDIENTES POSTERIORES A <span th:text="${txtFechaActual}"></span></h3> </div>
 			
 			<div class="panel panel-body alert alert-warning" th:if="${citas.empty}" th:text="${citasTxt}"></div>
 			
@@ -145,7 +145,6 @@
 							<th>Foto de mascota</th>
 							<th>Fecha de cita</th>
 							<th>Motivo de cita</th>
-							<th>Informe de cita</th>
 						</tr>
 					</thead>
 					
@@ -156,7 +155,6 @@
 								 th:alt="${cita.mascota.foto}" class="center-block" id="imagenMascota"/></td>
 							<td class="border" th:text="${#dates.format(cita.fecha,'dd/MM/yyyy')}"></td>
 							<td class="border" th:text="${cita.motivo}"></td>
-							<td class="border" th:text="${cita.informe}"></td>
 						</tr>
 					</tbody>
 				</table>
