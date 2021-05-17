@@ -151,21 +151,12 @@
 							<th>Fecha de cita</th>
 							<th>Motivo de cita</th>
 							<th>Informe de cita</th>
-							<th colspan="2">Operaciones</th>
 						</tr>
 					</thead>
 					
+					<!-- Para que solamente nos aparezcan las citas realizadas en el historial -->
 					<tbody class="table table-light" th:each="cita: ${citas}">
-						<tr id="realizada" th:if="${cita.realizada}">
-							<td class="border" th:text="${cita.mascota.nombre}"></td>
-							<td class="border"><img th:src="${#strings.isEmpty(cita.mascota.foto)} ? '/mascotasImg/image.png': ${cita.mascota.foto}"
-								 th:alt="${cita.mascota.foto}" class="center-block" id="imagenMascota"/></td>
-							<td class="border" th:text="${cita.usuario.username}"></td>
-							<td class="border" th:text="${#dates.format(cita.fecha,'dd/MM/yyyy')}"></td>
-							<td class="border" th:text="${cita.motivo}"></td>
-							<td class="border" th:text="${cita.informe}"></td>
-						</tr>
-						<tr th:unless="${cita.realizada}">
+						<tr th:if="${cita.realizada}">
 							<td class="border" th:text="${cita.mascota.nombre}"></td>
 							<td class="border"><img th:src="${#strings.isEmpty(cita.mascota.foto)} ? '/mascotasImg/image.png': ${cita.mascota.foto}"
 								 th:alt="${cita.mascota.foto}" class="center-block" id="imagenMascota"/></td>
@@ -176,12 +167,6 @@
 						</tr>
 					</tbody>
 				</table>
-				
-				<div class="card-body mt-5" id="idCita">
-					<h5 class="text-dark">Leyenda de citas</h5>
-					
-					<p>Realizadas: <span id="txtRealizada">....</span></p>
-				</div>
 			</div>
 		</div>
 			
