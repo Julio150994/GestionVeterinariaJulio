@@ -10,10 +10,13 @@ import com.veterinaria.modelos.ModeloCitas;
 
 public interface CitasService {
 	public abstract List<ModeloCitas> buscarCitas(Date fecha);
+	public abstract ModeloCitas buscarIdCita(Integer id);
 	
 	public abstract Citas pedirCita(Citas cita);
 	public abstract Page<Citas> paginacionCitas(Pageable cita);
 	public abstract ModeloCitas realizarCita(ModeloCitas cita, Integer idCita);
+	
+	public abstract void anularCitaPendiente(Integer id);
 	
 	public abstract Citas convertirCitas(ModeloCitas cita);
 	public abstract ModeloCitas convertirCitas(Citas cita);

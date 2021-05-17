@@ -84,6 +84,9 @@
                       <li sec:authorize="hasRole('ROLE_VETERINARIO')">
                       	<a class="dropdown-item" th:href="@{/citas/citaDia/}+${usuario}"><i class="fa fa-link pull-left"></i> Realiza citas</a>
                       </li>
+                      <li sec:authorize="hasRole('ROLE_VETERINARIO')">
+                      	<a class="dropdown-item" th:href="@{/citas/citasPosteriores/}+${usuario}"><i class="fa fa-link pull-left"></i> Ver citas posteriores</a>
+                      </li>
                     </ul>
                   </li>
                 </ul>

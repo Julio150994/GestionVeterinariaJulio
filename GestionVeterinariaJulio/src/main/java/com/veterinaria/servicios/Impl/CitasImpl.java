@@ -41,6 +41,11 @@ public class CitasImpl implements CitasService {
 	}
 	
 	@Override
+	public ModeloCitas buscarIdCita(Integer id) {
+		return convertirCitas(citas.findById(id).orElse(null));
+	}
+	
+	@Override
 	public Page<Citas> paginacionCitas(Pageable cita) {
 		return citas.findAll(cita);
 	}
@@ -59,6 +64,11 @@ public class CitasImpl implements CitasService {
 	public Citas pedirCita(Citas modeloCita) {
 		modeloCita.setRealizada(false);// establecemos la cita para saber que inicialmente no se ha realizado
 		return citas.save(modeloCita);
+	}
+	
+	@Override
+	public void anularCitaPendiente(Integer id) {
+		citas.deleteById(id);
 	}
 	
 

@@ -19,6 +19,12 @@
     	<link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
     	<link type="text/css" th:href="@{/css/citas.css}" rel="stylesheet"/>
     	<link type="text/css" th:href="@{/css/mascotas.css}" rel="stylesheet"/>
+    	
+    	<!-- Para utilizar nuestro formulario modal -->
+    	<script type="text/javascript" th:src="@{/js/anular_cita_pendiente_modal.js}"></script>
+    	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    	
 	</head>
 
 	<body class="nav-md">
@@ -122,6 +128,8 @@
             </div>
             
             <div sec:authorize="hasRole('ROLE_CLIENTE')" class="container mt-4">
+            
+             <div class="panel panel-body alert alert-danger" th:if="${citaAnulada}" th:text="${citaAnulada}"></div>
 			
 			<div class="card-headert mt-5 text-center"> <h3>CITAS PENDIENTES DE (<span th:text="${clienteActual}"></span>)</h3> </div>
 			
@@ -138,6 +146,7 @@
 							<th>Fecha de cita</th>
 							<th>Motivo de cita</th>
 							<th>Informe de cita</th>
+							<th colspan="2">Operaciones</th>
 						</tr>
 					</thead>
 					
@@ -150,6 +159,12 @@
 							<td class="border" th:text="${#dates.format(cita.fecha,'dd/MM/yyyy')}"></td>
 							<td class="border" th:text="${cita.motivo}"></td>
 							<td class="border" th:text="${cita.informe}"></td>
+							<td class="border"><a th:href="@{/citas/formCita/}+${cita.id}" class="btn btn-primary"><i class="fa fa-edit"></i> Modificar cita</a></td>
+							<td class="border">
+								<button class="btn btn-danger" th:onclick="anularCitaPendiente([[${cita.id}]])">
+									<i class="fa fa-minus-circle"></i> Anular cita
+								</button>
+							</td>
 						</tr>
 					</tbody>
 				</table>

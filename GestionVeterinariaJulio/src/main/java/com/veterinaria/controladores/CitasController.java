@@ -45,7 +45,8 @@ import com.veterinaria.servicios.Impl.VeterinariosImpl;
 public class CitasController {
 	private static final Log LOG_VETERINARIA = LogFactory.getLog(CitasController.class);
 	private static final String formCita = "/citas/formCita", historialCitas = "/citas/listadoCitas",
-			fechasCitas = "/citas/citasPendientes", historialMascota = "/citas/historialMascota", citasDiaActual = "/citas/citaDia";
+			fechasCitas = "/citas/citasPendientes", historialMascota = "/citas/historialMascota", citasDiaActual = "/citas/citaDia",
+			citasDiasPosteriores = "/citas/citasPosteriores";
 	private String txtCita, txtFechaActual, fechaFormatoNormal;
 	
 	private Calendar fecha = new GregorianCalendar();
@@ -85,8 +86,8 @@ public class CitasController {
 	/*------------------------------Métodos para los clientes (ROLE_CLIENTE)-------------------------------------------*/
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
-	@GetMapping("/citas/formCita")
-	public ModelAndView formularioCita(@ModelAttribute("cita") ModeloCitas modeloCita) {
+	@GetMapping({"/citas/formCita","/citas/formCita/{id}"})
+	public ModelAndView formularioCita(@ModelAttribute("cita") ModeloCitas modeloCita, @PathVariable(name="id",required=false) Integer idCita) {
 		LOG_VETERINARIA.info("Formulario para pedir la cita");
 		UserDetails usuario = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
@@ -97,19 +98,36 @@ public class CitasController {
 		if(auth.getPrincipal() != "anonymousUser") {
 			Usuarios clienteActual = usuariosRepository.findByUsername(auth.getName());
 			mavCita.addObject("usuario",clienteActual.getId());
-		
-			mavCita.addObject("cita", new Citas());
-			mavCita.addObject("clienteActual",usuario.getUsername().toUpperCase());
 			
-			mavCita.addObject("txtVeterinario","Veterinarios no contemplados en la base de datos");
-			
-			LOG_VETERINARIA.info("Veterinarios listados");
-			mavCita.addObject("usuarios",veterinarios.listarUsuarios());
-			
-			mavCita.addObject("txtMascota",clienteActual.getUsername()+" no tiene mascotas registradas en la base de datos");
-			
-			LOG_VETERINARIA.info("Mascotas listadas");
-			mavCita.addObject("mascotas",mascotasRepository.findByMascotasIdUsuario(clienteActual));
+			//-------------------Para poder añadir cita o modificar cita------------------------
+			if(idCita == null) {
+				mavCita.addObject("cita", new Citas());
+				mavCita.addObject("clienteActual",usuario.getUsername().toUpperCase());
+				
+				mavCita.addObject("txtVeterinario","Veterinarios no contemplados en la base de datos");
+				
+				LOG_VETERINARIA.info("Veterinarios listados");
+				mavCita.addObject("usuarios",veterinarios.listarUsuarios());
+				
+				mavCita.addObject("txtMascota",clienteActual.getUsername()+" no tiene mascotas registradas en la base de datos");
+				
+				LOG_VETERINARIA.info("Mascotas listadas");
+				mavCita.addObject("mascotas",mascotasRepository.findByMascotasIdUsuario(clienteActual));
+			}
+			else {
+				mavCita.addObject("cita",citas.buscarIdCita(idCita));
+				mavCita.addObject("clienteActual",usuario.getUsername().toUpperCase());
+				
+				mavCita.addObject("txtVeterinario","Veterinarios no contemplados en la base de datos");
+				
+				LOG_VETERINARIA.info("Veterinarios listados");
+				mavCita.addObject("usuarios",veterinarios.listarUsuarios());
+				
+				mavCita.addObject("txtMascota",clienteActual.getUsername()+" no tiene mascotas registradas en la base de datos");
+				
+				LOG_VETERINARIA.info("Mascotas listadas");
+				mavCita.addObject("mascotas",mascotasRepository.findByMascotasIdUsuario(clienteActual));
+			}
 		}
 		
 		return mavCita;
@@ -192,7 +210,8 @@ public class CitasController {
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/citas/citasPendientes")
 	public ModelAndView calendarioCitas(@ModelAttribute("cita") ModeloCitas modeloCita, Mascotas mascota,
-			@RequestParam(name="fecha",required=false) Date fecha, @RequestParam(name="realizada",required=false) boolean realizada) {
+			@RequestParam(name="fecha",required=false) Date fecha, @RequestParam(name="realizada",required=false) boolean realizada,
+			@RequestParam(name="id",required=false) Integer idCita, BindingResult validacionCita) {
 		LOG_VETERINARIA.info("Vista de calendario con citas pendientes");
 		
 		UserDetails usuarioClienteActual = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -212,6 +231,21 @@ public class CitasController {
 		}
 		return mavCitas;
 	}
+	
+	// Método para anular citas pendientes
+	@PreAuthorize("hasRole('ROLE_CLIENTE')")
+	@GetMapping("/citas/anularCita/{id}")
+	public String anularCita(@ModelAttribute("cita") Citas modeloCita, @PathVariable("id") int id,
+			RedirectAttributes mensajeFlash) {
+		
+		citas.anularCitaPendiente(id);
+		
+		txtCita = "Cita anulada correctamente";
+		LOG_VETERINARIA.info(txtCita);
+		mensajeFlash.addFlashAttribute("citaAnulada",txtCita);
+		return "redirect:"+fechasCitas;
+	}
+	
 	
 	/*----------------------------Métodos para los veterinarios (ROLE_VETERINARIO)---------------------------------------*/
 	
@@ -311,5 +345,36 @@ public class CitasController {
 		cita.addAttribute("txtFechaActual",fechaFormatoNormal);
 		
 		return citasDiaActual;
+	}
+	
+	
+	@PreAuthorize("hasRole('ROLE_VETERINARIO')")
+	@GetMapping("/citas/citasPosteriores/{id}")
+	public ModelAndView visualizarCitasPosteriores(@ModelAttribute("cita") ModeloCitas cita) {
+		LOG_VETERINARIA.info("Vista con las citas posteriores");
+		
+		ModelAndView mavCitas = new ModelAndView(citasDiasPosteriores);
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth.getPrincipal() != "anonymousUser") {
+			Usuarios usuario = usuariosRepository.findByUsername(auth.getName());
+			mavCitas.addObject("usuario",usuario.getId());
+		    
+		    txtFechaActual = anio+"-"+(mes+1)+"-"+dia;
+		    fechaFormatoNormal = dia+"/"+(mes+1)+"/"+anio;
+		    
+		    Date diaActual = Date.valueOf(txtFechaActual);// convertimos a fecha para la base de datos
+		    
+			mavCitas.addObject("citasTxt",usuario.getUsername()+" no tiene citas pendientes para fechas posteriores a "+fechaFormatoNormal);
+			
+			mavCitas.addObject("veterinarioActual",usuario.getUsername().toUpperCase());
+			
+			mavCitas.addObject("txtFechaActual",fechaFormatoNormal);
+			
+			//if(cita.isRealizada() == false)
+			mavCitas.addObject("citas",citasRepository.listarCitasDiasPosteriores(diaActual,cita.isRealizada(),usuario.getId()));
+		}
+		
+		return mavCitas;
 	}
 }

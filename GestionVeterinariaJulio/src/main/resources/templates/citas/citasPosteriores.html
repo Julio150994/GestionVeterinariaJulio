@@ -6,7 +6,7 @@
     	<meta charset="utf-8">
     	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Vista de citas del día</title>
+		<title>Calendario de citas</title>
 		
 		<!-- Bootstrap -->
     	<link th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
@@ -19,9 +19,6 @@
     	<link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
     	<link type="text/css" th:href="@{/css/citas.css}" rel="stylesheet"/>
     	<link type="text/css" th:href="@{/css/mascotas.css}" rel="stylesheet"/>
-    	
-    	<!-- Custom JS para el checkbox -->
-    	<script type="text/javascript" th:src="@{/js/citas.js}"></script>
 	</head>
 
 	<body class="nav-md">
@@ -82,7 +79,7 @@
                       <li sec:authorize="hasRole('ROLE_CLIENTE')">
                       	<a class="dropdown-item" th:href="@{/perfil_cliente/}+${usuario}"><i class="fa fa-link pull-left"></i> Perfil de usuario</a>
                       </li>
-                      <li sec:authorize="hasRole('ROLE_VETERINARIO')">
+                       <li sec:authorize="hasRole('ROLE_VETERINARIO')">
                       	<a class="dropdown-item" th:href="@{/citas/historialMascota/}+${usuario}"><i class="fa fa-link pull-left"></i> Historial de mascota</a>
                       </li>
                         <li sec:authorize="hasRole('ROLE_VETERINARIO')">
@@ -133,11 +130,9 @@
               </div>
             </div>
             
-            <div class="panel panel-body alert alert-info" th:if="${realizada}" role="alert" th:text="${realizada}"></div>
-            
             <div sec:authorize="hasRole('ROLE_VETERINARIO')" class="container mt-4">
 			
-			<div class="card-headert mt-5 text-center"> <h3> CITAS DEL DÍA <span th:text="${txtFechaActual}"></span></h3> </div>
+			<div class="card-headert mt-5 text-center"> <h3>CITAS POSTERIORES DE VETERINARIO (<span th:text="${veterinarioActual}"></span>)</h3> </div>
 			
 			<div class="panel panel-body alert alert-warning" th:if="${citas.empty}" th:text="${citasTxt}"></div>
 			
@@ -147,40 +142,21 @@
 					<thead class="table table-dark">
 						<tr>
 							<th>Nombre de mascota</th>
-							<th>Tipo de mascota</th>
-							<th>Raza de mascota</th>
 							<th>Foto de mascota</th>
+							<th>Fecha de cita</th>
 							<th>Motivo de cita</th>
 							<th>Informe de cita</th>
-							<th>Estado</th>
 						</tr>
 					</thead>
 					
 					<tbody class="table table-light" th:each="cita: ${citas}">
 						<tr>
 							<td class="border" th:text="${cita.mascota.nombre}"></td>
-							<td class="border" th:text="${cita.mascota.tipo}"></td>
-							<td class="border" th:text="${cita.mascota.raza}"></td>
-							<td class="border"><img th:src="${#strings.isEmpty(cita.mascota.foto)} ? '/mascotasImg/image.png': ${cita.mascota.foto}"
+								<td class="border"><img th:src="${#strings.isEmpty(cita.mascota.foto)} ? '/mascotasImg/image.png': ${cita.mascota.foto}"
 								 th:alt="${cita.mascota.foto}" class="center-block" id="imagenMascota"/></td>
+							<td class="border" th:text="${#dates.format(cita.fecha,'dd/MM/yyyy')}"></td>
 							<td class="border" th:text="${cita.motivo}"></td>
 							<td class="border" th:text="${cita.informe}"></td>
-							<td class="border">
-								<form class="form-signin" action="#" th:action="@{/realizada/}+${cita.id}" th:object="${cita}" method="post">
-									<input type="hidden" name="id" th:value="${cita.id}"/>
-									<input type="hidden" name="nombre" th:value="${cita.mascota.nombre}"/>
-									<input type="hidden" name="fecha" th:value="${cita.fecha}"/>
-									<input type="hidden" name="realizada" th:value="${cita.realizada}"/>
-  									
-  									<button class="btn btn-info text-white" th:field="*{realizada}" type="submit" th:if="${cita.realizada}">
-										<i class="fa fa-check-square"></i> Realizada
-									</button>
-										
-									<button class="btn btn-warning text-white" th:field="*{realizada}" type="submit" th:unless="${cita.realizada}">
-										<i class="fa fa-square"></i> No realizada
-									</button>
-								</form>
-							</td>
 						</tr>
 					</tbody>
 				</table>
