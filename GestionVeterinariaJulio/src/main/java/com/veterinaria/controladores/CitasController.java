@@ -46,7 +46,7 @@ public class CitasController {
 	private static final Log LOG_VETERINARIA = LogFactory.getLog(CitasController.class);
 	private static final String formCita = "/citas/formCita", historialCitas = "/citas/listadoCitas",
 			fechasCitas = "/citas/citasPendientes", historialMascota = "/citas/historialMascota", citasDiaActual = "/citas/citaDia",
-			citasDiasPosteriores = "/citas/citasPosteriores";
+			citasDiasPosteriores = "/citas/citasPosteriores", clientesVeterinario = "/citas/clientesVeterinario";
 	private String txtCita, txtFechaActual, fechaFormatoNormal;
 	
 	private Calendar fecha = new GregorianCalendar();
@@ -376,5 +376,26 @@ public class CitasController {
 		}
 		
 		return mavCitas;
+	}
+	
+	@PreAuthorize("hasRole('ROLE_VETERINARIO')")
+	@GetMapping("/citas/clientesVeterinario/{id}")
+	public ModelAndView mostrarClientesVeterinario(@ModelAttribute("cita") ModeloCitas modeloCita) {
+		LOG_VETERINARIA.info("Listado de clientes del veterinario");
+		ModelAndView mavClientesVeterinario = new ModelAndView(clientesVeterinario);
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth.getPrincipal() != "anonymousUser") {
+			Usuarios usuario = usuariosRepository.findByUsername(auth.getName());
+			mavClientesVeterinario.addObject("usuario",usuario.getId());    
+		    
+			mavClientesVeterinario.addObject("veterinarioActual",usuario.getUsername().toUpperCase());
+			
+			mavClientesVeterinario.addObject("clientesTxt",usuario.getUsername()+" no tiene clientes en sus citas");
+			
+			mavClientesVeterinario.addObject("clientesVeterinario",citasRepository.listarClientesByVeterinario(usuario));
+		}
+		
+		return mavClientesVeterinario;
 	}
 }

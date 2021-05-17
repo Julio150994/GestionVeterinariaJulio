@@ -6,7 +6,7 @@
     	<meta charset="utf-8">
     	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Citas posteriores al día actual</title>
+		<title>Listado de clientes del veterinario</title>
 		
 		<!-- Bootstrap -->
     	<link th:href="@{/vendors/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet">
@@ -19,6 +19,9 @@
     	<link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
     	<link type="text/css" th:href="@{/css/citas.css}" rel="stylesheet"/>
     	<link type="text/css" th:href="@{/css/mascotas.css}" rel="stylesheet"/>
+    	
+    	<!-- Custom JS para el checkbox -->
+    	<script type="text/javascript" th:src="@{/js/citas.js}"></script>
 	</head>
 
 	<body class="nav-md">
@@ -79,7 +82,7 @@
                       <li sec:authorize="hasRole('ROLE_CLIENTE')">
                       	<a class="dropdown-item" th:href="@{/perfil_cliente/}+${usuario}"><i class="fa fa-link pull-left"></i> Perfil de usuario</a>
                       </li>
-                       <li sec:authorize="hasRole('ROLE_VETERINARIO')">
+                      <li sec:authorize="hasRole('ROLE_VETERINARIO')">
                       	<a class="dropdown-item" th:href="@{/citas/historialMascota/}+${usuario}"><i class="fa fa-link pull-left"></i> Historial de mascota</a>
                       </li>
                         <li sec:authorize="hasRole('ROLE_VETERINARIO')">
@@ -133,31 +136,33 @@
               </div>
             </div>
             
+            
             <div sec:authorize="hasRole('ROLE_VETERINARIO')" class="container mt-4">
 			
-			<div class="card-headert mt-5 text-center"> <h3>CITAS PENDIENTES POSTERIORES A <span th:text="${txtFechaActual}"></span></h3> </div>
+			<div class="card-headert mt-5 text-center"> <h3> LISTA DE CLIENTES DE <span th:text="${veterinarioActual}"></span></h3> </div>
 			
-			<div class="panel panel-body alert alert-warning" th:if="${citas.empty}" th:text="${citasTxt}"></div>
+			<div class="panel panel-body alert alert-warning" th:if="${clientesVeterinario.empty}" th:text="${clientesTxt}"></div>
 			
 			<div class="card-body">
 			
-				<table class="table table-bordered text-center" id="historialCitas">
+				<table class="table table-bordered text-center" id="tablaClientes">
 					<thead class="table table-dark">
 						<tr>
-							<th>Nombre de mascota</th>
-							<th>Foto de mascota</th>
-							<th>Fecha de cita</th>
-							<th>Motivo de cita</th>
+							<th>Nombre</th>
+							<th>Apellidos</th>
+							<th>Teléfono</th>
+							<th>Username</th>
+							<th>PDF</th>
 						</tr>
 					</thead>
-					
-					<tbody class="table table-light" th:each="cita: ${citas}">
+						
+					<tbody class="table table-light" th:each="cita: ${clientesVeterinario}">
 						<tr>
-							<td class="border" th:text="${cita.mascota.nombre}"></td>
-								<td class="border"><img th:src="${#strings.isEmpty(cita.mascota.foto)} ? '/mascotasImg/image.png': ${cita.mascota.foto}"
-								 th:alt="${cita.mascota.foto}" class="center-block" id="imagenMascota"/></td>
-							<td class="border" th:text="${#dates.format(cita.fecha,'dd/MM/yyyy')}"></td>
-							<td class="border" th:text="${cita.motivo}"></td>
+							<td class="border" th:text="${cita.usuario.nombre}"></td>
+							<td class="border" th:text="${cita.usuario.apellidos}"></td>
+							<td class="border" th:text="${cita.usuario.telefono}"></td>
+							<td class="border" th:text="${cita.usuario.username}"></td>
+							<td class="border"><a th:href="@{/citas/datosClientes/}+${cita.id}" class="btn btn-info"><i class="fa fa-file-pdf-o"></i> Exportar cliente</a></td>
 						</tr>
 					</tbody>
 				</table>

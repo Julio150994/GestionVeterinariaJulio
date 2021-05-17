@@ -43,4 +43,8 @@ public interface CitasRepository extends JpaRepository<Citas, Integer> {
 	
 	@Query("select c from Citas c, Usuarios u where c.fecha > :fecha and c.realizada = :realizada and c.usuario = u.id and u.id = :id")
 	public abstract List<Citas> listarCitasDiasPosteriores(@Param("fecha") Date fecha, @Param("realizada") boolean realizada, @Param("id") int id);
+	
+	
+	@Query(value="select c from Citas c, Mascotas m, Usuarios u where c.mascota = m.id and m.usuario = u.id and c.usuario = :usuario group by u.username") // corregir lo del usuario
+	public abstract List<Citas> listarClientesByVeterinario(@Param("usuario") Usuarios clienteVeterinario);
 }
