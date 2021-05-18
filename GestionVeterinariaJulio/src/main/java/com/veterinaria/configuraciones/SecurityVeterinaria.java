@@ -48,9 +48,9 @@ public class SecurityVeterinaria extends WebSecurityConfigurerAdapter {
 			.antMatchers("/mascotas/listadoMascotas").access("hasRole('ROLE_CLIENTE') or hasRole('ROLE_VETERINARIO')")
 			.antMatchers("/mascotas/formMascota","/mascotas/formMascota/{id}","/mascotas/saveMascota",
 					"/mascotas/eliminarMascota/{id}","/mascotas/mostrarMascota").access("hasRole('ROLE_CLIENTE')")
-			.antMatchers("/citas/formCita","/citas/saveCita","/citas/listadoCitas","/citas/citasMascota","/citas/citasPendientes","/citas/formCita/{id}","/citas/anularCita/{id}").access("hasRole('ROLE_CLIENTE')")
-			.antMatchers("/citas/historialMascota/{id}","/citas/nombreMascota","/citas/citaDia/{id}","/realizada/{id}","/citas/citasPosteriores/{id}",
-					"/citas/clientesVeterinario/{id}").access("hasRole('ROLE_VETERINARIO')")
+			.antMatchers("/citas/formCita","/citas/saveCita","/citas/listadoCitas","/citas/citasMascota","/citas/citasPendientes","/citas/formCita/{id}",
+					"/citas/anularCita/{id}","/citas/clientesVeterinario/{id}").access("hasRole('ROLE_CLIENTE')")
+			.antMatchers("/citas/historialMascota/{id}","/citas/nombreMascota","/citas/citaDia/{id}","/realizada/{id}","/citas/citasPosteriores/{id}").access("hasRole('ROLE_VETERINARIO')")
 			.anyRequest().authenticated()
 			.and()
 		.formLogin()
