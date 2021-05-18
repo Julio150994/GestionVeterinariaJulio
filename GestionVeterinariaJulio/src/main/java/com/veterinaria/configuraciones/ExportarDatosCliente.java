@@ -20,7 +20,7 @@ import com.veterinaria.modelos.ModeloUsuarios;
 
 public class ExportarDatosCliente {
 	private static ModeloUsuarios datosCliente;
-	private static Font txtDatosCliente;
+	private static Font txtDatosCliente, txtLogo;
 	
 	
 	public ExportarDatosCliente() {
@@ -71,12 +71,17 @@ public class ExportarDatosCliente {
 		Image logoClinica = Image.getInstance("logo.png");
 		logoClinica.setAlignment(Element.ALIGN_RIGHT);
 		docCliente.add(logoClinica);
-		docCliente.addTitle("Logo de Clínica DAM");
+		
+		txtLogo = FontFactory.getFont(FontFactory.TIMES_ROMAN);
+		txtLogo.setSize(6);
+		txtLogo.setColor(Color.black);
+		Paragraph logo = new Paragraph("Logo de Clínica DAM",txtLogo);
+		logo.setAlignment(Paragraph.ALIGN_RIGHT);
+		
 		
 		txtDatosCliente = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
 		txtDatosCliente.setSize(19);
 		txtDatosCliente.setColor(Color.white);
-		
 		Paragraph titulo = new Paragraph("Datos de cliente",txtDatosCliente);
 		titulo.setAlignment(Paragraph.ALIGN_CENTER);
 		
