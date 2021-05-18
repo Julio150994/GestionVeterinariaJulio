@@ -71,6 +71,7 @@ public class ExportarDatosCliente {
 		Image logoClinica = Image.getInstance("logo.png");
 		logoClinica.setAlignment(Element.ALIGN_RIGHT);
 		docCliente.add(logoClinica);
+		docCliente.addTitle("Logo de Clínica DAM");
 		
 		txtDatosCliente = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
 		txtDatosCliente.setSize(19);
