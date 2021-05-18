@@ -174,9 +174,8 @@ public class ExportarDatosCliente {
 		//--------------Para las citas de la mascota---------------
 		PdfPTable tablaCitasMascota = new PdfPTable(12);
 		tablaCitasMascota.setWidthPercentage(100f);
-		tablaCitasMascota.setWidths(new float[] {1.13f,1.13f,1.13f,1.13f,1.13f,1.13f,
-				1.13f,1.13f,1.13f,1.13f,1.13f,1.13f});// dimensiones para las 12 columnas
-		tablaCitasMascota.setSpacingBefore(60.6f);
+		tablaCitasMascota.setWidths(new float[] {1f,2f,1f,2f,1f,2f,1f,2f,1f,2f,1f,2f});// dimensiones para las 12 columnas con proporción 1/3 y 2/3
+		tablaCitasMascota.setSpacingBefore(63.8f);
 		
 		this.headCitasMascota(tablaCitasMascota);
 		this.bodyCitasMascota(tablaCitasMascota);
