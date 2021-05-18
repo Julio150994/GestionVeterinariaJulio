@@ -91,7 +91,7 @@
                       <li sec:authorize="hasRole('ROLE_VETERINARIO')">
                       	<a class="dropdown-item" th:href="@{/citas/citasPosteriores/}+${usuario}"><i class="fa fa-link pull-left"></i> Ver citas posteriores</a>
                       </li>
-                      <li sec:authorize="hasRole('ROLE_VETERINARIO')">
+                      <li sec:authorize="hasRole('ROLE_CLIENTE')">
                       	<a class="dropdown-item" th:href="@{/citas/clientesVeterinario/}+${usuario}"><i class="fa fa-link pull-left"></i> Clientes del veterinario</a>
                       </li>
                     </ul>
@@ -137,7 +137,7 @@
             </div>
             
             
-            <div sec:authorize="hasRole('ROLE_VETERINARIO')" class="container mt-4">
+            <div sec:authorize="hasRole('ROLE_CLIENTE')" class="container mt-4">
 			
 			<div class="card-headert mt-5 text-center"> <h3> LISTA DE CLIENTES DE <span th:text="${veterinarioActual}"></span></h3> </div>
 			
@@ -162,7 +162,7 @@
 							<td class="border" th:text="${cita.usuario.apellidos}"></td>
 							<td class="border" th:text="${cita.usuario.telefono}"></td>
 							<td class="border" th:text="${cita.usuario.username}"></td>
-							<td class="border"><a th:href="@{/citas/datosClientes/}+${cita.id}" class="btn btn-info"><i class="fa fa-file-pdf-o"></i> Exportar cliente</a></td>
+							<td class="border"><a th:href="@{/citas/clientesVeterinario/pdf/}+${cita.id}" class="btn btn-info"><i class="fa fa-file-pdf-o"></i> Exportar cliente</a></td>
 						</tr>
 					</tbody>
 				</table>
