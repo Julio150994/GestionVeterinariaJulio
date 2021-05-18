@@ -2,7 +2,6 @@ package com.veterinaria.configuraciones;
 
 import java.awt.Color;
 import java.io.IOException;
-import java.sql.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import com.lowagie.text.Document;
@@ -18,7 +17,6 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import com.veterinaria.entidades.Citas;
-import com.veterinaria.modelos.ModeloMascotas;
 import com.veterinaria.modelos.ModeloUsuarios;
 
 
@@ -47,16 +45,28 @@ public class ExportarDatosCliente {
 		txtDatosCliente = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
 		txtDatosCliente.setColor(Color.WHITE);
 		
-		filaCliente.setPhrase(new Phrase("Nombre"));
+		filaCliente.setPhrase(new Phrase("Nombre",txtDatosCliente));
+		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setPadding(10);
 		tablaClientes.addCell(filaCliente);
 		
-		filaCliente.setPhrase(new Phrase("Apellidos"));
+		filaCliente.setPhrase(new Phrase("Apellidos",txtDatosCliente));
+		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setPadding(10);
 		tablaClientes.addCell(filaCliente);
 		
-		filaCliente.setPhrase(new Phrase("Teléfono"));
+		filaCliente.setPhrase(new Phrase("Teléfono",txtDatosCliente));
+		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setPadding(10);
 		tablaClientes.addCell(filaCliente);
 		
-		filaCliente.setPhrase(new Phrase("Username"));
+		filaCliente.setPhrase(new Phrase("Username",txtDatosCliente));
+		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setPadding(10);
 		tablaClientes.addCell(filaCliente);
 	}
 	
@@ -134,7 +144,10 @@ public class ExportarDatosCliente {
 	
 	
 	public void exportarDatosCliente(HttpServletResponse resCliente) throws DocumentException, IOException {
-		Document docCliente = new Document(PageSize.A2);
+		Document docCliente = new Document();
+		docCliente.setPageSize(PageSize.LETTER.rotate());
+		docCliente.setMargins(-10, -10, 25, 10);
+		
 		PdfWriter.getInstance(docCliente, resCliente.getOutputStream());
 		
 		docCliente.open();
