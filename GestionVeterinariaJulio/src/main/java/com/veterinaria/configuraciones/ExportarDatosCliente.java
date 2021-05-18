@@ -69,16 +69,13 @@ public class ExportarDatosCliente {
 		tablaClientes.addCell(filaCliente);
 	}
 	
-	private void bodyClientes(PdfPTable tablaClientes) {		
+	private void bodyClientes(PdfPTable tablaClientes) {
+		tablaClientes.setHorizontalAlignment(Element.ALIGN_CENTER);
+		
 		tablaClientes.addCell(datosCliente.getNombre());
 		tablaClientes.addCell(datosCliente.getApellidos());
 		tablaClientes.addCell(datosCliente.getTelefono());
 		tablaClientes.addCell(datosCliente.getUsername());
-		
-		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
-		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
-		filaCliente.setPadding(10);
-		tablaClientes.addCell(filaCliente);
 	}
 	
 	
