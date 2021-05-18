@@ -37,10 +37,10 @@ public class ClientesPDFController {
 	private UsuariosRepository usuariosRepository;
 	
 	
-	// Método para mostrar los datos del cliente actual
+	/* Método para mostrar los datos del cliente actual */
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/citas/datosCliente/{id}")
-	public ModelAndView mostrarDatosCliente() { // @ModelAttribute("usuario") ModeloUsuarios usuarioCliente
+	public ModelAndView mostrarDatosCliente() {
 		LOG_VETERINARIA.info("Datos personales del cliente");
 		ModelAndView mavDatosCliente = new ModelAndView(datosClienteActual);
 			
@@ -56,7 +56,7 @@ public class ClientesPDFController {
 		return mavDatosCliente;
 	}
 		
-	// Método para exportar los datos del cliente a pdf
+	/* Método para exportar los datos del cliente a pdf */
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/citas/datosCliente/pdf/{id}")
 	public void mostrarInformeCliente(HttpServletResponse resCliente, Model modelo) throws DocumentException, IOException {		

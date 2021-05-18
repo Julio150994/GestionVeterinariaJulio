@@ -5,8 +5,10 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
+import com.lowagie.text.Element;
 import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;
+import com.lowagie.text.Image;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
@@ -32,11 +34,11 @@ public class ExportarDatosCliente {
 	
 	private void headClientes(PdfPTable tablaClientes) {
 		PdfPCell filaCliente = new PdfPCell();
-		filaCliente.setBackgroundColor(Color.GRAY);
+		filaCliente.setBackgroundColor(Color.BLUE);
 		filaCliente.setPadding(5);
 		
 		txtDatosCliente = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
-		txtDatosCliente.setColor(Color.BLACK);
+		txtDatosCliente.setColor(Color.WHITE);
 		
 		filaCliente.setPhrase(new Phrase("Nombre"));
 		tablaClientes.addCell(filaCliente);
@@ -64,9 +66,15 @@ public class ExportarDatosCliente {
 		PdfWriter.getInstance(docCliente, resCliente.getOutputStream());
 		
 		docCliente.open();
+		
+		//----------Establecemos la imágen de logo de la clínica a la derecha del informe------------------
+		Image logoClinica = Image.getInstance("logo.png");
+		logoClinica.setAlignment(Element.ALIGN_RIGHT);
+		docCliente.add(logoClinica);
+		
 		txtDatosCliente = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
 		txtDatosCliente.setSize(19);
-		txtDatosCliente.setColor(Color.BLACK);
+		txtDatosCliente.setColor(Color.white);
 		
 		Paragraph titulo = new Paragraph("Datos de cliente",txtDatosCliente);
 		titulo.setAlignment(Paragraph.ALIGN_CENTER);
@@ -74,8 +82,8 @@ public class ExportarDatosCliente {
 		docCliente.add(titulo);
 		
 		PdfPTable tablaClientes = new PdfPTable(4);
-		tablaClientes.setWidthPercentage(83f);
-		tablaClientes.setWidths(new float[] {1.5f, 3.5f, 2.7f, 1.4f});// dimensiones para las 4 columnas
+		tablaClientes.setWidthPercentage(90f);
+		tablaClientes.setWidths(new float[] {1.6f, 3.6f, 2.8f, 1.5f});// dimensiones para las 4 columnas
 		tablaClientes.setSpacingBefore(10);
 		
 		this.headClientes(tablaClientes);
