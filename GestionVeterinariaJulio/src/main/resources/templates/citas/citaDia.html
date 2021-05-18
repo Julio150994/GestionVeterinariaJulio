@@ -91,8 +91,8 @@
                       <li sec:authorize="hasRole('ROLE_VETERINARIO')">
                       	<a class="dropdown-item" th:href="@{/citas/citasPosteriores/}+${usuario}"><i class="fa fa-link pull-left"></i> Ver citas posteriores</a>
                       </li>
-                      <li sec:authorize="hasRole('ROLE_CLIENTE')">
-                      	<a class="dropdown-item" th:href="@{/citas/clientesVeterinario/}+${usuario}"><i class="fa fa-link pull-left"></i> Clientes del veterinario</a>
+                     <li sec:authorize="hasRole('ROLE_CLIENTE')">
+                      	<a class="dropdown-item" th:href="@{/citas/datosCliente/}+${usuario}"><i class="fa fa-link pull-left"></i> Datos personales</a>
                       </li>
                     </ul>
                   </li>

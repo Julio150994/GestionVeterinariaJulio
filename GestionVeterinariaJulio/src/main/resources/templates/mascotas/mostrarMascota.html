@@ -78,8 +78,8 @@
                       <li sec:authorize="hasRole('ROLE_CLIENTE')">
                       	<a class="dropdown-item" th:href="@{/perfil_cliente/}+${usuario}"><i class="fa fa-link pull-left"></i> Perfil de usuario</a>
                       </li>
-                      <li sec:authorize="hasRole('ROLE_CLIENTE')">
-                      	<a class="dropdown-item" th:href="@{/citas/clientesVeterinario/}+${usuario}"><i class="fa fa-link pull-left"></i> Clientes del veterinario</a>
+                     <li sec:authorize="hasRole('ROLE_CLIENTE')">
+                      	<a class="dropdown-item" th:href="@{/citas/datosCliente/}+${usuario}"><i class="fa fa-link pull-left"></i> Datos personales</a>
                       </li>
                     </ul>
                   </li>
