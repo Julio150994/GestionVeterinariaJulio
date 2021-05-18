@@ -176,7 +176,7 @@ public class ExportarDatosCliente {
 		tablaCitasMascota.setWidthPercentage(100f);
 		tablaCitasMascota.setWidths(new float[] {1.13f,1.13f,1.13f,1.13f,1.13f,1.13f,
 				1.13f,1.13f,1.13f,1.13f,1.13f,1.13f});// dimensiones para las 12 columnas
-		tablaCitasMascota.setSpacingAfter(20.1f);
+		tablaCitasMascota.setSpacingBefore(60.6f);
 		
 		this.headCitasMascota(tablaCitasMascota);
 		this.bodyCitasMascota(tablaCitasMascota);
