@@ -17,11 +17,7 @@
 
     	<!-- Custom Theme Style -->
     	<link th:href="@{/build/css/custom.min.css}" rel="stylesheet">
-    	<link type="text/css" th:href="@{/css/citas.css}" rel="stylesheet"/>
-    	<link type="text/css" th:href="@{/css/mascotas.css}" rel="stylesheet"/>
-    	
-    	<!-- Custom JS para el checkbox -->
-    	<script type="text/javascript" th:src="@{/js/citas.js}"></script>
+    	<link type="text/css" th:href="@{/css/usuarios.css}" rel="stylesheet"/>
 	</head>
 
 	<body class="nav-md">
@@ -139,31 +135,19 @@
             
             <div sec:authorize="hasRole('ROLE_CLIENTE')" class="container mt-4">
 			
-			<div class="card-headert mt-5 text-center"> <h3> DATOS PERSONALES DE <span th:text="${clienteActual}"></span></h3> </div>
+			<div class="card-headert text-center mt-4"> <h3> DATOS PERSONALES DE <span th:text="${clienteActual}"></span></h3> </div>
 			
-			<div class="card-body">
-			
-				<table class="table table-bordered text-center" id="tablaClientes">
-					<thead class="table table-dark">
-						<tr>
-							<th>Nombre</th>
-							<th>Apellidos</th>
-							<th>Teléfono</th>
-							<th>Username</th>
-							<th>Operaciones</th>
-						</tr>
-					</thead>
-						
-					<tbody class="table table-light">
-						<tr>
-							<td class="border" th:text="${usuario.nombre}"></td>
-							<td class="border" th:text="${usuario.apellidos}"></td>
-							<td class="border" th:text="${usuario.telefono}"></td>
-							<td class="border" th:text="${usuario.username}"></td>
-							<td class="border"><a th:href="@{/citas/datosCliente/pdf/}+${usuario.id}" class="btn btn-info"><i class="fa fa-file-pdf-o"></i> Exportar datos</a></td>
-						</tr>
-					</tbody>
-				</table>
+			<div class="container mt-5 col-md-3">
+				<ul class="list-group">
+           			<li class="list-group-item" id="datoUsuario"><span class="text-left"><strong>Nombre:</strong></span> <span th:text="${usuario.nombre}" class="text-right"></span></li>
+           			<li class="list-group-item" id="datoUsuario"><span class="text-left"><strong>Apellidos:</strong></span> <span th:text="${usuario.apellidos}" class="text-right"></span></li>
+           			<li class="list-group-item" id="datoUsuario"><span class="text-left"><strong>Teléfono:</strong></span> <span th:text="${usuario.telefono}" class="text-right"></span></li>
+           			<li class="list-group-item bg-info text-white" id="datoUsuario"><span class="text-left"><strong>Username:</strong></span> <span th:text="${usuario.username}" class="text-right"></span></li>
+           		</ul>
+				
+				<div class="card-footer mt-4">
+					<a th:href="@{/citas/datosCliente/pdf/}+${usuario.id}" class="btn btn-info" id="btnInformePDF"><i class="fa fa-file-pdf-o"></i> Exportar a PDF</a>
+				</div>
 			</div>
 		</div>
 			

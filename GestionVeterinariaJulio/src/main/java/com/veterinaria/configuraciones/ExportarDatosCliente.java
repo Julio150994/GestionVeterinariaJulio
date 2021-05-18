@@ -2,7 +2,6 @@ package com.veterinaria.configuraciones;
 
 import java.awt.Color;
 import java.io.IOException;
-import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -16,14 +15,18 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import com.veterinaria.modelos.ModeloUsuarios;
 
-/* Realizado sin utilizar reportLab */
 
 public class ExportarDatosCliente {
-	private static List<ModeloUsuarios> listaClientes;
+	private static ModeloUsuarios datosCliente;
 	private static Font txtDatosCliente;
 	
-	public ExportarDatosCliente(List<ModeloUsuarios> listaClientes) {
-		this.listaClientes = listaClientes;
+	
+	public ExportarDatosCliente() {
+		super();
+	}
+	
+	public ExportarDatosCliente(ModeloUsuarios datosCliente) {
+		this.datosCliente = datosCliente;
 	}
 
 	
@@ -49,17 +52,15 @@ public class ExportarDatosCliente {
 	}
 	
 	private void bodyClientes(PdfPTable tablaClientes) {
-		for(ModeloUsuarios cliente: listaClientes) {
-			tablaClientes.addCell(cliente.getNombre());
-			tablaClientes.addCell(cliente.getApellidos());
-			tablaClientes.addCell(cliente.getTelefono());
-			tablaClientes.addCell(cliente.getUsername());
-		}
+		tablaClientes.addCell(datosCliente.getNombre());
+		tablaClientes.addCell(datosCliente.getApellidos());
+		tablaClientes.addCell(datosCliente.getTelefono());
+		tablaClientes.addCell(datosCliente.getUsername());
 	}
 	
 	
 	public void exportarDatosCliente(HttpServletResponse resCliente) throws DocumentException, IOException {
-		Document docCliente = new Document(PageSize.A3);// luego probar con DIN A4
+		Document docCliente = new Document(PageSize.A4);
 		PdfWriter.getInstance(docCliente, resCliente.getOutputStream());
 		
 		docCliente.open();
