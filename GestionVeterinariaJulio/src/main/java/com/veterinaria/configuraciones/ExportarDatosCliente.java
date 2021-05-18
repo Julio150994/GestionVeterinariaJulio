@@ -24,7 +24,7 @@ public class ExportarDatosCliente {
 	private static ModeloUsuarios datosCliente;
 	private static List<Citas> datosCitasCliente;
 	private static Font txtDatosCliente,txtLogo;
-	
+	private static PdfPCell filaCliente = new PdfPCell();
 	
 	public ExportarDatosCliente() {
 		super();
@@ -38,7 +38,6 @@ public class ExportarDatosCliente {
 	/*--------------Mostramos los datos del cliente actual------------------------*/
 	
 	private void headClientes(PdfPTable tablaClientes) {
-		PdfPCell filaCliente = new PdfPCell();
 		filaCliente.setBackgroundColor(Color.decode("#437EB9"));
 		filaCliente.setPadding(5);
 		
@@ -70,11 +69,16 @@ public class ExportarDatosCliente {
 		tablaClientes.addCell(filaCliente);
 	}
 	
-	private void bodyClientes(PdfPTable tablaClientes) {
+	private void bodyClientes(PdfPTable tablaClientes) {		
 		tablaClientes.addCell(datosCliente.getNombre());
 		tablaClientes.addCell(datosCliente.getApellidos());
 		tablaClientes.addCell(datosCliente.getTelefono());
 		tablaClientes.addCell(datosCliente.getUsername());
+		
+		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setPadding(10);
+		tablaClientes.addCell(filaCliente);
 	}
 	
 	
@@ -145,8 +149,7 @@ public class ExportarDatosCliente {
 	
 	public void exportarDatosCliente(HttpServletResponse resCliente) throws DocumentException, IOException {
 		Document docCliente = new Document();
-		docCliente.setPageSize(PageSize.LETTER.rotate());
-		docCliente.setMargins(-10, -10, 25, 10);
+		docCliente.setPageSize(PageSize.A3);
 		
 		PdfWriter.getInstance(docCliente, resCliente.getOutputStream());
 		
