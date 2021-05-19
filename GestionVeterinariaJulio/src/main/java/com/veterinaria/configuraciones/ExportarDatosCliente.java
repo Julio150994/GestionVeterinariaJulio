@@ -69,9 +69,7 @@ public class ExportarDatosCliente {
 		tablaClientes.addCell(filaCliente);
 	}
 	
-	private void bodyClientes(PdfPTable tablaClientes) {
-		tablaClientes.setHorizontalAlignment(Element.ALIGN_CENTER);
-		
+	private void bodyClientes(PdfPTable tablaClientes) {		
 		tablaClientes.addCell(datosCliente.getNombre());
 		tablaClientes.addCell(datosCliente.getApellidos());
 		tablaClientes.addCell(datosCliente.getTelefono());
@@ -128,16 +126,16 @@ public class ExportarDatosCliente {
 	private void bodyCitasMascota(PdfPTable tablaCitasMascota) throws IOException {
 		for(Citas cita: datosCitasCliente) {
 			tablaCitasMascota.addCell(cita.getUsuario().getUsername());
-			tablaCitasMascota.addCell(""+cita.getFecha());// comprobar esto
+			tablaCitasMascota.addCell(""+cita.getFecha());
 			tablaCitasMascota.addCell(cita.getMotivo());
 			tablaCitasMascota.addCell(cita.getInforme());
 			
 			tablaCitasMascota.addCell(cita.getMascota().getNombre());
 			tablaCitasMascota.addCell(cita.getMascota().getTipo());
 			tablaCitasMascota.addCell(cita.getMascota().getRaza());
-			tablaCitasMascota.addCell(""+cita.getMascota().getFechaNacimiento());// comprobar esto
+			tablaCitasMascota.addCell(""+cita.getMascota().getFechaNacimiento());
 			
-			Image fotoMascota = Image.getInstance(cita.getMascota().getFoto());// visualizamos las fotos en el PDF
+			Image fotoMascota = Image.getInstance(cita.getMascota().getFoto());
 			fotoMascota.setAlignment(Element.ALIGN_CENTER);
 			tablaCitasMascota.addCell(fotoMascota);
 		}
@@ -176,7 +174,7 @@ public class ExportarDatosCliente {
 		//-----------Para el cliente actual------------------------
 		PdfPTable tablaClientes = new PdfPTable(4);
 		tablaClientes.setWidthPercentage(90f);
-		tablaClientes.setWidths(new float[] {1.6f, 3.6f, 2.8f, 1.5f});// dimensiones para las 4 columnas
+		tablaClientes.setWidths(new float[] {2.3f, 3.8f, 3.1f, 1.6f});// dimensiones para las 4 columnas
 		tablaClientes.setSpacingBefore(10);
 		
 		this.headClientes(tablaClientes);
