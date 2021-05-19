@@ -119,7 +119,7 @@ public class ExportarDatosCliente {
 	
 	
 	/*------------------Mostrar las citas de la mascota de ese cliente---------------------------------*/
-	private void headCitasMascota(PdfPTable tablaCitasMascota) {
+	private void mostrarCitasMascota(PdfPTable tablaCitasMascota) throws IOException {
 		PdfPCell filaCitas = new PdfPCell();
 		filaCitas.setBackgroundColor(Color.decode("#437EB9"));
 		filaCitas.setPadding(5);
@@ -127,95 +127,100 @@ public class ExportarDatosCliente {
 		txtDatosCliente = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
 		txtDatosCliente.setColor(Color.WHITE);
 		
-		filaCitas.setPhrase(new Phrase("Nombre de veterinario",txtDatosCliente));
-		filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
-		filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
-		filaCitas.setPadding(10);
-		tablaCitasMascota.addCell(filaCitas);
-		
-		filaCitas.setPhrase(new Phrase("Apellidos de veterinario",txtDatosCliente));
-		filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
-		filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
-		filaCitas.setPadding(10);
-		tablaCitasMascota.addCell(filaCitas);
-		
-		filaCitas.setPhrase(new Phrase("Teléfono de veterinario",txtDatosCliente));
-		filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
-		filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
-		filaCitas.setPadding(10);
-		tablaCitasMascota.addCell(filaCitas);
-		
-		filaCitas.setPhrase(new Phrase("Username de veterinario",txtDatosCliente));
-		filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
-		filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
-		filaCitas.setPadding(10);
-		tablaCitasMascota.addCell(filaCitas);
-		
-		filaCitas.setPhrase(new Phrase("Fecha de cita",txtDatosCliente));
-		filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
-		filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
-		filaCitas.setPadding(10);
-		tablaCitasMascota.addCell(filaCitas);
-		
-		filaCitas.setPhrase(new Phrase("Motivo",txtDatosCliente));
-		filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
-		filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
-		filaCitas.setPadding(10);
-		tablaCitasMascota.addCell(filaCitas);
-		
-		filaCitas.setPhrase(new Phrase("Informe",txtDatosCliente));
-		filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
-		filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
-		filaCitas.setPadding(10);
-		tablaCitasMascota.addCell(filaCitas);
-		
-		filaCitas.setPhrase(new Phrase("Nombre de mascota",txtDatosCliente));
-		filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
-		filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
-		filaCitas.setPadding(10);
-		tablaCitasMascota.addCell(filaCitas);
-		
-		filaCitas.setPhrase(new Phrase("Tipo de mascota",txtDatosCliente));
-		filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
-		filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
-		filaCitas.setPadding(10);
-		tablaCitasMascota.addCell(filaCitas);
-		
-		filaCitas.setPhrase(new Phrase("Raza de mascota",txtDatosCliente));
-		filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
-		filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
-		filaCitas.setPadding(10);
-		tablaCitasMascota.addCell(filaCitas);
-		
-		filaCitas.setPhrase(new Phrase("Fecha de mascota",txtDatosCliente));
-		filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
-		filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
-		filaCitas.setPadding(10);
-		tablaCitasMascota.addCell(filaCitas);
-		
-		filaCitas.setPhrase(new Phrase("Foto de mascota",txtDatosCliente));
-		filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
-		filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
-		filaCitas.setPadding(10);
-		tablaCitasMascota.addCell(filaCitas);
-	}
-	
-	private void bodyCitasMascota(PdfPTable tablaCitasMascota) throws IOException {
 		for(Citas cita: datosCitasCliente) {
+			filaCitas.setPhrase(new Phrase("Nombre de veterinario",txtDatosCliente));
+			filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setPadding(10);
+			tablaCitasMascota.addCell(filaCitas);
 			tablaCitasMascota.addCell(cita.getUsuario().getNombre());
+			
+			
+			filaCitas.setPhrase(new Phrase("Apellidos de veterinario",txtDatosCliente));
+			filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setPadding(10);
+			tablaCitasMascota.addCell(filaCitas);
 			tablaCitasMascota.addCell(cita.getUsuario().getApellidos());
+			
+			
+			filaCitas.setPhrase(new Phrase("Teléfono de veterinario",txtDatosCliente));
+			filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setPadding(10);
+			tablaCitasMascota.addCell(filaCitas);
 			tablaCitasMascota.addCell(cita.getUsuario().getTelefono());
+			
+			
+			filaCitas.setPhrase(new Phrase("Username de veterinario",txtDatosCliente));
+			filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setPadding(10);
+			tablaCitasMascota.addCell(filaCitas);
 			tablaCitasMascota.addCell(cita.getUsuario().getUsername());
 			
+			
+			filaCitas.setPhrase(new Phrase("Fecha de cita",txtDatosCliente));
+			filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setPadding(10);
+			tablaCitasMascota.addCell(filaCitas);
 			tablaCitasMascota.addCell(""+cita.getFecha());
+			
+			
+			filaCitas.setPhrase(new Phrase("Motivo",txtDatosCliente));
+			filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setPadding(10);
+			tablaCitasMascota.addCell(filaCitas);
 			tablaCitasMascota.addCell(cita.getMotivo());
+			
+			
+			filaCitas.setPhrase(new Phrase("Informe",txtDatosCliente));
+			filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setPadding(10);
+			tablaCitasMascota.addCell(filaCitas);
 			tablaCitasMascota.addCell(cita.getInforme());
 			
+			
+			filaCitas.setPhrase(new Phrase("Nombre de mascota",txtDatosCliente));
+			filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setPadding(10);
+			tablaCitasMascota.addCell(filaCitas);
 			tablaCitasMascota.addCell(cita.getMascota().getNombre());
+			
+			
+			filaCitas.setPhrase(new Phrase("Tipo de mascota",txtDatosCliente));
+			filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setPadding(10);
+			tablaCitasMascota.addCell(filaCitas);
 			tablaCitasMascota.addCell(cita.getMascota().getTipo());
+			
+			
+			filaCitas.setPhrase(new Phrase("Raza de mascota",txtDatosCliente));
+			filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setPadding(10);
+			tablaCitasMascota.addCell(filaCitas);
 			tablaCitasMascota.addCell(cita.getMascota().getRaza());
+			
+			
+			filaCitas.setPhrase(new Phrase("Fecha de mascota",txtDatosCliente));
+			filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setPadding(10);
+			tablaCitasMascota.addCell(filaCitas);
 			tablaCitasMascota.addCell(""+cita.getMascota().getFechaNacimiento());
 			
+			
+			filaCitas.setPhrase(new Phrase("Foto de mascota",txtDatosCliente));
+			filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setPadding(10);
+			tablaCitasMascota.addCell(filaCitas);
 			Image fotoMascota = Image.getInstance(cita.getMascota().getFoto());
 			fotoMascota.setAlignment(Element.ALIGN_CENTER);
 			tablaCitasMascota.addCell(fotoMascota);
@@ -278,8 +283,7 @@ public class ExportarDatosCliente {
 		tablaCitasMascota.setWidths(new float[] {1f,1f,1f,1f,1f,1f,1f,1f,1f,1f,1f,1f});// dimensiones para las 12 columnas
 		tablaCitasMascota.setSpacingBefore(9.35f);
 		
-		this.headCitasMascota(tablaCitasMascota);
-		this.bodyCitasMascota(tablaCitasMascota);
+		this.mostrarCitasMascota(tablaCitasMascota);
 		
 		docCliente.add(tablaCitasMascota);
 		
