@@ -37,7 +37,7 @@ public class ExportarDatosCliente {
 
 	/*--------------Mostramos los datos del cliente actual------------------------*/
 	
-	private void headClientes(PdfPTable tablaClientes) {
+	private void mostrarDatosCliente(PdfPTable tablaClientes) {
 		filaCliente.setBackgroundColor(Color.decode("#437EB9"));
 		filaCliente.setPadding(5);
 		
@@ -49,31 +49,72 @@ public class ExportarDatosCliente {
 		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
 		filaCliente.setPadding(10);
 		tablaClientes.addCell(filaCliente);
+		tablaClientes.addCell(datosCliente.getNombre());
+		filaCliente.setPhrase(new Phrase("..."));
+		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setPadding(0);
+		tablaClientes.addCell(filaCliente);
+		filaCliente.setPhrase(new Phrase("..."));
+		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setPadding(0);
+		tablaClientes.addCell(filaCliente);
+		
 		
 		filaCliente.setPhrase(new Phrase("Apellidos",txtDatosCliente));
 		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
 		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
 		filaCliente.setPadding(10);
 		tablaClientes.addCell(filaCliente);
+		tablaClientes.addCell(datosCliente.getApellidos());
+		
+		filaCliente.setPhrase(new Phrase("..."));
+		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setPadding(0);
+		tablaClientes.addCell(filaCliente);
+		filaCliente.setPhrase(new Phrase("..."));
+		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setPadding(0);
+		tablaClientes.addCell(filaCliente);
+		
 		
 		filaCliente.setPhrase(new Phrase("Teléfono",txtDatosCliente));
 		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
 		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
 		filaCliente.setPadding(10);
 		tablaClientes.addCell(filaCliente);
+		tablaClientes.addCell(datosCliente.getTelefono());
+		filaCliente.setPhrase(new Phrase("..."));
+		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setPadding(0);
+		tablaClientes.addCell(filaCliente);
+		filaCliente.setPhrase(new Phrase("..."));
+		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setPadding(0);
+		tablaClientes.addCell(filaCliente);
+		
 		
 		filaCliente.setPhrase(new Phrase("Username",txtDatosCliente));
 		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
 		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
 		filaCliente.setPadding(10);
 		tablaClientes.addCell(filaCliente);
-	}
-	
-	private void bodyClientes(PdfPTable tablaClientes) {		
-		tablaClientes.addCell(datosCliente.getNombre());
-		tablaClientes.addCell(datosCliente.getApellidos());
-		tablaClientes.addCell(datosCliente.getTelefono());
 		tablaClientes.addCell(datosCliente.getUsername());
+		filaCliente.setPhrase(new Phrase("..."));
+		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setPadding(0);
+		tablaClientes.addCell(filaCliente);
+		filaCliente.setPhrase(new Phrase("..."));
+		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setPadding(0);
+		tablaClientes.addCell(filaCliente);
 	}
 	
 	
@@ -217,8 +258,7 @@ public class ExportarDatosCliente {
 		tablaClientes.setWidths(new float[] {2.3f, 3.8f, 3.1f, 1.6f});// dimensiones para las 4 columnas
 		tablaClientes.setSpacingBefore(10.6f);
 		
-		this.headClientes(tablaClientes);
-		this.bodyClientes(tablaClientes);
+		this.mostrarDatosCliente(tablaClientes);
 		
 		docCliente.add(tablaClientes);
 		
