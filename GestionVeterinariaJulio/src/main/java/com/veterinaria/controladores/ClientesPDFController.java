@@ -2,8 +2,8 @@ package com.veterinaria.controladores;
 
 import java.io.IOException;
 import java.util.List;
-
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +13,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.lowagie.text.DocumentException;
 import com.veterinaria.configuraciones.ExportarDatosCliente;
 import com.veterinaria.entidades.Citas;
@@ -78,11 +79,17 @@ public class ClientesPDFController {
 	/* Método para exportar los datos del cliente a pdf */
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/citas/datosCliente/pdf/{id}")
-	public void mostrarInformeCliente(HttpServletResponse resCliente, Model modelo, ModeloMascotas modeloMascota,
-			@RequestParam(name="nombre",required=false) String nombre) throws DocumentException, IOException {		
+	public void mostrarInformeCliente(HttpServletResponse resCliente, Model modelo, @Valid @ModelAttribute("mascota") ModeloMascotas mascota,
+			BindingResult validation, ModeloCitas cita, RedirectAttributes mensajeFlash) throws DocumentException, IOException {
+		
+		LOG_VETERINARIA.info(mascota.getNombre()+" introducido correctamente");
+		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth.getPrincipal() != "anonymousUser") {
 			Usuarios cliente = usuariosRepository.findByUsername(auth.getName());
+			
+			boolean realizada = cita.isRealizada();
+			realizada = true;
 			
 			resCliente.setContentType("application/pdf");
 			
@@ -93,7 +100,7 @@ public class ClientesPDFController {
 			ModeloUsuarios modeloCliente = usuariosImpl.buscarId(cliente.getId());
 			modelo.addAttribute("usuario",modeloCliente);
 			
-			List<Citas> modeloCita = citas.listHistorialCitasMascota(cliente.getId(),modeloMascota.getNombre());
+			List<Citas> modeloCita = citas.findCitasByMascota(mascota.getNombre(),realizada);
 			
 			ExportarDatosCliente pdfCliente = new ExportarDatosCliente(modeloCliente,modeloCita);
 			pdfCliente.exportarDatosCliente(resCliente);

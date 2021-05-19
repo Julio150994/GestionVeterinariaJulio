@@ -145,13 +145,10 @@
            			<li class="list-group-item bg-info text-white" id="datoUsuario"><span class="text-left"><strong>Username:</strong></span> <span th:text="${usuario.username}" class="text-right"></span></li>
            		</ul>
            		
-           		<form action="#" th:action="@{/citas/datosCliente/pdf/}+${usuario.id}" th:object="${mascota}" method="GET">
-           			<input type="hidden" th:field="*{id}"/>
-					<input type="hidden" name="nombre" th:value="${mascota.nombre}"/>
-					
+           		<form action="#" th:action="@{/citas/datosCliente/pdf/}+${usuario.id}" th:object="${mascota}" method="GET">					
 					<select name="nombre" class="form-control col-sm-12 mt-3">
 						<option value="">Seleccione su mascota</option>
-						<option th:each="mascota: ${mascotas}" th:value="${mascota.id}" th:text="${mascota.nombre}"></option>
+						<option th:each="mascota: ${mascotas}" th:value="${mascota.nombre}" th:text="${mascota.nombre}"></option>
 					</select>
 					
 					<button class="btn btn-info mt-5" id="btnInformePDF"><i class="fa fa-file-pdf-o"></i> Exportar a PDF</button>
