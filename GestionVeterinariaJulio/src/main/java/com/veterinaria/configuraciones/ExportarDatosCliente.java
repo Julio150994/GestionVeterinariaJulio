@@ -23,7 +23,7 @@ import com.veterinaria.modelos.ModeloUsuarios;
 public class ExportarDatosCliente {
 	private static ModeloUsuarios datosCliente;
 	private static List<Citas> datosCitasCliente;
-	private static Font txtDatosCliente,txtLogo;
+	private static Font txtDatosCliente,txtLogo,txtCitasMascotaCliente;
 	private static PdfPCell filaCliente = new PdfPCell();
 	
 	public ExportarDatosCliente() {
@@ -206,10 +206,10 @@ public class ExportarDatosCliente {
 		txtDatosCliente = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
 		txtDatosCliente.setSize(19);
 		txtDatosCliente.setColor(Color.BLACK);
-		Paragraph titulo = new Paragraph("Datos de cliente",txtDatosCliente);
-		titulo.setAlignment(Paragraph.ALIGN_CENTER);
+		Paragraph tituloDatosCliente = new Paragraph("Datos de cliente",txtDatosCliente);
+		tituloDatosCliente.setAlignment(Paragraph.ALIGN_CENTER);
 		
-		docCliente.add(titulo);
+		docCliente.add(tituloDatosCliente);
 		
 		//-----------Para el cliente actual------------------------
 		PdfPTable tablaClientes = new PdfPTable(4);
@@ -221,6 +221,15 @@ public class ExportarDatosCliente {
 		this.bodyClientes(tablaClientes);
 		
 		docCliente.add(tablaClientes);
+		
+		
+		txtCitasMascotaCliente = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
+		txtCitasMascotaCliente.setSize(19);
+		txtCitasMascotaCliente.setColor(Color.BLACK);
+		Paragraph tituloCitasMascota = new Paragraph("Datos de cliente",txtCitasMascotaCliente);
+		tituloCitasMascota.setAlignment(Paragraph.ALIGN_CENTER);
+		
+		docCliente.add(tituloCitasMascota);
 		
 		//--------------Para las citas de la mascota---------------
 		PdfPTable tablaCitasMascota = new PdfPTable(12);
