@@ -13,6 +13,7 @@ import com.lowagie.text.Image;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
+import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
@@ -25,7 +26,7 @@ public class ExportarDatosCliente {
 	private static List<Citas> datosCitasCliente;
 	private static Font txtDatosCliente,txtLogo,txtCitasMascotaCliente;
 	
-	private static PdfPCell filaCliente = new PdfPCell();
+	private static PdfPCell filaCliente = new PdfPCell(), filaCitas = new PdfPCell();
 	
 	public ExportarDatosCliente() {
 		super();
@@ -50,38 +51,56 @@ public class ExportarDatosCliente {
 		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
 		filaCliente.setPadding(10);
 		tablaClientes.addCell(filaCliente);
-		tablaClientes.addCell(datosCliente.getNombre());
-		tablaClientes.spacingBefore();
+		filaCliente.setPhrase(new Phrase(datosCliente.getNombre()));
+		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setPadding(10);
+		tablaClientes.addCell(filaCliente);
+		tablaClientes.addCell(""); tablaClientes.addCell("");
+		
 		
 		filaCliente.setPhrase(new Phrase("Apellidos",txtDatosCliente));
 		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
 		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
 		filaCliente.setPadding(10);
 		tablaClientes.addCell(filaCliente);
-		tablaClientes.addCell(datosCliente.getApellidos());
-		tablaClientes.spacingBefore();
+		filaCliente.setPhrase(new Phrase(datosCliente.getApellidos()));
+		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setPadding(10);
+		tablaClientes.addCell(filaCliente);
+		tablaClientes.addCell(""); tablaClientes.addCell("");
+		
 		
 		filaCliente.setPhrase(new Phrase("Teléfono",txtDatosCliente));
 		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
 		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
 		filaCliente.setPadding(10);
 		tablaClientes.addCell(filaCliente);
-		tablaClientes.addCell(datosCliente.getTelefono());
-		tablaClientes.spacingBefore();
+		filaCliente.setPhrase(new Phrase(datosCliente.getTelefono()));
+		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setPadding(10);
+		tablaClientes.addCell(filaCliente);
+		tablaClientes.addCell(""); tablaClientes.addCell("");
+		
 		
 		filaCliente.setPhrase(new Phrase("Username",txtDatosCliente));
 		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
 		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
 		filaCliente.setPadding(10);
 		tablaClientes.addCell(filaCliente);
-		tablaClientes.addCell(datosCliente.getUsername());
-		tablaClientes.spacingBefore();
+		filaCliente.setPhrase(new Phrase(datosCliente.getUsername()));
+		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
+		filaCliente.setPadding(10);
+		tablaClientes.addCell(filaCliente);
+		tablaClientes.addCell(""); tablaClientes.addCell("");
 	}
 	
 	
 	/*------------------Mostrar las citas de la mascota de ese cliente---------------------------------*/
 	private void mostrarCitasMascota(PdfPTable tablaCitasMascota) throws IOException {
-		PdfPCell filaCitas = new PdfPCell();
 		filaCitas.setBackgroundColor(Color.decode("#437EB9"));
 		filaCitas.setPadding(5);
 		
@@ -220,7 +239,7 @@ public class ExportarDatosCliente {
 		//-----------Para el cliente actual------------------------
 		PdfPTable tablaClientes = new PdfPTable(4);
 		tablaClientes.setWidthPercentage(90f);
-		tablaClientes.setWidths(new float[] {2.3f, 3.8f, 3.1f, 1.6f});// dimensiones para las 4 columnas
+		tablaClientes.setWidths(new float[] {1.5f, 2.1f, 1f, 2f});// dimensiones para las 4 columnas
 		tablaClientes.setSpacingBefore(10.6f);
 		
 		this.mostrarDatosCliente(tablaClientes);
