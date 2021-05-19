@@ -139,6 +139,11 @@ public class ExportarDatosCliente {
 			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
 			filaCitas.setPadding(0);
 			tablaCitasMascota.addCell(filaCitas);
+			filaCitas.setPhrase(new Phrase("..."));
+			filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setPadding(0);
+			tablaCitasMascota.addCell(filaCitas);
 			
 			
 			filaCitas.setPhrase(new Phrase("Apellidos de veterinario",txtCitasMascotaCliente));
@@ -147,6 +152,11 @@ public class ExportarDatosCliente {
 			filaCitas.setPadding(10);
 			tablaCitasMascota.addCell(filaCitas);
 			tablaCitasMascota.addCell(cita.getUsuario().getApellidos());
+			filaCitas.setPhrase(new Phrase("..."));
+			filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setPadding(0);
+			tablaCitasMascota.addCell(filaCitas);
 			filaCitas.setPhrase(new Phrase("..."));
 			filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
 			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
@@ -165,6 +175,11 @@ public class ExportarDatosCliente {
 			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
 			filaCitas.setPadding(0);
 			tablaCitasMascota.addCell(filaCitas);
+			filaCitas.setPhrase(new Phrase("..."));
+			filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setPadding(0);
+			tablaCitasMascota.addCell(filaCitas);
 			
 			
 			filaCitas.setPhrase(new Phrase("Username de veterinario",txtCitasMascotaCliente));
@@ -173,6 +188,11 @@ public class ExportarDatosCliente {
 			filaCitas.setPadding(10);
 			tablaCitasMascota.addCell(filaCitas);
 			tablaCitasMascota.addCell(cita.getUsuario().getUsername());
+			filaCitas.setPhrase(new Phrase("..."));
+			filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setPadding(0);
+			tablaCitasMascota.addCell(filaCitas);
 			filaCitas.setPhrase(new Phrase("..."));
 			filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
 			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
@@ -191,6 +211,16 @@ public class ExportarDatosCliente {
 			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
 			filaCitas.setPadding(0);
 			tablaCitasMascota.addCell(filaCitas);
+			filaCitas.setPhrase(new Phrase("..."));
+			filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setPadding(0);
+			tablaCitasMascota.addCell(filaCitas);
+			filaCitas.setPhrase(new Phrase("..."));
+			filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setPadding(0);
+			tablaCitasMascota.addCell(filaCitas);
 			
 			
 			filaCitas.setPhrase(new Phrase("Motivo",txtCitasMascotaCliente));
@@ -199,6 +229,11 @@ public class ExportarDatosCliente {
 			filaCitas.setPadding(10);
 			tablaCitasMascota.addCell(filaCitas);
 			tablaCitasMascota.addCell(cita.getMotivo());
+			filaCitas.setPhrase(new Phrase("..."));
+			filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setPadding(0);
+			tablaCitasMascota.addCell(filaCitas);
 			filaCitas.setPhrase(new Phrase("..."));
 			filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
 			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
@@ -217,6 +252,11 @@ public class ExportarDatosCliente {
 			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
 			filaCitas.setPadding(0);
 			tablaCitasMascota.addCell(filaCitas);
+			filaCitas.setPhrase(new Phrase("..."));
+			filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setPadding(0);
+			tablaCitasMascota.addCell(filaCitas);
 			
 			
 			filaCitas.setPhrase(new Phrase("Nombre de mascota",txtCitasMascotaCliente));
@@ -225,6 +265,11 @@ public class ExportarDatosCliente {
 			filaCitas.setPadding(10);
 			tablaCitasMascota.addCell(filaCitas);
 			tablaCitasMascota.addCell(cita.getMascota().getNombre());
+			filaCitas.setPhrase(new Phrase("..."));
+			filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setPadding(0);
+			tablaCitasMascota.addCell(filaCitas);
 			filaCitas.setPhrase(new Phrase("..."));
 			filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
 			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
@@ -243,6 +288,11 @@ public class ExportarDatosCliente {
 			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
 			filaCitas.setPadding(0);
 			tablaCitasMascota.addCell(filaCitas);
+			filaCitas.setPhrase(new Phrase("..."));
+			filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setPadding(0);
+			tablaCitasMascota.addCell(filaCitas);
 			
 			
 			filaCitas.setPhrase(new Phrase("Raza de mascota",txtCitasMascotaCliente));
@@ -256,6 +306,11 @@ public class ExportarDatosCliente {
 			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
 			filaCitas.setPadding(0);
 			tablaCitasMascota.addCell(filaCitas);
+			filaCitas.setPhrase(new Phrase("..."));
+			filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setPadding(0);
+			tablaCitasMascota.addCell(filaCitas);
 			
 			
 			filaCitas.setPhrase(new Phrase("Fecha de mascota",txtCitasMascotaCliente));
@@ -264,6 +319,11 @@ public class ExportarDatosCliente {
 			filaCitas.setPadding(10);
 			tablaCitasMascota.addCell(filaCitas);
 			tablaCitasMascota.addCell(""+cita.getMascota().getFechaNacimiento());
+			filaCitas.setPhrase(new Phrase("..."));
+			filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
+			filaCitas.setPadding(0);
+			tablaCitasMascota.addCell(filaCitas);
 			filaCitas.setPhrase(new Phrase("..."));
 			filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
 			filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
