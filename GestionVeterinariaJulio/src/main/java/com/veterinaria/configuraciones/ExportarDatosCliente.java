@@ -215,7 +215,7 @@ public class ExportarDatosCliente {
 		PdfPTable tablaClientes = new PdfPTable(4);
 		tablaClientes.setWidthPercentage(90f);
 		tablaClientes.setWidths(new float[] {2.3f, 3.8f, 3.1f, 1.6f});// dimensiones para las 4 columnas
-		tablaClientes.setSpacingBefore(10);
+		tablaClientes.setSpacingBefore(10.6f);
 		
 		this.headClientes(tablaClientes);
 		this.bodyClientes(tablaClientes);
@@ -226,8 +226,9 @@ public class ExportarDatosCliente {
 		txtCitasMascotaCliente = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
 		txtCitasMascotaCliente.setSize(19);
 		txtCitasMascotaCliente.setColor(Color.BLACK);
-		Paragraph tituloCitasMascota = new Paragraph("Datos de cliente",txtCitasMascotaCliente);
+		Paragraph tituloCitasMascota = new Paragraph("Lista de citas realizadas",txtCitasMascotaCliente);
 		tituloCitasMascota.setAlignment(Paragraph.ALIGN_CENTER);
+		tituloCitasMascota.setSpacingBefore(65.3f);
 		
 		docCliente.add(tituloCitasMascota);
 		
@@ -235,7 +236,7 @@ public class ExportarDatosCliente {
 		PdfPTable tablaCitasMascota = new PdfPTable(12);
 		tablaCitasMascota.setWidthPercentage(100f);
 		tablaCitasMascota.setWidths(new float[] {1f,1f,1f,1f,1f,1f,1f,1f,1f,1f,1f,1f});// dimensiones para las 12 columnas
-		tablaCitasMascota.setSpacingBefore(63.8f);
+		tablaCitasMascota.setSpacingBefore(9.35f);
 		
 		this.headCitasMascota(tablaCitasMascota);
 		this.bodyCitasMascota(tablaCitasMascota);
