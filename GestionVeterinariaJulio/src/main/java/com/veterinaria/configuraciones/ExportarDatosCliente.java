@@ -42,6 +42,10 @@ public class ExportarDatosCliente {
 	private void mostrarDatosCliente(PdfPTable tablaClientes) {
 		filaCliente.setBackgroundColor(Color.decode("#437EB9"));
 		filaCliente.setPadding(5);
+		PdfPCell celdasCliente = new PdfPCell();
+		celdasCliente.setBackgroundColor(Color.WHITE);
+		celdasCliente.setPadding(5);
+		
 		
 		txtDatosCliente = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
 		txtDatosCliente.setColor(Color.WHITE);
@@ -64,11 +68,11 @@ public class ExportarDatosCliente {
 		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
 		filaCliente.setPadding(10);
 		tablaClientes.addCell(filaCliente);
-		filaCliente.setPhrase(new Phrase(datosCliente.getApellidos()));
-		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
-		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
-		filaCliente.setPadding(10);
-		tablaClientes.addCell(filaCliente);
+		celdasCliente.setPhrase(new Phrase(datosCliente.getApellidos()));
+		celdasCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
+		celdasCliente.setVerticalAlignment(Element.ALIGN_CENTER);
+		celdasCliente.setPadding(10);
+		tablaClientes.addCell(celdasCliente);
 		tablaClientes.addCell(""); tablaClientes.addCell("");
 		
 		
@@ -77,11 +81,11 @@ public class ExportarDatosCliente {
 		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
 		filaCliente.setPadding(10);
 		tablaClientes.addCell(filaCliente);
-		filaCliente.setPhrase(new Phrase(datosCliente.getTelefono()));
-		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
-		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
-		filaCliente.setPadding(10);
-		tablaClientes.addCell(filaCliente);
+		celdasCliente.setPhrase(new Phrase(datosCliente.getTelefono()));
+		celdasCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
+		celdasCliente.setVerticalAlignment(Element.ALIGN_CENTER);
+		celdasCliente.setPadding(10);
+		tablaClientes.addCell(celdasCliente);
 		tablaClientes.addCell(""); tablaClientes.addCell("");
 		
 		
@@ -90,10 +94,10 @@ public class ExportarDatosCliente {
 		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
 		filaCliente.setPadding(10);
 		tablaClientes.addCell(filaCliente);
-		filaCliente.setPhrase(new Phrase(datosCliente.getUsername()));
-		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
-		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
-		filaCliente.setPadding(10);
+		celdasCliente.setPhrase(new Phrase(datosCliente.getUsername()));
+		celdasCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
+		celdasCliente.setVerticalAlignment(Element.ALIGN_CENTER);
+		celdasCliente.setPadding(10);
 		tablaClientes.addCell(filaCliente);
 		tablaClientes.addCell(""); tablaClientes.addCell("");
 	}
