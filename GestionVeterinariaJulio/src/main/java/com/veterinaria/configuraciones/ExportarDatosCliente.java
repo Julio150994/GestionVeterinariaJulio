@@ -51,17 +51,7 @@ public class ExportarDatosCliente {
 		filaCliente.setPadding(10);
 		tablaClientes.addCell(filaCliente);
 		tablaClientes.addCell(datosCliente.getNombre());
-		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
-		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
-		filaCliente.setPadding(0);
-		filaCliente.setBorder(0);
-		tablaClientes.addCell("");
-		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
-		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
-		filaCliente.setPadding(0);
-		filaCliente.setBorder(0);
-		tablaClientes.addCell("");
-		
+		tablaClientes.spacingBefore();
 		
 		filaCliente.setPhrase(new Phrase("Apellidos",txtDatosCliente));
 		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -69,18 +59,7 @@ public class ExportarDatosCliente {
 		filaCliente.setPadding(10);
 		tablaClientes.addCell(filaCliente);
 		tablaClientes.addCell(datosCliente.getApellidos());
-		
-		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
-		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
-		filaCliente.setPadding(0);
-		filaCliente.setBorder(0);
-		tablaClientes.addCell("");
-		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
-		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
-		filaCliente.setPadding(0);
-		filaCliente.setBorder(0);
-		tablaClientes.addCell("");
-		
+		tablaClientes.spacingBefore();
 		
 		filaCliente.setPhrase(new Phrase("Teléfono",txtDatosCliente));
 		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -88,17 +67,7 @@ public class ExportarDatosCliente {
 		filaCliente.setPadding(10);
 		tablaClientes.addCell(filaCliente);
 		tablaClientes.addCell(datosCliente.getTelefono());
-		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
-		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
-		filaCliente.setPadding(0);
-		filaCliente.setBorder(0);
-		tablaClientes.addCell("");
-		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
-		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
-		filaCliente.setPadding(0);
-		filaCliente.setBorder(0);
-		tablaClientes.addCell("");
-		
+		tablaClientes.spacingBefore();
 		
 		filaCliente.setPhrase(new Phrase("Username",txtDatosCliente));
 		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -106,16 +75,7 @@ public class ExportarDatosCliente {
 		filaCliente.setPadding(10);
 		tablaClientes.addCell(filaCliente);
 		tablaClientes.addCell(datosCliente.getUsername());
-		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
-		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
-		filaCliente.setPadding(0);
-		filaCliente.setBorder(0);
-		tablaClientes.addCell("");
-		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
-		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
-		filaCliente.setPadding(0);
-		filaCliente.setBorder(0);
-		tablaClientes.addCell("");
+		tablaClientes.spacingBefore();
 	}
 	
 	
