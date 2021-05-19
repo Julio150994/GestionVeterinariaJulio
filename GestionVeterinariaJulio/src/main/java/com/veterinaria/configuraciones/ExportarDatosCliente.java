@@ -55,11 +55,11 @@ public class ExportarDatosCliente {
 		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
 		filaCliente.setPadding(10);
 		tablaClientes.addCell(filaCliente);
-		filaCliente.setPhrase(new Phrase(datosCliente.getNombre()));
-		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
-		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
-		filaCliente.setPadding(10);
-		tablaClientes.addCell(filaCliente);
+		celdasCliente.setPhrase(new Phrase(datosCliente.getNombre()));
+		celdasCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
+		celdasCliente.setVerticalAlignment(Element.ALIGN_CENTER);
+		celdasCliente.setPadding(10);
+		tablaClientes.addCell(celdasCliente);
 		tablaClientes.addCell(""); tablaClientes.addCell("");
 		
 		
@@ -98,7 +98,7 @@ public class ExportarDatosCliente {
 		celdasCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
 		celdasCliente.setVerticalAlignment(Element.ALIGN_CENTER);
 		celdasCliente.setPadding(10);
-		tablaClientes.addCell(filaCliente);
+		tablaClientes.addCell(celdasCliente);
 		tablaClientes.addCell(""); tablaClientes.addCell("");
 	}
 	
