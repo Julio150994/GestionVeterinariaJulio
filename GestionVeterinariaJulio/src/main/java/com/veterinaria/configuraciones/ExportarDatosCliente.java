@@ -286,10 +286,12 @@ public class ExportarDatosCliente {
 			filaCitas.setColspan(6);
 			tablaCitasMascota.addCell(filaCitas);
 			Image fotoMascota = Image.getInstance(cita.getMascota().getFoto());
+			fotoMascota.scaleAbsolute(2.5f,2.5f);
 			fotoMascota.setAlignment(Element.ALIGN_CENTER);
+			
 			celdasCitasMascota.setHorizontalAlignment(Element.ALIGN_CENTER);
 			celdasCitasMascota.setVerticalAlignment(Element.ALIGN_CENTER);
-			celdasCitasMascota.setPadding(3);
+			celdasCitasMascota.setPadding(10);
 			celdasCitasMascota.setColspan(6);
 			celdasCitasMascota.setImage(fotoMascota);
 			tablaCitasMascota.addCell(celdasCitasMascota);
