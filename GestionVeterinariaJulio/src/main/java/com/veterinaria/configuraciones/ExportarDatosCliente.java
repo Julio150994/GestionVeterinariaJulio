@@ -46,7 +46,6 @@ public class ExportarDatosCliente {
 		celdasCliente.setBackgroundColor(Color.WHITE);
 		celdasCliente.setPadding(5);
 		
-		
 		txtDatosCliente = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
 		txtDatosCliente.setColor(Color.WHITE);
 		
@@ -54,6 +53,7 @@ public class ExportarDatosCliente {
 		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
 		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
 		filaCliente.setPadding(10);
+		filaCliente.setColspan(2);
 		tablaClientes.addCell(filaCliente);
 		celdasCliente.setPhrase(new Phrase(datosCliente.getNombre()));
 		celdasCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -66,6 +66,7 @@ public class ExportarDatosCliente {
 		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
 		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
 		filaCliente.setPadding(10);
+		filaCliente.setColspan(2);
 		tablaClientes.addCell(filaCliente);
 		celdasCliente.setPhrase(new Phrase(datosCliente.getApellidos()));
 		celdasCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -73,7 +74,6 @@ public class ExportarDatosCliente {
 		celdasCliente.setPadding(10);
 		celdasCliente.setColspan(2);
 		tablaClientes.addCell(celdasCliente);
-		
 		
 		filaCliente.setPhrase(new Phrase("Teléfono",txtDatosCliente));
 		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -84,9 +84,7 @@ public class ExportarDatosCliente {
 		celdasCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
 		celdasCliente.setVerticalAlignment(Element.ALIGN_CENTER);
 		celdasCliente.setPadding(10);
-		celdasCliente.setColspan(2);
 		tablaClientes.addCell(celdasCliente);
-		
 		
 		filaCliente.setPhrase(new Phrase("Username",txtDatosCliente));
 		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -97,7 +95,6 @@ public class ExportarDatosCliente {
 		celdasCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
 		celdasCliente.setVerticalAlignment(Element.ALIGN_CENTER);
 		celdasCliente.setPadding(10);
-		celdasCliente.setColspan(2);
 		tablaClientes.addCell(celdasCliente);
 	}
 	
@@ -215,7 +212,6 @@ public class ExportarDatosCliente {
 		docCliente.setPageSize(PageSize.A3);
 		
 		PdfWriter.getInstance(docCliente, resCliente.getOutputStream());
-		
 		docCliente.open();
 		
 		//----------Establecemos la imágen de logo de la clínica a la derecha del informe------------------
@@ -236,6 +232,7 @@ public class ExportarDatosCliente {
 		txtDatosCliente.setColor(Color.BLACK);
 		Paragraph tituloDatosCliente = new Paragraph("Datos de cliente",txtDatosCliente);
 		tituloDatosCliente.setAlignment(Paragraph.ALIGN_CENTER);
+		tituloDatosCliente.setSpacingBefore(27.45f);
 		
 		docCliente.add(tituloDatosCliente);
 		
@@ -243,19 +240,18 @@ public class ExportarDatosCliente {
 		PdfPTable tablaClientes = new PdfPTable(4);
 		tablaClientes.setWidthPercentage(90f);
 		tablaClientes.setWidths(new float[] {1.5f, 2.1f, 1f, 2f});// dimensiones para las 4 columnas
-		tablaClientes.setSpacingBefore(10.6f);
+		tablaClientes.setSpacingBefore(12.01f);
 		
 		this.mostrarDatosCliente(tablaClientes);
 		
 		docCliente.add(tablaClientes);
-		
 		
 		txtCitasMascotaCliente = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
 		txtCitasMascotaCliente.setSize(19);
 		txtCitasMascotaCliente.setColor(Color.BLACK);
 		Paragraph tituloCitasMascota = new Paragraph("Lista de citas realizadas",txtCitasMascotaCliente);
 		tituloCitasMascota.setAlignment(Paragraph.ALIGN_CENTER);
-		tituloCitasMascota.setSpacingBefore(65.3f);
+		tituloCitasMascota.setSpacingBefore(103.38f);
 		
 		docCliente.add(tituloCitasMascota);
 		
