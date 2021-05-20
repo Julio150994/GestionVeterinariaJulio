@@ -289,7 +289,7 @@ public class ExportarDatosCliente {
 	
 	public void exportarDatosCliente(HttpServletResponse resCliente) throws DocumentException, IOException {
 		Document docCliente = new Document();
-		docCliente.setPageSize(PageSize.A4);
+		docCliente.setPageSize(PageSize.A3);
 		
 		PdfWriter.getInstance(docCliente, resCliente.getOutputStream());
 		docCliente.open();
