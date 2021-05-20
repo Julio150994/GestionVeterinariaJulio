@@ -34,6 +34,7 @@ public class ExportarDatosCliente {
 	private static Font txtDatosCliente,txtLogo,txtCitasMascotaCliente;
 	private static SimpleDateFormat fechaSQL = new SimpleDateFormat("yyyy-MM-dd"),
 			fechaNormal = new SimpleDateFormat("dd/MM/yyyy");
+	private static Date fechaFormateada;
 	
 	private static PdfPCell filaCliente = new PdfPCell(), filaCitas = new PdfPCell();
 	
@@ -183,8 +184,8 @@ public class ExportarDatosCliente {
 			filaCitas.setColspan(6);
 			tablaCitasMascota.addCell(filaCitas);
 			
-			Date fechaCita = fechaSQL.parse(""+cita.getFecha());
-			celdasCitasMascota.setPhrase(new Phrase(fechaNormal.format(fechaCita)));
+			fechaFormateada = fechaSQL.parse(""+cita.getFecha());
+			celdasCitasMascota.setPhrase(new Phrase(fechaNormal.format(fechaFormateada)));
 			celdasCitasMascota.setHorizontalAlignment(Element.ALIGN_CENTER);
 			celdasCitasMascota.setVerticalAlignment(Element.ALIGN_CENTER);
 			celdasCitasMascota.setPadding(10);
@@ -269,8 +270,8 @@ public class ExportarDatosCliente {
 			filaCitas.setColspan(6);
 			tablaCitasMascota.addCell(filaCitas);
 			
-			Date fechaNacimientoMascota = fechaSQL.parse(""+cita.getMascota().getFechaNacimiento());
-			celdasCitasMascota.setPhrase(new Phrase(fechaNormal.format(fechaNacimientoMascota)));
+			fechaFormateada = fechaSQL.parse(""+cita.getMascota().getFechaNacimiento());
+			celdasCitasMascota.setPhrase(new Phrase(fechaNormal.format(fechaFormateada)));
 			celdasCitasMascota.setHorizontalAlignment(Element.ALIGN_CENTER);
 			celdasCitasMascota.setVerticalAlignment(Element.ALIGN_CENTER);
 			celdasCitasMascota.setPadding(10);
