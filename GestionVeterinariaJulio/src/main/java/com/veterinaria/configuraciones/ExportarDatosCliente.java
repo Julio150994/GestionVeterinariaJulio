@@ -112,10 +112,8 @@ public class ExportarDatosCliente {
 	/*------------------Mostrar las citas de la mascota de ese cliente---------------------------------*/
 	private void mostrarCitasMascota(PdfPTable tablaCitasMascota) throws IOException, ParseException {
 		filaCitas.setBackgroundColor(Color.decode("#437EB9"));
-		filaCitas.setPadding(5);
 		PdfPCell celdasCitasMascota = new PdfPCell();
 		celdasCitasMascota.setBackgroundColor(Color.WHITE);
-		celdasCitasMascota.setPadding(5);
 		
 		txtCitasMascotaCliente = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
 		txtCitasMascotaCliente.setColor(Color.WHITE);
@@ -347,7 +345,7 @@ public class ExportarDatosCliente {
 		try {
 			//--------------Para las citas de la mascota---------------
 			PdfPTable tablaCitasMascota = new PdfPTable(12);
-			tablaCitasMascota.setWidthPercentage(60.1f);
+			tablaCitasMascota.setWidthPercentage(60.5f);
 			tablaCitasMascota.setSpacingBefore(14.36f);
 			
 			this.mostrarCitasMascota(tablaCitasMascota);
