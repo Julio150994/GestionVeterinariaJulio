@@ -315,7 +315,6 @@ public class ExportarDatosCliente {
 		//-----------Para el cliente actual------------------------
 		PdfPTable tablaClientes = new PdfPTable(4);
 		tablaClientes.setWidthPercentage(90f);
-		tablaClientes.setWidths(new float[] {1.5f, 2.1f, 1f, 2f});// dimensiones para las 4 columnas
 		tablaClientes.setSpacingBefore(15.37f);
 		
 		this.mostrarDatosCliente(tablaClientes);
@@ -334,7 +333,6 @@ public class ExportarDatosCliente {
 		//--------------Para las citas de la mascota---------------
 		PdfPTable tablaCitasMascota = new PdfPTable(12);
 		tablaCitasMascota.setWidthPercentage(100f);
-		tablaCitasMascota.setWidths(new float[] {1f,1f,1f,1f,1f,1f,1f,1f,1f,1f,1f,1f});// dimensiones para las 12 columnas
 		tablaCitasMascota.setSpacingBefore(9.35f);
 		
 		this.mostrarCitasMascota(tablaCitasMascota);
