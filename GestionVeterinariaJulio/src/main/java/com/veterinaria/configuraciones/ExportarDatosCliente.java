@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import com.lowagie.text.Document;
@@ -29,6 +32,8 @@ public class ExportarDatosCliente {
 	private static ModeloUsuarios datosCliente;
 	private static List<Citas> datosCitasCliente;
 	private static Font txtDatosCliente,txtLogo,txtCitasMascotaCliente;
+	private static SimpleDateFormat fechaSQL = new SimpleDateFormat("yyyy-MM-dd"),
+			fechaNormal = new SimpleDateFormat("dd/MM/yyyy");
 	
 	private static PdfPCell filaCliente = new PdfPCell(), filaCitas = new PdfPCell();
 	
@@ -104,7 +109,7 @@ public class ExportarDatosCliente {
 	
 	
 	/*------------------Mostrar las citas de la mascota de ese cliente---------------------------------*/
-	private void mostrarCitasMascota(PdfPTable tablaCitasMascota) throws IOException {
+	private void mostrarCitasMascota(PdfPTable tablaCitasMascota) throws IOException, ParseException {
 		filaCitas.setBackgroundColor(Color.decode("#437EB9"));
 		filaCitas.setPadding(5);
 		PdfPCell celdasCitasMascota = new PdfPCell();
@@ -177,7 +182,9 @@ public class ExportarDatosCliente {
 			filaCitas.setPadding(10);
 			filaCitas.setColspan(6);
 			tablaCitasMascota.addCell(filaCitas);
-			celdasCitasMascota.setPhrase(new Phrase(""+cita.getFecha()));
+			
+			Date fechaCita = fechaSQL.parse(""+cita.getFecha());
+			celdasCitasMascota.setPhrase(new Phrase(fechaNormal.format(fechaCita)));
 			celdasCitasMascota.setHorizontalAlignment(Element.ALIGN_CENTER);
 			celdasCitasMascota.setVerticalAlignment(Element.ALIGN_CENTER);
 			celdasCitasMascota.setPadding(10);
@@ -261,7 +268,9 @@ public class ExportarDatosCliente {
 			filaCitas.setPadding(10);
 			filaCitas.setColspan(6);
 			tablaCitasMascota.addCell(filaCitas);
-			celdasCitasMascota.setPhrase(new Phrase(""+cita.getMascota().getFechaNacimiento()));
+			
+			Date fechaNacimientoMascota = fechaSQL.parse(""+cita.getMascota().getFechaNacimiento());
+			celdasCitasMascota.setPhrase(new Phrase(fechaNormal.format(fechaNacimientoMascota)));
 			celdasCitasMascota.setHorizontalAlignment(Element.ALIGN_CENTER);
 			celdasCitasMascota.setVerticalAlignment(Element.ALIGN_CENTER);
 			celdasCitasMascota.setPadding(10);
@@ -334,15 +343,20 @@ public class ExportarDatosCliente {
 		
 		docCliente.add(tituloCitasMascota);
 		
-		//--------------Para las citas de la mascota---------------
-		PdfPTable tablaCitasMascota = new PdfPTable(12);
-		tablaCitasMascota.setWidthPercentage(100f);
-		tablaCitasMascota.setSpacingBefore(9.35f);
-		
-		this.mostrarCitasMascota(tablaCitasMascota);
-		
-		docCliente.add(tablaCitasMascota);
-		
-		docCliente.close();
+		try {
+			
+			//--------------Para las citas de la mascota---------------
+			PdfPTable tablaCitasMascota = new PdfPTable(12);
+			tablaCitasMascota.setWidthPercentage(100f);
+			tablaCitasMascota.setSpacingBefore(9.35f);
+			
+			this.mostrarCitasMascota(tablaCitasMascota);
+			
+			docCliente.add(tablaCitasMascota);
+			docCliente.close();
+		}
+		catch(ParseException | IOException ex) {
+			ex.printStackTrace();
+		}
 	}
 }
