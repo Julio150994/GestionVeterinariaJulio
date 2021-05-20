@@ -1,6 +1,9 @@
 package com.veterinaria.configuraciones;
 
 import java.awt.Color;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +20,7 @@ import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+import com.sun.org.apache.xml.internal.security.utils.Base64;
 import com.veterinaria.entidades.Citas;
 import com.veterinaria.modelos.ModeloUsuarios;
 
@@ -273,11 +277,12 @@ public class ExportarDatosCliente {
 			tablaCitasMascota.addCell(filaCitas);
 			Image fotoMascota = Image.getInstance(cita.getMascota().getFoto());
 			fotoMascota.setAlignment(Element.ALIGN_CENTER);
-			celdasCitasMascota.setPhrase(new Phrase(fotoMascota.getAlt()));
+			celdasCitasMascota.setPhrase(new Phrase());
 			celdasCitasMascota.setHorizontalAlignment(Element.ALIGN_CENTER);
 			celdasCitasMascota.setVerticalAlignment(Element.ALIGN_CENTER);
 			celdasCitasMascota.setPadding(10);
 			celdasCitasMascota.setColspan(6);
+			celdasCitasMascota.setImage(fotoMascota);
 			tablaCitasMascota.addCell(celdasCitasMascota);
 		}
 	}
