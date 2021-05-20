@@ -348,7 +348,7 @@ public class ExportarDatosCliente {
 			//--------------Para las citas de la mascota---------------
 			PdfPTable tablaCitasMascota = new PdfPTable(12);
 			tablaCitasMascota.setWidthPercentage(60.1f);
-			tablaCitasMascota.setSpacingBefore(9.35f);
+			tablaCitasMascota.setSpacingBefore(14.36f);
 			
 			this.mostrarCitasMascota(tablaCitasMascota);
 			
