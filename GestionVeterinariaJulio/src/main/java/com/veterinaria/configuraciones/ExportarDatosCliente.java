@@ -286,9 +286,7 @@ public class ExportarDatosCliente {
 			filaCitas.setColspan(6);
 			tablaCitasMascota.addCell(filaCitas);
 			Image fotoMascota = Image.getInstance(cita.getMascota().getFoto());
-			fotoMascota.scaleAbsolute(2.5f,2.5f);
 			fotoMascota.setAlignment(Element.ALIGN_CENTER);
-			
 			celdasCitasMascota.setHorizontalAlignment(Element.ALIGN_CENTER);
 			celdasCitasMascota.setVerticalAlignment(Element.ALIGN_CENTER);
 			celdasCitasMascota.setPadding(10);
@@ -301,37 +299,37 @@ public class ExportarDatosCliente {
 	
 	public void exportarDatosCliente(HttpServletResponse resCliente) throws DocumentException, IOException {
 		Document docCliente = new Document();
-		docCliente.setPageSize(PageSize.A3);
+		docCliente.setPageSize(PageSize.A4);
 		
 		PdfWriter.getInstance(docCliente, resCliente.getOutputStream());
 		docCliente.open();
 		
 		//----------Establecemos la imágen de logo de la clínica a la derecha del informe------------------
-		Image logoClinica = Image.getInstance("logo.png");
-		logoClinica.setAlignment(Element.ALIGN_RIGHT);
-		docCliente.add(logoClinica);
-		
 		txtLogo = FontFactory.getFont(FontFactory.TIMES_ROMAN);
 		txtLogo.setSize(12);
 		txtLogo.setColor(Color.BLACK);
 		Paragraph logo = new Paragraph("Informe de clínica DAM",txtLogo);
 		logo.setAlignment(Paragraph.ALIGN_LEFT);
-		
 		docCliente.add(logo);
+		
+		Image logoClinica = Image.getInstance("logo.png");
+		logoClinica.setAbsolutePosition(510,769);
+		logoClinica.setAlignment(Element.ALIGN_RIGHT);
+		docCliente.add(logoClinica);
 		
 		txtDatosCliente = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
 		txtDatosCliente.setSize(19);
 		txtDatosCliente.setColor(Color.BLACK);
 		Paragraph tituloDatosCliente = new Paragraph("Datos de cliente",txtDatosCliente);
 		tituloDatosCliente.setAlignment(Paragraph.ALIGN_CENTER);
-		tituloDatosCliente.setSpacingBefore(27.45f);
+		tituloDatosCliente.setSpacingBefore(8.45f);
 		
 		docCliente.add(tituloDatosCliente);
 		
 		//-----------Para el cliente actual------------------------
 		PdfPTable tablaClientes = new PdfPTable(4);
-		tablaClientes.setWidthPercentage(90f);
-		tablaClientes.setSpacingBefore(15.37f);
+		tablaClientes.setWidthPercentage(100f);
+		tablaClientes.setSpacingBefore(4.36f);
 		
 		this.mostrarDatosCliente(tablaClientes);
 		
@@ -342,15 +340,14 @@ public class ExportarDatosCliente {
 		txtCitasMascotaCliente.setColor(Color.BLACK);
 		Paragraph tituloCitasMascota = new Paragraph("Lista de citas realizadas",txtCitasMascotaCliente);
 		tituloCitasMascota.setAlignment(Paragraph.ALIGN_CENTER);
-		tituloCitasMascota.setSpacingBefore(50.38f);
+		tituloCitasMascota.setSpacingBefore(9.38f);
 		
 		docCliente.add(tituloCitasMascota);
 		
 		try {
-			
 			//--------------Para las citas de la mascota---------------
 			PdfPTable tablaCitasMascota = new PdfPTable(12);
-			tablaCitasMascota.setWidthPercentage(100f);
+			tablaCitasMascota.setWidthPercentage(60.1f);
 			tablaCitasMascota.setSpacingBefore(9.35f);
 			
 			this.mostrarCitasMascota(tablaCitasMascota);
