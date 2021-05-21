@@ -30,8 +30,8 @@ public class ExportarDatosCliente {
 	private static SimpleDateFormat fechaSQL = new SimpleDateFormat("yyyy-MM-dd"),
 			fechaNormal = new SimpleDateFormat("dd/MM/yyyy");
 	private static Date fechaFormateada;
-	
 	private static PdfPCell filaCliente = new PdfPCell(), filaCitas = new PdfPCell();
+	
 	
 	public ExportarDatosCliente() {
 		super();
@@ -105,7 +105,7 @@ public class ExportarDatosCliente {
 	
 	public void exportarDatosCliente(HttpServletResponse resCliente) throws DocumentException, IOException {
 		Document docCliente = new Document();
-		docCliente.setPageSize(PageSize.A4);
+		docCliente.setPageSize(PageSize.LETTER);
 		
 		PdfWriter.getInstance(docCliente, resCliente.getOutputStream());
 		docCliente.open();
@@ -119,7 +119,7 @@ public class ExportarDatosCliente {
 		docCliente.add(logo);
 		
 		Image logoClinica = Image.getInstance("logo.png");
-		logoClinica.setAbsolutePosition(510,769);
+		logoClinica.setAbsolutePosition(510,723);
 		logoClinica.setAlignment(Element.ALIGN_RIGHT);
 		docCliente.add(logoClinica);
 		
@@ -146,14 +146,14 @@ public class ExportarDatosCliente {
 		txtCitasMascotaCliente.setColor(Color.BLACK);
 		Paragraph tituloCitasMascota = new Paragraph("Lista de citas realizadas",txtCitasMascotaCliente);
 		tituloCitasMascota.setAlignment(Paragraph.ALIGN_CENTER);
-		tituloCitasMascota.setSpacingBefore(9.38f);
+		tituloCitasMascota.setSpacingBefore(8.45f);
 		docCliente.add(tituloCitasMascota);
 		
 		try {
 			/*---------------Para mostrar todas las citas de la mascota------------------*/
 			for(Citas cita: datosCitasCliente) {
 				PdfPTable tablaCitasMascota = new PdfPTable(12);
-				tablaCitasMascota.setWidthPercentage(86.85f);
+				tablaCitasMascota.setWidthPercentage(73.85f);
 				tablaCitasMascota.setSpacingBefore(14.36f);
 				filaCitas.setBackgroundColor(Color.decode("#437EB9"));
 				PdfPCell celdasCitasMascota = new PdfPCell();
@@ -330,6 +330,7 @@ public class ExportarDatosCliente {
 				fotoMascota.setAlignment(Element.ALIGN_CENTER);
 				celdasCitasMascota.setHorizontalAlignment(Element.ALIGN_CENTER);
 				celdasCitasMascota.setVerticalAlignment(Element.ALIGN_CENTER);
+				celdasCitasMascota.setPadding(10);
 				celdasCitasMascota.setColspan(6);
 				celdasCitasMascota.setImage(fotoMascota);
 				tablaCitasMascota.addCell(celdasCitasMascota);
