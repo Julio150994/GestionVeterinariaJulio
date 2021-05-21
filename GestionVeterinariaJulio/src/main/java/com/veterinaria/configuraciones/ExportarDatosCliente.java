@@ -322,7 +322,7 @@ public class ExportarDatosCliente {
 				
 				filaCitas.setPhrase(new Phrase("Foto de mascota",txtCitasMascotaCliente));
 				filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
-				filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
+				filaCitas.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				filaCitas.setPadding(10);
 				filaCitas.setColspan(6);
 				tablaCitasMascota.addCell(filaCitas);
