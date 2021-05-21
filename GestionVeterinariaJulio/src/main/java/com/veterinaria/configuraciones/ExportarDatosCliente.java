@@ -334,8 +334,8 @@ public class ExportarDatosCliente {
 				celdasCitasMascota.setImage(fotoMascota);
 				tablaCitasMascota.addCell(celdasCitasMascota);
 				
-				docCliente.add(tablaCitasMascota);// añadimos una tabla cada vez
-				docCliente.newPage();// realizamos el salto de página
+				docCliente.add(tablaCitasMascota);
+				docCliente.newPage();
 			}
 			
 			docCliente.close();
