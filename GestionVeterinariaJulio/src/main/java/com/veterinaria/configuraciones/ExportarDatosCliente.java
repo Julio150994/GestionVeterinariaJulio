@@ -118,7 +118,7 @@ public class ExportarDatosCliente {
 		logo.setAlignment(Paragraph.ALIGN_LEFT);
 		docCliente.add(logo);
 		
-		Image logoClinica = Image.getInstance("logo.png");
+		Image logoClinica = Image.getInstance("src/main/resources/static/images/logo.png");
 		logoClinica.setAbsolutePosition(510,723);
 		logoClinica.setAlignment(Element.ALIGN_RIGHT);
 		docCliente.add(logoClinica);
