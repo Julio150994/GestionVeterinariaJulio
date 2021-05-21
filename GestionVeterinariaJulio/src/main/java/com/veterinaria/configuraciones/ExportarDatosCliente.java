@@ -153,14 +153,15 @@ public class ExportarDatosCliente {
 			/*---------------Para mostrar todas las citas de la mascota------------------*/
 			for(Citas cita: datosCitasCliente) {
 				PdfPTable tablaCitasMascota = new PdfPTable(12);
-				tablaCitasMascota.setWidthPercentage(73.85f);
-				tablaCitasMascota.setSpacingBefore(14.36f);
+				tablaCitasMascota.setWidthPercentage(56.85f);
+				tablaCitasMascota.setSpacingBefore(4.36f);
 				filaCitas.setBackgroundColor(Color.decode("#437EB9"));
 				PdfPCell celdasCitasMascota = new PdfPCell();
 				celdasCitasMascota.setBackgroundColor(Color.WHITE);
 				
 				txtCitasMascotaCliente = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
 				txtCitasMascotaCliente.setColor(Color.WHITE);
+				txtCitasMascotaCliente.setSize(12);
 				
 				filaCitas.setPhrase(new Phrase("Nombre de veterinario",txtCitasMascotaCliente));
 				filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -224,7 +225,6 @@ public class ExportarDatosCliente {
 				filaCitas.setPadding(10);
 				filaCitas.setColspan(6);
 				tablaCitasMascota.addCell(filaCitas);
-				
 				fechaFormateada = fechaSQL.parse(""+cita.getFecha());
 				celdasCitasMascota.setPhrase(new Phrase(fechaNormal.format(fechaFormateada)));
 				celdasCitasMascota.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -310,7 +310,6 @@ public class ExportarDatosCliente {
 				filaCitas.setPadding(10);
 				filaCitas.setColspan(6);
 				tablaCitasMascota.addCell(filaCitas);
-				
 				fechaFormateada = fechaSQL.parse(""+cita.getMascota().getFechaNacimiento());
 				celdasCitasMascota.setPhrase(new Phrase(fechaNormal.format(fechaFormateada)));
 				celdasCitasMascota.setHorizontalAlignment(Element.ALIGN_CENTER);
