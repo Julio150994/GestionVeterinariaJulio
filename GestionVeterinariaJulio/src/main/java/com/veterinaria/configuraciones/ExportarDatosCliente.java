@@ -24,8 +24,8 @@ import com.veterinaria.modelos.ModeloUsuarios;
 
 
 public class ExportarDatosCliente {
-	private static ModeloUsuarios datosCliente;
-	private static List<Citas> datosCitasCliente;
+	private ModeloUsuarios datosCliente;
+	private List<Citas> datosCitasCliente;
 	private static Font txtDatosCliente,txtLogo,txtCitasMascotaCliente;
 	private static SimpleDateFormat fechaSQL = new SimpleDateFormat("yyyy-MM-dd"),
 			fechaNormal = new SimpleDateFormat("dd/MM/yyyy");
@@ -225,7 +225,7 @@ public class ExportarDatosCliente {
 				filaCitas.setPadding(10);
 				filaCitas.setColspan(6);
 				tablaCitasMascota.addCell(filaCitas);
-				fechaFormateada = fechaSQL.parse(""+cita.getFecha());
+				fechaFormateada = fechaSQL.parse(String.valueOf(cita.getFecha()));
 				celdasCitasMascota.setPhrase(new Phrase(fechaNormal.format(fechaFormateada)));
 				celdasCitasMascota.setHorizontalAlignment(Element.ALIGN_CENTER);
 				celdasCitasMascota.setVerticalAlignment(Element.ALIGN_CENTER);
@@ -310,7 +310,7 @@ public class ExportarDatosCliente {
 				filaCitas.setPadding(10);
 				filaCitas.setColspan(6);
 				tablaCitasMascota.addCell(filaCitas);
-				fechaFormateada = fechaSQL.parse(""+cita.getMascota().getFechaNacimiento());
+				fechaFormateada = fechaSQL.parse(String.valueOf(cita.getMascota().getFechaNacimiento()));
 				celdasCitasMascota.setPhrase(new Phrase(fechaNormal.format(fechaFormateada)));
 				celdasCitasMascota.setHorizontalAlignment(Element.ALIGN_CENTER);
 				celdasCitasMascota.setVerticalAlignment(Element.ALIGN_CENTER);
