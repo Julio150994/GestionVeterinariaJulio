@@ -13,7 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -80,30 +79,37 @@ public class ClientesPDFController {
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/citas/datosCliente/pdf/{id}")
 	public void mostrarInformeCliente(HttpServletResponse resCliente, Model modelo, @Valid @ModelAttribute("mascota") ModeloMascotas mascota,
-			BindingResult validation, ModeloCitas cita, RedirectAttributes mensajeFlash) throws DocumentException, IOException {
+			ModeloCitas cita, RedirectAttributes mensajeFlash) throws DocumentException, IOException {
 		
-		LOG_VETERINARIA.info(mascota.getNombre()+" introducido correctamente");
-		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if(auth.getPrincipal() != "anonymousUser") {
-			Usuarios cliente = usuariosRepository.findByUsername(auth.getName());
+		if(mascota.getNombre().isEmpty()) {
+			String mensaje = "Debe seleccionar su mascota";
+			LOG_VETERINARIA.info(mensaje);
+			mensajeFlash.addFlashAttribute("empty",mensaje);
+		}
+		else {
+			LOG_VETERINARIA.info(mascota.getNombre()+" introducido correctamente");
 			
-			boolean realizada = cita.isRealizada();
-			realizada = true;
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			if(auth.getPrincipal() != "anonymousUser") {
+				Usuarios cliente = usuariosRepository.findByUsername(auth.getName());
+				
+				boolean realizada = cita.isRealizada();
+				realizada = true;
+				
+				resCliente.setContentType("application/pdf");
+				
+				String clientesPDF = "attachment; filename=informe_de_cliente_"+cliente.getUsername()+".pdf";
+				
+				resCliente.setHeader("Content-Disposition",clientesPDF);
 			
-			resCliente.setContentType("application/pdf");
-			
-			String clientesPDF = "attachment; filename=informe_de_cliente_"+cliente.getUsername()+".pdf";
-			
-			resCliente.setHeader("Content-Disposition",clientesPDF);
-		
-			ModeloUsuarios modeloCliente = usuariosImpl.buscarId(cliente.getId());
-			modelo.addAttribute("usuario",modeloCliente);
-			
-			List<Citas> modeloCita = citas.findCitasByMascota(mascota.getNombre(),realizada);
-			
-			ExportarDatosCliente pdfCliente = new ExportarDatosCliente(modeloCliente,modeloCita);
-			pdfCliente.exportarDatosCliente(resCliente);
+				ModeloUsuarios modeloCliente = usuariosImpl.buscarId(cliente.getId());
+				modelo.addAttribute("usuario",modeloCliente);
+				
+				List<Citas> modeloCita = citas.findCitasByMascota(mascota.getNombre(),realizada);
+				
+				ExportarDatosCliente pdfCliente = new ExportarDatosCliente(modeloCliente,modeloCita);
+				pdfCliente.exportarDatosCliente(resCliente);
+			}
 		}
 	}
 }
