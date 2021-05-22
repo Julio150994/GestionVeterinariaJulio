@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.lowagie.text.DocumentException;
 import com.veterinaria.configuraciones.ExportarDatosCliente;
 import com.veterinaria.entidades.Citas;
@@ -79,12 +78,12 @@ public class ClientesPDFController {
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/citas/datosCliente/pdf/{id}")
 	public void mostrarInformeCliente(HttpServletResponse resCliente, Model modelo, @Valid @ModelAttribute("mascota") ModeloMascotas mascota,
-			ModeloCitas cita, RedirectAttributes mensajeFlash) throws DocumentException, IOException {
+			ModeloCitas cita) throws DocumentException, IOException {
 		
 		if(mascota.getNombre().isEmpty()) {
 			String mensaje = "Debe seleccionar su mascota";
 			LOG_VETERINARIA.info(mensaje);
-			mensajeFlash.addFlashAttribute("empty",mensaje);
+			modelo.addAttribute("empty",mensaje);
 		}
 		else {
 			LOG_VETERINARIA.info(mascota.getNombre()+" introducido correctamente");
