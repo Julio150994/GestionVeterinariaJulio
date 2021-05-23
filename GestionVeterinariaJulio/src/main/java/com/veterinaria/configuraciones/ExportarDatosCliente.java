@@ -332,7 +332,6 @@ public class ExportarDatosCliente {
 				celdasCitasMascota.setHorizontalAlignment(Element.ALIGN_CENTER);
 				celdasCitasMascota.setVerticalAlignment(Element.ALIGN_CENTER);
 				celdasCitasMascota.setColspan(6);
-				celdasCitasMascota.getBottom(-1.5f);
 				celdasCitasMascota.setImage(fotoMascota);
 				tablaCitasMascota.addCell(celdasCitasMascota);
 				
