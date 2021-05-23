@@ -283,7 +283,14 @@ public class CitasController {
 			
 			cita.addAttribute("citas",citasRepository.findMascotasByVeterinario(usuario.getId()));// recargamos de nuevo las mascotas que tiene el veterinario
 			
-			cita.addAttribute("fechas",citasRepository.listHistorialCitasMascota(usuario.getId(),modeloMascota.getNombre()));
+			modeloCita.setRealizada(true);
+			if(citasRepository.countByCitasRealizadas(usuario.getId(), modeloMascota.getNombre(),modeloCita.isRealizada()) == 0) {
+				String txtCita = modeloMascota.getNombre()+" no tiene citas realizadas para el historial de "+usuario.getUsername();
+				LOG_VETERINARIA.info(txtCita);
+				cita.addAttribute("txtCitaPendiente",txtCita);
+			}
+			else
+				cita.addAttribute("fechas",citasRepository.listHistorialCitasMascota(usuario.getId(),modeloMascota.getNombre(),modeloCita.isRealizada()));
 		}
 		
 		return historialMascota;

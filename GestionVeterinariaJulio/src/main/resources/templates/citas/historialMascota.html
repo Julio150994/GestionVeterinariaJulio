@@ -146,6 +146,8 @@
 					</select>
 					
 					<button type="submit" class="btn btn-primary" id="send"><i class="fa fa-search"></i> Buscar</button>
+				
+					<div class="panel panel-body alert alert-warning" th:if="${txtCitaPendiente}" role="alert" th:text="${txtCitaPendiente}" id="nombreMascota"></div>
 				</form>
 			</div>
 			
