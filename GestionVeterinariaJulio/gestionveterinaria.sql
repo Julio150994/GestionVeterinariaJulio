@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 17-05-2021 a las 14:54:24
+-- Tiempo de generación: 23-05-2021 a las 19:19:02
 -- Versión del servidor: 10.4.14-MariaDB
 -- Versión de PHP: 7.4.10
 
@@ -42,20 +42,25 @@ CREATE TABLE `citas` (
 --
 
 INSERT INTO `citas` (`id`, `fecha`, `informe`, `motivo`, `realizada`, `idMascota`, `idVeterinario`) VALUES
-(1, '2021-05-09', 'Tratamiento para las uñas dañadas', 'Daño leve en las uñas', b'0', 2, 6),
+(1, '2021-05-09', 'Tratamiento para las uñas dañadas', 'Daño leve en las uñas', b'1', 2, 6),
 (2, '2021-05-09', 'Tratamiento mediante vacunación', 'Urgencia', b'1', 1, 6),
 (3, '2021-05-13', 'Elaborado para su curación', 'Lesión en la pata', b'1', 3, 6),
 (4, '2021-06-15', 'Defaults', 'Urgencia', b'0', 3, 8),
 (5, '2021-06-15', 'Requerimiento de tratamiento para la irritación y posible dolor de ojos', 'Irritación de los ojos', b'0', 4, 11),
 (6, '2021-05-12', 'Tratamiento por sobrepeso con alimentos sanos', 'Cuidados en la alimentación', b'1', 4, 6),
 (7, '2021-05-13', 'Elaborado para recuperación de lesión', 'Lesión en la pata derecha', b'1', 3, 6),
-(8, '2021-05-13', 'Informe diario sobre reacciones de Epi', 'Vacuna de la rabia', b'1', 1, 6),
+(8, '2021-05-13', 'Informe diario sobre reacciones de Epi', 'Vacuna de la rabia', b'1', 1, 8),
 (9, '2021-05-13', 'Tratamiento diario para el dolor', 'Dolor grave en el estómago', b'1', 5, 8),
 (10, '2021-05-14', 'Informe para el daño', 'Daño medio', b'1', 6, 11),
-(11, '2021-05-20', 'Informe para el tratamiento de los riñones', 'Daño en los riñones', b'0', 5, 6),
-(12, '2021-05-21', 'Informe para cita posterior', 'Daño colateral', b'0', 4, 6),
-(13, '2021-05-21', 'Informe del tratamiento del pecho del gato Blas', 'Motivo de daño en el pecho', b'0', 2, 8),
-(14, '2021-05-23', 'Tratamiento urgente para Salazar', 'Atropello en la carretera', b'0', 4, 8);
+(11, '2021-05-20', 'Informe para el tratamiento de los riñones', 'Daño en los riñones', b'1', 5, 6),
+(12, '2021-05-21', 'Informe para cita posterior', 'Daño colateral', b'1', 4, 6),
+(13, '2021-05-21', 'Informe del tratamiento del pecho del gato Blas', 'Motivo de daño en el pecho', b'1', 2, 8),
+(14, '2021-05-23', 'Tratamiento urgente para Salazar', 'Atropello en la carretera', b'1', 4, 8),
+(15, '2021-05-20', 'Tratamiento sobre alimentación adecuada para la mascota', 'Motivo de sobrepeso', b'1', 1, 12),
+(16, '2021-05-20', 'Informe 1', 'Cita 1', b'1', 1, 11),
+(17, '2021-05-20', 'Informe 2', 'Cita 2', b'1', 1, 11),
+(18, '2021-05-20', 'Informe 3', 'Cita 3', b'1', 1, 5),
+(19, '2021-05-20', 'Informe 4', 'Cita 4', b'1', 1, 8);
 
 -- --------------------------------------------------------
 
@@ -72,7 +77,7 @@ CREATE TABLE `hibernate_sequence` (
 --
 
 INSERT INTO `hibernate_sequence` (`next_val`) VALUES
-(41),
+(48),
 (1);
 
 -- --------------------------------------------------------
