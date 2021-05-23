@@ -149,6 +149,9 @@
 							<th>Teléfono de cliente</th>
 							<th>Usuario del cliente</th>
 							<th>Nombre de mascota</th>
+							<th>Tipo de mascota</th>
+							<th>Raza de mascota</th>
+							<th>Fecha de mascota</th>
 							<th>Foto de mascota</th>
 							<th>Fecha de cita</th>
 							<th>Motivo de cita</th>
@@ -162,6 +165,9 @@
 							<td class="border" th:text="${cita.mascota.usuario.telefono}"></td>
 							<td class="border" th:text="${cita.mascota.usuario.username}"></td>
 							<td class="border" th:text="${cita.mascota.nombre}"></td>
+							<td class="border" th:text="${cita.mascota.tipo}"></td>
+							<td class="border" th:text="${cita.mascota.raza}"></td>
+							<td class="border" th:text="${cita.mascota.fechaNacimiento}"></td>
 								<td class="border"><img th:src="${#strings.isEmpty(cita.mascota.foto)} ? '/mascotasImg/image.png': ${cita.mascota.foto}"
 								 th:alt="${cita.mascota.foto}" class="center-block" id="imagenMascota"/></td>
 							<td class="border" th:text="${#dates.format(cita.fecha,'dd/MM/yyyy')}"></td>
