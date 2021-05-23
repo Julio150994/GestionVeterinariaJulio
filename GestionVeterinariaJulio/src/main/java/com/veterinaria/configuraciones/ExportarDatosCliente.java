@@ -26,7 +26,7 @@ import com.veterinaria.modelos.ModeloUsuarios;
 public class ExportarDatosCliente {
 	private ModeloUsuarios datosCliente;
 	private List<Citas> datosCitasCliente;
-	private static Font txtDatosCliente,txtLogo,txtCitasMascotaCliente;
+	private static Font txtDatosCliente,txtLogo,txtCitasMascotaCliente, txtPiePagina;
 	private static SimpleDateFormat fechaSQL = new SimpleDateFormat("yyyy-MM-dd"),
 			fechaNormal = new SimpleDateFormat("dd/MM/yyyy");
 	private static Date fechaFormateada;
@@ -337,6 +337,17 @@ public class ExportarDatosCliente {
 				
 				
 				docCliente.add(tablaCitasMascota);
+				
+				//------------------Para establecer un pie a cada página del pdf----------------------------
+				txtPiePagina = FontFactory.getFont(FontFactory.COURIER);
+				txtPiePagina.setSize(12);
+				txtPiePagina.setColor(Color.getColor("#9E9E9E"));
+				Paragraph piePagina = new Paragraph("Datos del cliente",txtPiePagina);
+				piePagina.setAlignment(Element.ALIGN_LEFT);
+				piePagina.setSpacingBefore(15.82f);
+				
+				docCliente.add(piePagina);
+				
 				docCliente.newPage();
 			}
 			
