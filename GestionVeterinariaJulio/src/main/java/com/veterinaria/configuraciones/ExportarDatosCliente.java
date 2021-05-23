@@ -155,6 +155,7 @@ public class ExportarDatosCliente {
 				PdfPTable tablaCitasMascota = new PdfPTable(12);
 				tablaCitasMascota.setWidthPercentage(60.85f);
 				tablaCitasMascota.setSpacingBefore(4.36f);
+				
 				filaCitas.setBackgroundColor(Color.decode("#437EB9"));
 				PdfPCell celdasCitasMascota = new PdfPCell();
 				celdasCitasMascota.setBackgroundColor(Color.WHITE);
@@ -322,7 +323,6 @@ public class ExportarDatosCliente {
 				filaCitas.setPhrase(new Phrase("Foto de mascota",txtCitasMascotaCliente));
 				filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
 				filaCitas.setVerticalAlignment(Element.ALIGN_MIDDLE);
-				filaCitas.setPadding(10);
 				filaCitas.setColspan(6);
 				tablaCitasMascota.addCell(filaCitas);
 				
@@ -331,10 +331,11 @@ public class ExportarDatosCliente {
 				celdasCitasMascota.setPhrase(new Phrase(String.valueOf(fotoMascota)));
 				celdasCitasMascota.setHorizontalAlignment(Element.ALIGN_CENTER);
 				celdasCitasMascota.setVerticalAlignment(Element.ALIGN_CENTER);
-				celdasCitasMascota.setPadding(10);
 				celdasCitasMascota.setColspan(6);
+				celdasCitasMascota.getBottom(-1.5f);
 				celdasCitasMascota.setImage(fotoMascota);
 				tablaCitasMascota.addCell(celdasCitasMascota);
+				
 				
 				docCliente.add(tablaCitasMascota);
 				docCliente.newPage();
