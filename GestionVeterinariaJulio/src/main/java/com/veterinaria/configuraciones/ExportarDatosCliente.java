@@ -26,7 +26,7 @@ import com.veterinaria.modelos.ModeloUsuarios;
 public class ExportarDatosCliente {
 	private ModeloUsuarios datosCliente;
 	private List<Citas> datosCitasCliente;
-	private static Font txtDatosCliente,txtLogo,txtCitasMascotaCliente, txtPiePagina;
+	private static Font txtDatosCliente,txtLogo,txtCitasMascotaCliente;
 	private static SimpleDateFormat fechaSQL = new SimpleDateFormat("yyyy-MM-dd"),
 			fechaNormal = new SimpleDateFormat("dd/MM/yyyy");
 	private static Date fechaFormateada;
@@ -111,7 +111,7 @@ public class ExportarDatosCliente {
 		docCliente.open();
 		
 		//----------Establecemos la imágen de logo de la clínica a la derecha del informe------------------
-		txtLogo = FontFactory.getFont(FontFactory.TIMES_ROMAN);
+		txtLogo = FontFactory.getFont("CALIBRI");
 		txtLogo.setSize(12);
 		txtLogo.setColor(Color.BLACK);
 		Paragraph logo = new Paragraph("Informe de clínica DAM",txtLogo);
@@ -119,7 +119,7 @@ public class ExportarDatosCliente {
 		docCliente.add(logo);
 		
 		Image logoClinica = Image.getInstance("src/main/resources/static/images/logo.png");
-		logoClinica.setAbsolutePosition(510,723);
+		logoClinica.setAbsolutePosition(525,723);
 		logoClinica.setAlignment(Element.ALIGN_RIGHT);
 		docCliente.add(logoClinica);
 		
@@ -335,18 +335,7 @@ public class ExportarDatosCliente {
 				celdasCitasMascota.setImage(fotoMascota);
 				tablaCitasMascota.addCell(celdasCitasMascota);
 				
-				
 				docCliente.add(tablaCitasMascota);
-				
-				//------------------Para establecer un pie a cada página del pdf----------------------------
-				txtPiePagina = FontFactory.getFont(FontFactory.COURIER);
-				txtPiePagina.setSize(12);
-				txtPiePagina.setColor(Color.getColor("#9E9E9E"));
-				Paragraph piePagina = new Paragraph("Datos del cliente",txtPiePagina);
-				piePagina.setAlignment(Element.ALIGN_LEFT);
-				piePagina.setSpacingBefore(15.82f);
-				
-				docCliente.add(piePagina);
 				
 				docCliente.newPage();
 			}
