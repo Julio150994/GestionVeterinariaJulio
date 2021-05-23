@@ -26,7 +26,7 @@ import com.veterinaria.modelos.ModeloUsuarios;
 public class ExportarDatosCliente {
 	private ModeloUsuarios datosCliente;
 	private List<Citas> datosCitasCliente;
-	private static Font txtDatosCliente,txtLogo,txtCitasMascotaCliente;
+	private static Font txtPortada,txtDatosCliente,txtLogo,txtCitasMascotaCliente;
 	private static SimpleDateFormat fechaSQL = new SimpleDateFormat("yyyy-MM-dd"),
 			fechaNormal = new SimpleDateFormat("dd/MM/yyyy");
 	private static Date fechaFormateada;
@@ -44,7 +44,7 @@ public class ExportarDatosCliente {
 
 	/*--------------Mostramos los datos del cliente actual------------------------*/
 	
-	private void mostrarDatosCliente(PdfPTable tablaClientes) {
+	private void mostrarDatosCliente(PdfPTable tablaClientes) {		
 		filaCliente.setBackgroundColor(Color.decode("#437EB9"));
 		filaCliente.setPadding(5);
 		PdfPCell celdasCliente = new PdfPCell();
@@ -109,6 +109,16 @@ public class ExportarDatosCliente {
 		
 		PdfWriter.getInstance(docCliente, resCliente.getOutputStream());
 		docCliente.open();
+		
+		//---------------Creamos una portada para el PDF-----------------------------------
+		txtPortada = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
+		txtPortada.setSize(30);
+		txtPortada.setStyle(3);
+		Paragraph tituloPortada = new Paragraph("Informe de citas del cliente",txtPortada);
+		tituloPortada.setAlignment(Element.ALIGN_CENTER);
+		docCliente.add(tituloPortada);
+		
+		docCliente.newPage();
 		
 		//----------Establecemos la imágen de logo de la clínica a la derecha del informe------------------
 		txtLogo = FontFactory.getFont("CALIBRI");
