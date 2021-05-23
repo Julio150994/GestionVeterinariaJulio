@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-05-2021 a las 22:01:08
+-- Tiempo de generación: 23-05-2021 a las 22:04:32
 -- Versión del servidor: 10.4.14-MariaDB
 -- Versión de PHP: 7.4.10
 
@@ -55,7 +55,7 @@ INSERT INTO `citas` (`id`, `fecha`, `informe`, `motivo`, `realizada`, `idMascota
 (11, '2021-05-20', 'Informe para el tratamiento de los riñones', 'Daño en los riñones', b'1', 5, 6),
 (12, '2021-05-21', 'Informe para cita posterior', 'Daño colateral', b'1', 4, 6),
 (13, '2021-05-21', 'Informe del tratamiento del pecho del gato Blas', 'Motivo de daño en el pecho', b'1', 2, 8),
-(14, '2021-05-23', 'Tratamiento urgente para Salazar', 'Atropello en la carretera', b'0', 4, 8),
+(14, '2021-05-23', 'Tratamiento urgente para Salazar', 'Atropello en la carretera', b'1', 4, 8),
 (15, '2021-05-20', 'Tratamiento sobre alimentación adecuada para la mascota', 'Motivo de sobrepeso', b'1', 1, 12),
 (16, '2021-05-20', 'Informe 1', 'Cita 1', b'1', 1, 11),
 (17, '2021-05-20', 'Informe 2', 'Cita 2', b'1', 1, 11),
