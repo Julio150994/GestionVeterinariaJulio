@@ -137,13 +137,17 @@
 			
 			<div class="card-headert mt-5 text-center"> <h3>CITAS PENDIENTES POSTERIORES A <span th:text="${txtFechaActual}"></span></h3> </div>
 			
-			<div class="panel panel-body alert alert-warning" th:if="${citas.empty}" th:text="${citasTxt}"></div>
+			<div class="panel panel-body alert alert-warning" th:if="${citas.empty}" th:text="${citasTxt}" id="fechaCita"></div>
 			
 			<div class="card-body">
 			
 				<table class="table table-bordered text-center" id="historialCitas">
 					<thead class="table table-dark">
 						<tr>
+							<th>Nombre de cliente</th>
+							<th>Apellidos de cliente</th>
+							<th>Teléfono de cliente</th>
+							<th>Usuario del cliente</th>
 							<th>Nombre de mascota</th>
 							<th>Foto de mascota</th>
 							<th>Fecha de cita</th>
@@ -153,6 +157,10 @@
 					
 					<tbody class="table table-light" th:each="cita: ${citas}">
 						<tr>
+							<td class="border" th:text="${cita.mascota.usuario.nombre}"></td>
+							<td class="border" th:text="${cita.mascota.usuario.apellidos}"></td>
+							<td class="border" th:text="${cita.mascota.usuario.telefono}"></td>
+							<td class="border" th:text="${cita.mascota.usuario.username}"></td>
 							<td class="border" th:text="${cita.mascota.nombre}"></td>
 								<td class="border"><img th:src="${#strings.isEmpty(cita.mascota.foto)} ? '/mascotasImg/image.png': ${cita.mascota.foto}"
 								 th:alt="${cita.mascota.foto}" class="center-block" id="imagenMascota"/></td>

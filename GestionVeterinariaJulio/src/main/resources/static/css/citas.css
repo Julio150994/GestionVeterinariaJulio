@@ -42,3 +42,10 @@
   	-o-transform: scale(1.65);
   	padding: 18px;
 }
+
+
+/* Para el mensaje de la vista de citas posteriores */
+#fechaCita { 
+	margin-top: 3.15%;
+	margin-bottom: -2%;
+}
