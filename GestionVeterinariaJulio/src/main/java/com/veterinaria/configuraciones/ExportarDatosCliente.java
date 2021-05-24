@@ -173,7 +173,7 @@ public class ExportarDatosCliente {
 		
 		//-----------Para el cliente actual------------------------
 		PdfPTable tablaClientes = new PdfPTable(4);
-		tablaClientes.setWidthPercentage(100f);
+		tablaClientes.setWidthPercentage(90.1f);
 		tablaClientes.setSpacingBefore(4.36f);
 		
 		this.mostrarDatosCliente(tablaClientes);
@@ -192,7 +192,7 @@ public class ExportarDatosCliente {
 			/*---------------Para mostrar todas las citas de la mascota------------------*/
 			for(Citas cita: datosCitasCliente) {
 				PdfPTable tablaCitasMascota = new PdfPTable(12);
-				tablaCitasMascota.setWidthPercentage(73.85f);
+				tablaCitasMascota.setWidthPercentage(90.1f);
 				tablaCitasMascota.setSpacingBefore(4.36f);
 				
 				filaCitas.setBackgroundColor(Color.decode("#437EB9"));
@@ -366,13 +366,9 @@ public class ExportarDatosCliente {
 				tablaCitasMascota.addCell(filaCitas);
 				
 				Image fotoMascota = Image.getInstance(cita.getMascota().getFoto());
-				fotoMascota.setAlignment(Element.ALIGN_CENTER);
-				fotoMascota.setAbsolutePosition(90.5f,90.5f);
-				fotoMascota.scaleAbsolute(200,200);
-				
+				fotoMascota.setAlignment(Element.ALIGN_CENTER);				
 				celdasCitasMascota.setPhrase(new Phrase(String.valueOf(fotoMascota)));
-				celdasCitasMascota.setHorizontalAlignment(Element.ALIGN_CENTER);
-				celdasCitasMascota.setVerticalAlignment(Element.ALIGN_CENTER);
+				celdasCitasMascota.setFixedHeight(127.38f);
 				celdasCitasMascota.setColspan(6);
 				celdasCitasMascota.setImage(fotoMascota);
 				tablaCitasMascota.addCell(celdasCitasMascota);
