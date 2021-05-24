@@ -26,7 +26,7 @@ import com.veterinaria.modelos.ModeloUsuarios;
 public class ExportarDatosCliente {
 	private ModeloUsuarios datosCliente;
 	private List<Citas> datosCitasCliente;
-	private static Font txtPortada, txtAnioCita ,txtDatosCliente,txtLogo, txtCitasMascotaCliente, txtBarra;
+	private static Font txtPortada, txtAnioCita ,txtDatosCliente,txtLogo, txtCitasMascotaCliente;
 	private static SimpleDateFormat fechaSQL = new SimpleDateFormat("yyyy-MM-dd"),
 			fechaNormal = new SimpleDateFormat("dd/MM/yyyy");
 	private static Date fechaFormateada;
@@ -135,15 +135,13 @@ public class ExportarDatosCliente {
 		
 		// Establecemos la barra baja de la portada
 		PdfPTable barra = new PdfPTable(1);
+		barra.setWidthPercentage(108.46f);
 		PdfPCell barraPortada = new PdfPCell();
 		
-		txtBarra = FontFactory.getFont(FontFactory.HELVETICA);
-		
-		barraPortada = new PdfPCell(new Phrase("",txtBarra));
+		barraPortada = new PdfPCell(new Phrase(""));
 		barraPortada.setBorder(0);
 		barraPortada.setBackgroundColor(Color.decode("#6D00CE"));
-		barraPortada.setPaddingTop(9.5f);
-		barraPortada.setPaddingBottom(9.5f);
+		barraPortada.setPadding(10.2f);
 		
 		barra.setSpacingBefore(520.07f);
 		barra.addCell(barraPortada);
