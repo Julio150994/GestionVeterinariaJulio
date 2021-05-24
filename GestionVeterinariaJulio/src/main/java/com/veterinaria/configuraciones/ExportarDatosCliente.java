@@ -380,24 +380,6 @@ public class ExportarDatosCliente {
 				docCliente.add(tablaCitasMascota);
 				
 				docCliente.newPage();
-				
-				//------------Ponemos la cabecera del pdf cada vez que pasamos de página-----------------
-				txtLogo = FontFactory.getFont("CALIBRI");
-				txtLogo.setSize(12);
-				txtLogo.setColor(Color.BLACK);
-				logo = new Paragraph("Informe de clínica DAM",txtLogo);
-				logo.setAlignment(Paragraph.ALIGN_LEFT);
-				docCliente.add(logo);
-				
-				logoClinica = Image.getInstance("src/main/resources/static/images/logo.png");
-				logoClinica.setAbsolutePosition(525,723);
-				logoClinica.setAlignment(Element.ALIGN_RIGHT);
-				
-				Paragraph linea = new Paragraph();// establecemos un párrafo como espacios en blanco
-				linea.setSpacingBefore(68.36f);
-				docCliente.add(linea);
-				
-				docCliente.add(logoClinica);
 			}
 			
 			docCliente.close();
