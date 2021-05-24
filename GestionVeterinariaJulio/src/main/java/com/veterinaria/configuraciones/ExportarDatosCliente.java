@@ -145,9 +145,8 @@ public class ExportarDatosCliente {
 		barraPortada.setPaddingTop(9.5f);
 		barraPortada.setPaddingBottom(9.5f);
 		
-		
-		barra.addCell(barraPortada);
 		barra.setSpacingBefore(520.07f);
+		barra.addCell(barraPortada);
 		docCliente.add(barra);
 		
 		docCliente.newPage();
@@ -370,7 +369,7 @@ public class ExportarDatosCliente {
 				
 				Image fotoMascota = Image.getInstance(cita.getMascota().getFoto());
 				fotoMascota.setAlignment(Element.ALIGN_CENTER);
-				celdasCitasMascota.setPhrase(new Phrase(String.valueOf(fotoMascota)));
+				celdasCitasMascota.setPhrase(new Phrase(String.valueOf(fotoMascota),txtCitasMascotaCliente));
 				celdasCitasMascota.setHorizontalAlignment(Element.ALIGN_CENTER);
 				celdasCitasMascota.setVerticalAlignment(Element.ALIGN_CENTER);
 				celdasCitasMascota.setColspan(6);
@@ -392,11 +391,12 @@ public class ExportarDatosCliente {
 				logoClinica = Image.getInstance("src/main/resources/static/images/logo.png");
 				logoClinica.setAbsolutePosition(525,723);
 				logoClinica.setAlignment(Element.ALIGN_RIGHT);
-				docCliente.add(logoClinica);
 				
 				Paragraph linea = new Paragraph();// establecemos un párrafo como espacios en blanco
 				linea.setSpacingBefore(68.36f);
 				docCliente.add(linea);
+				
+				docCliente.add(logoClinica);
 			}
 			
 			docCliente.close();
