@@ -120,8 +120,8 @@ public class ExportarDatosCliente {
 		docCliente.add(anio);
 		txtPortada = FontFactory.getFont(FontFactory.HELVETICA);
 		txtPortada.setColor(Color.decode("#234CB2"));
-		txtPortada.setSize(48);
-		Paragraph tituloPortada = new Paragraph("Informe para \n el cliente",txtPortada);
+		txtPortada.setSize(47);
+		Paragraph tituloPortada = new Paragraph("Clinica DAM \n Informe cliente",txtPortada);
 		tituloPortada.setAlignment(Element.ALIGN_LEFT);
 		tituloPortada.setSpacingBefore(610.87f);
 		docCliente.add(tituloPortada);
@@ -192,7 +192,7 @@ public class ExportarDatosCliente {
 			/*---------------Para mostrar todas las citas de la mascota------------------*/
 			for(Citas cita: datosCitasCliente) {
 				PdfPTable tablaCitasMascota = new PdfPTable(12);
-				tablaCitasMascota.setWidthPercentage(60.85f);
+				tablaCitasMascota.setWidthPercentage(73.85f);
 				tablaCitasMascota.setSpacingBefore(4.36f);
 				
 				filaCitas.setBackgroundColor(Color.decode("#437EB9"));
@@ -367,9 +367,10 @@ public class ExportarDatosCliente {
 				
 				Image fotoMascota = Image.getInstance(cita.getMascota().getFoto());
 				fotoMascota.setAlignment(Element.ALIGN_CENTER);
-				fotoMascota.setAbsolutePosition(0,0);
-				fotoMascota.scaleToFit(234.47f,234.47f);
-				celdasCitasMascota.setPhrase(new Phrase(String.valueOf(fotoMascota),txtCitasMascotaCliente));
+				fotoMascota.setAbsolutePosition(90.5f,90.5f);
+				fotoMascota.scaleAbsolute(200,200);
+				
+				celdasCitasMascota.setPhrase(new Phrase(String.valueOf(fotoMascota)));
 				celdasCitasMascota.setHorizontalAlignment(Element.ALIGN_CENTER);
 				celdasCitasMascota.setVerticalAlignment(Element.ALIGN_CENTER);
 				celdasCitasMascota.setColspan(6);
