@@ -120,10 +120,10 @@ public class ExportarDatosCliente {
 		docCliente.add(anio);
 		txtPortada = FontFactory.getFont(FontFactory.HELVETICA);
 		txtPortada.setColor(Color.decode("#234CB2"));
-		txtPortada.setSize(47);
-		Paragraph tituloPortada = new Paragraph("Clinica DAM \n Informe cliente",txtPortada);
+		txtPortada.setSize(46);
+		Paragraph tituloPortada = new Paragraph("Clinica DAM \n Informe para \n el cliente",txtPortada);
 		tituloPortada.setAlignment(Element.ALIGN_LEFT);
-		tituloPortada.setSpacingBefore(610.87f);
+		tituloPortada.setSpacingBefore(613.87f);
 		docCliente.add(tituloPortada);
 		
 		Image imgPortada = Image.getInstance("src/main/resources/static/images/imagen_portada.png");	
@@ -143,7 +143,7 @@ public class ExportarDatosCliente {
 		barraPortada.setBackgroundColor(Color.decode("#6D00CE"));
 		barraPortada.setPadding(10.2f);
 		
-		barra.setSpacingBefore(520.07f);
+		barra.setSpacingBefore(451.12f);
 		barra.addCell(barraPortada);
 		docCliente.add(barra);
 		
