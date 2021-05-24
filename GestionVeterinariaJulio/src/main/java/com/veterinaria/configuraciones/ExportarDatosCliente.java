@@ -26,7 +26,7 @@ import com.veterinaria.modelos.ModeloUsuarios;
 public class ExportarDatosCliente {
 	private ModeloUsuarios datosCliente;
 	private List<Citas> datosCitasCliente;
-	private static Font txtPortada,txtDatosCliente,txtLogo,txtCitasMascotaCliente;
+	private static Font txtPortada, txtAnioCita ,txtDatosCliente,txtLogo, txtCitasMascotaCliente, txtBarra;
 	private static SimpleDateFormat fechaSQL = new SimpleDateFormat("yyyy-MM-dd"),
 			fechaNormal = new SimpleDateFormat("dd/MM/yyyy");
 	private static Date fechaFormateada;
@@ -111,12 +111,44 @@ public class ExportarDatosCliente {
 		docCliente.open();
 		
 		//---------------Creamos una portada para el PDF-----------------------------------
-		txtPortada = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
-		txtPortada.setSize(30);
-		txtPortada.setStyle(3);
-		Paragraph tituloPortada = new Paragraph("Informe de citas del cliente",txtPortada);
-		tituloPortada.setAlignment(Element.ALIGN_CENTER);
+		txtAnioCita = FontFactory.getFont(FontFactory.HELVETICA);
+		txtAnioCita.setColor(Color.decode("#508DD1"));
+		txtAnioCita.setSize(34);
+		Paragraph anio = new Paragraph("2021",txtAnioCita);
+		anio.setSpacingAfter(-629.35f);
+		anio.setAlignment(Element.ALIGN_RIGHT);
+		docCliente.add(anio);
+		txtPortada = FontFactory.getFont(FontFactory.HELVETICA);
+		txtPortada.setColor(Color.decode("#234CB2"));
+		txtPortada.setSize(49);
+		Paragraph tituloPortada = new Paragraph("Informe para \n el cliente",txtPortada);
+		tituloPortada.setAlignment(Element.ALIGN_LEFT);
+		tituloPortada.setSpacingBefore(610.87f);
 		docCliente.add(tituloPortada);
+		
+		Image imgPortada = Image.getInstance("src/main/resources/static/images/imagen_portada.png");	
+		imgPortada.setAbsolutePosition(134.01f,169.45f);
+		imgPortada.scaleToFit(520.47f,550.51f);
+		imgPortada.setRotation(100f);
+		imgPortada.setAlignment(Element.ALIGN_RIGHT);
+		docCliente.add(imgPortada);
+		
+		// Establecemos la barra baja de la portada
+		PdfPTable barra = new PdfPTable(1);
+		PdfPCell barraPortada = new PdfPCell();
+		
+		txtBarra = FontFactory.getFont(FontFactory.HELVETICA);
+		
+		barraPortada = new PdfPCell(new Phrase("",txtBarra));
+		barraPortada.setBorder(0);
+		barraPortada.setBackgroundColor(Color.decode("#6D00CE"));
+		barraPortada.setPaddingTop(9.5f);
+		barraPortada.setPaddingBottom(9.5f);
+		
+		
+		barra.addCell(barraPortada);
+		barra.setSpacingBefore(520.07f);
+		docCliente.add(barra);
 		
 		docCliente.newPage();
 		
