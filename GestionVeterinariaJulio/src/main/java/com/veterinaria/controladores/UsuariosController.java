@@ -49,8 +49,6 @@ public class UsuariosController {
 			logoutUser = " Ha cerrado sesión éxitosamente";
 			LOG_VETERINARIA.info(logoutUser);
 			mavUsuario.addObject("logout_user",logoutUser);
-			
-			mavUsuario.setViewName("redirect:/login_user");
 		}
 		
 		return mavUsuario;
