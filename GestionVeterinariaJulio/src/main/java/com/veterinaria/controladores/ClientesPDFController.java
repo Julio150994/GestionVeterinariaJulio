@@ -111,7 +111,7 @@ public class ClientesPDFController {
 			else {
 				resCliente.setContentType("application/pdf");
 				
-				String clientesPDF = "attachment; filename=informe_de_cliente_"+cliente.getUsername()+".pdf";
+				String clientesPDF = "attachment; filename=informe_cliente_"+cliente.getUsername()+".pdf";
 				
 				resCliente.setHeader("Content-Disposition",clientesPDF);
 			
