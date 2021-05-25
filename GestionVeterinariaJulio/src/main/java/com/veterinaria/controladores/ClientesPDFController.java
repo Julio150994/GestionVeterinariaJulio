@@ -83,8 +83,6 @@ public class ClientesPDFController {
 			ModeloCitas cita) throws DocumentException, IOException {
 		
 		if(mascota.getNombre().isEmpty()) {
-			mascotas.findMascotasByNullValue(mascota.getNombre());
-			
 			String mensaje = "Debe seleccionar su mascota";
 			LOG_VETERINARIA.info(mensaje);
 			modelo.addAttribute("empty",mensaje);

@@ -18,8 +18,4 @@ public interface MascotasRepository extends JpaRepository<Mascotas, Integer> {
 	
 	@Query("select m from Mascotas m where m.usuario =  :usuario group by m.nombre")
 	public abstract List<Mascotas> findByIdUsuario(@Param("usuario") Usuarios usuario);
-	
-	// SELECT * FROM mascotas WHERE nombre IS NULL
-	@Query("select m from Mascotas m where m.nombre is null")
-	public abstract List<Mascotas> findMascotasByNullValue(@Param("nombre") String nombre);
 }
