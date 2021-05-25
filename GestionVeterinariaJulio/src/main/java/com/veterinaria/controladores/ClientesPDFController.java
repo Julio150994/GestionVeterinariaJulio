@@ -120,7 +120,7 @@ public class ClientesPDFController {
 				
 				ExportarDatosCliente pdfCliente = new ExportarDatosCliente(modeloCliente,modeloCita);
 				pdfCliente.exportarDatosCliente(resCliente);
-				return "";
+				return null;
 			}
 		}
 		return "/citas/datosCliente/pdf/"+c.getId();
