@@ -5,7 +5,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +33,7 @@ public class UsuariosController {
 	
 	@GetMapping("/auth/login")
 	public ModelAndView formLoginUser(@ModelAttribute("usuario") ModeloUsuarios modeloUsuario, @RequestParam(name="error",required=false) String mensajeError,
-			@RequestParam(name="logout_user",required=false) String logoutUser, Model modelo) {
+			@RequestParam(name="logout_user",required=false) String logoutUser) {
 		LOG_VETERINARIA.info("Vista de login");
 		
 		ModelAndView mavUsuario = new ModelAndView(vista_login);
@@ -49,7 +48,9 @@ public class UsuariosController {
 		if(logoutUser != null) {
 			logoutUser = " Ha cerrado sesión éxitosamente";
 			LOG_VETERINARIA.info(logoutUser);
-			modelo.addAttribute("logout_user",logoutUser);
+			mavUsuario.addObject("logout_user",logoutUser);
+			
+			mavUsuario.setViewName("redirect:/login_user");
 		}
 		
 		return mavUsuario;
