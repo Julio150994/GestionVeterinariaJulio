@@ -134,6 +134,9 @@
             
             
             <div sec:authorize="hasRole('ROLE_CLIENTE')" class="container mt-4">
+            
+            <div class="panel panel-body alert alert-warning" th:if="${citaEmpty}" role="alert" th:text="${citaEmpty}"></div>
+			<div class="panel panel-body alert alert-danger" th:if="${errorCita}" role="alert" th:text="${errorCita}"></div>
 			
 			<div class="card-headert text-center mt-5"> <h3> DATOS DE CLIENTE <span th:text="${clienteActual}"></span></h3> </div>
 			
@@ -146,20 +149,18 @@
            		</ul>
            		
            		<div class="col-offset-3 mt-2" th:if="${!mascotas.empty}">
-           			<form class="col-md-12" action="#" th:action="@{/citas/datosCliente/pdf/}+${usuario.id}" th:object="${mascota}" method="GET">					
-						<select name="nombre" class="form-control col-sm-12 mt-3">
+           			<form class="col-md-12" action="#" th:action="@{/citas/datosCliente/pdf/}+${usuario.id}" th:object="${mascota}" method="GET">
+						<select name="nombre" class="form-control col-sm-12 mt-3" required>
 							<option value="">Seleccione su mascota</option>
 							<option th:each="mascota: ${mascotas}" th:value="${mascota.nombre}" th:text="${mascota.nombre}"></option>
 						</select>
-											
-						<div class="alert alert-warning" th:if="${empty}" th:text="${empty}"></div>
-						
-						<!-- Para cuando el cliente no tiene ninguna mascota en la base de datos -->
-						<div class="panel panel-body alert alert-warning" th:if="${mascotas.empty}" role="alert" th:text="${txtMascota}" id="nombreMascota"></div>
 						
 						<button type="submit" class="btn btn-info mt-5" th:if="${!mascotas.empty}" id="btnInformePDF"><i class="fa fa-file-pdf-o"></i> Exportar a PDF</button>
 					</form>
            		</div>
+           		
+           		<!-- Para cuando el cliente no tiene ninguna mascota en la base de datos -->
+				<div class="col-sm-6 alert alert-warning" th:if="${mascotas.empty}" role="alert" th:text="${txtMascota}" id="nombreMascota"></div>
 			</div>
 		</div>
 			

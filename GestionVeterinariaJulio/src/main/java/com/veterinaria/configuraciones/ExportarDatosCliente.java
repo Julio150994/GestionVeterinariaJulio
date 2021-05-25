@@ -151,7 +151,7 @@ public class ExportarDatosCliente {
 		
 		//----------Establecemos la imágen de logo de la clínica a la derecha del informe------------------
 		txtLogo = FontFactory.getFont("CALIBRI");
-		txtLogo.setSize(12);
+		txtLogo.setSize(13.5f);
 		txtLogo.setColor(Color.BLACK);
 		Paragraph logo = new Paragraph("Informe de clínica DAM",txtLogo);
 		logo.setAlignment(Paragraph.ALIGN_LEFT);
@@ -370,7 +370,7 @@ public class ExportarDatosCliente {
 				Image fotoMascota = Image.getInstance(cita.getMascota().getFoto());
 				fotoMascota.setAlignment(Element.ALIGN_CENTER);				
 				celdasCitasMascota.setPhrase(new Phrase(String.valueOf(fotoMascota)));
-				celdasCitasMascota.setFixedHeight(120.39f);
+				celdasCitasMascota.setFixedHeight(101.65f);
 				celdasCitasMascota.setColspan(6);
 				celdasCitasMascota.setImage(fotoMascota);
 				tablaCitasMascota.addCell(celdasCitasMascota);

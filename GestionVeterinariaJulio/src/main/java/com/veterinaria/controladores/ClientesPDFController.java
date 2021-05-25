@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.lowagie.text.DocumentException;
 import com.veterinaria.configuraciones.ExportarDatosCliente;
 import com.veterinaria.entidades.Citas;
@@ -56,7 +58,7 @@ public class ClientesPDFController {
 	/* Método para mostrar los datos del cliente actual */
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/citas/datosCliente/{id}")
-	public ModelAndView mostrarDatosCliente(@ModelAttribute("mascota") ModeloMascotas modeloMascota) {
+	public ModelAndView mostrarDatosCliente(@ModelAttribute("cita") ModeloCitas modeloCita, ModeloMascotas modeloMascota) {
 		LOG_VETERINARIA.info("Datos personales del cliente");
 		ModelAndView mavDatosCliente = new ModelAndView(datosClienteActual);
 			
@@ -70,6 +72,13 @@ public class ClientesPDFController {
 			
 			mavDatosCliente.addObject("mascotas",mascotas.findByIdUsuario(cliente));
 			
+			boolean realizada = modeloCita.isRealizada();
+			realizada = true;
+			
+			//mavDatosCliente.addObject("citas",citas.findMascotasByCitasRealizada(cliente.getId(), realizada));
+			
+			mavDatosCliente.addObject("citas",citas.findCitasByMascota(cliente.getUsername(),realizada));
+			
 			mavDatosCliente.addObject("clienteActual",cliente.getUsername().toUpperCase());
 		}
 			
@@ -79,24 +88,29 @@ public class ClientesPDFController {
 	/* Método para exportar los datos del cliente a pdf */
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/citas/datosCliente/pdf/{id}")
-	public void mostrarInformeCliente(HttpServletResponse resCliente, Model modelo, @Valid @ModelAttribute("mascota") ModeloMascotas mascota,
-			ModeloCitas cita) throws DocumentException, IOException {
+	public String mostrarInformeCliente(HttpServletResponse resCliente, Model modelo, @Valid @ModelAttribute("mascota") ModeloMascotas mascota,
+			ModeloCitas cita, RedirectAttributes mensajeFlash) throws DocumentException, IOException {
 		
-		if(mascota.getNombre().isEmpty()) {
-			String mensaje = "Debe seleccionar su mascota";
-			LOG_VETERINARIA.info(mensaje);
-			modelo.addAttribute("empty",mensaje);
-		}
-		else {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuarios c = usuariosRepository.findByUsername(auth.getName());
+		
+		if(auth.getPrincipal() != "anonymousUser") {
+			Usuarios cliente = usuariosRepository.findByUsername(auth.getName());
+			
+			boolean realizada = cita.isRealizada();
+			realizada = true;
+			
+			List<Citas> modeloCita = citas.findCitasByMascota(mascota.getNombre(),realizada);
 			LOG_VETERINARIA.info(mascota.getNombre()+" seleccionado correctamente");
 			
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			if(auth.getPrincipal() != "anonymousUser") {
-				Usuarios cliente = usuariosRepository.findByUsername(auth.getName());
+			if(modeloCita.isEmpty()) {
+				String error = mascota.getNombre()+" no tiene citas realizadas";
+				LOG_VETERINARIA.info(error);
+				mensajeFlash.addFlashAttribute("errorCita",error);
 				
-				boolean realizada = cita.isRealizada();
-				realizada = true;
-				
+				return "redirect:/citas/datosCliente/"+cliente.getId();
+			}
+			else {
 				resCliente.setContentType("application/pdf");
 				
 				String clientesPDF = "attachment; filename=informe_de_cliente_"+cliente.getUsername()+".pdf";
@@ -106,11 +120,11 @@ public class ClientesPDFController {
 				ModeloUsuarios modeloCliente = usuariosImpl.buscarId(cliente.getId());
 				modelo.addAttribute("usuario",modeloCliente);
 				
-				List<Citas> modeloCita = citas.findCitasByMascota(mascota.getNombre(),realizada);
-				
 				ExportarDatosCliente pdfCliente = new ExportarDatosCliente(modeloCliente,modeloCita);
 				pdfCliente.exportarDatosCliente(resCliente);
+				return "";
 			}
 		}
+		return "/citas/datosCliente/pdf/"+c.getId();
 	}
 }
