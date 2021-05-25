@@ -75,8 +75,6 @@ public class ClientesPDFController {
 			boolean realizada = modeloCita.isRealizada();
 			realizada = true;
 			
-			//mavDatosCliente.addObject("citas",citas.findMascotasByCitasRealizada(cliente.getId(), realizada));
-			
 			mavDatosCliente.addObject("citas",citas.findCitasByMascota(cliente.getUsername(),realizada));
 			
 			mavDatosCliente.addObject("clienteActual",cliente.getUsername().toUpperCase());
