@@ -105,7 +105,7 @@ public class ExportarDatosCliente {
 	
 	public void exportarDatosCliente(HttpServletResponse resCliente) throws DocumentException, IOException {
 		Document docCliente = new Document();
-		docCliente.setPageSize(PageSize.LETTER);
+		docCliente.setPageSize(PageSize.A4);
 		
 		PdfWriter.getInstance(docCliente, resCliente.getOutputStream());
 		docCliente.open();
@@ -115,27 +115,27 @@ public class ExportarDatosCliente {
 		txtAnioCita.setColor(Color.decode("#508DD1"));
 		txtAnioCita.setSize(34);
 		Paragraph anio = new Paragraph("2021",txtAnioCita);
-		anio.setSpacingAfter(-646.37f);
+		anio.setSpacingAfter(-716.38f);
 		anio.setAlignment(Element.ALIGN_RIGHT);
 		docCliente.add(anio);
 		txtPortada = FontFactory.getFont(FontFactory.HELVETICA);
 		txtPortada.setColor(Color.decode("#234CB2"));
-		txtPortada.setSize(46);
+		txtPortada.setSize(44);
 		Paragraph tituloPortada = new Paragraph("Clinica DAM \n Informe para \n el cliente",txtPortada);
 		tituloPortada.setAlignment(Element.ALIGN_LEFT);
-		tituloPortada.setSpacingBefore(615.87f);
+		tituloPortada.setSpacingBefore(678.96f);
 		docCliente.add(tituloPortada);
 		
 		Image imgPortada = Image.getInstance("src/main/resources/static/images/imagen_portada.png");	
-		imgPortada.setAbsolutePosition(134.43f,190.46f);
-		imgPortada.scaleToFit(520.47f,550.51f);
+		imgPortada.setAbsolutePosition(101.09f,227.51f);
+		imgPortada.scaleToFit(538.56f,562.47f);
 		imgPortada.setRotation(100f);
 		imgPortada.setAlignment(Element.ALIGN_RIGHT);
 		docCliente.add(imgPortada);
 		
 		// Establecemos la barra baja de la portada
 		PdfPTable barra = new PdfPTable(1);
-		barra.setWidthPercentage(108.46f);
+		barra.setWidthPercentage(108.47f);
 		PdfPCell barraPortada = new PdfPCell();
 		
 		barraPortada = new PdfPCell(new Phrase(""));
@@ -143,7 +143,7 @@ public class ExportarDatosCliente {
 		barraPortada.setBackgroundColor(Color.decode("#6D00CE"));
 		barraPortada.setPadding(10.2f);
 		
-		barra.setSpacingBefore(451.12f);
+		barra.setSpacingBefore(530.56f);
 		barra.addCell(barraPortada);
 		docCliente.add(barra);
 		
@@ -158,7 +158,7 @@ public class ExportarDatosCliente {
 		docCliente.add(logo);
 		
 		Image logoClinica = Image.getInstance("src/main/resources/static/images/logo.png");
-		logoClinica.setAbsolutePosition(525,723);
+		logoClinica.setAbsolutePosition(525,772);
 		logoClinica.setAlignment(Element.ALIGN_RIGHT);
 		docCliente.add(logoClinica);
 		
@@ -167,14 +167,15 @@ public class ExportarDatosCliente {
 		txtDatosCliente.setColor(Color.BLACK);
 		Paragraph tituloDatosCliente = new Paragraph("Datos de cliente",txtDatosCliente);
 		tituloDatosCliente.setAlignment(Paragraph.ALIGN_CENTER);
-		tituloDatosCliente.setSpacingBefore(8.45f);
+		tituloDatosCliente.setSpacingBefore(28.89f);
+		tituloDatosCliente.setSpacingAfter(16.37f);
 		
 		docCliente.add(tituloDatosCliente);
 		
 		//-----------Para el cliente actual------------------------
 		PdfPTable tablaClientes = new PdfPTable(4);
 		tablaClientes.setWidthPercentage(90.1f);
-		tablaClientes.setSpacingBefore(4.36f);
+		tablaClientes.setSpacingAfter(18.63f);
 		
 		this.mostrarDatosCliente(tablaClientes);
 		
@@ -185,7 +186,8 @@ public class ExportarDatosCliente {
 		txtCitasMascotaCliente.setColor(Color.BLACK);
 		Paragraph tituloCitasMascota = new Paragraph("Lista de citas realizadas",txtCitasMascotaCliente);
 		tituloCitasMascota.setAlignment(Paragraph.ALIGN_CENTER);
-		tituloCitasMascota.setSpacingBefore(8.45f);
+		tituloCitasMascota.setSpacingBefore(9.51f);
+		tituloCitasMascota.setSpacingAfter(16.37f);
 		docCliente.add(tituloCitasMascota);
 		
 		try {
@@ -368,7 +370,7 @@ public class ExportarDatosCliente {
 				Image fotoMascota = Image.getInstance(cita.getMascota().getFoto());
 				fotoMascota.setAlignment(Element.ALIGN_CENTER);				
 				celdasCitasMascota.setPhrase(new Phrase(String.valueOf(fotoMascota)));
-				celdasCitasMascota.setFixedHeight(127.38f);
+				celdasCitasMascota.setFixedHeight(120.39f);
 				celdasCitasMascota.setColspan(6);
 				celdasCitasMascota.setImage(fotoMascota);
 				tablaCitasMascota.addCell(celdasCitasMascota);
