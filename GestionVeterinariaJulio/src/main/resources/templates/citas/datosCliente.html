@@ -153,6 +153,8 @@
 						</select>
 											
 						<div class="alert alert-warning" th:if="${empty}" th:text="${empty}"></div>
+						
+						<!-- Para cuando el cliente no tiene ninguna mascota en la base de datos -->
 						<div class="panel panel-body alert alert-warning" th:if="${mascotas.empty}" role="alert" th:text="${txtMascota}" id="nombreMascota"></div>
 						
 						<button type="submit" class="btn btn-info mt-5" id="btnInformePDF"><i class="fa fa-file-pdf-o"></i> Exportar a PDF</button>
