@@ -63,6 +63,7 @@ public class ClientesPDFController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth.getPrincipal() != "anonymousUser") {
 			Usuarios cliente = usuariosRepository.findByUsername(auth.getName());
+			
 			mavDatosCliente.addObject("txtMascota",cliente.getUsername()+" no tiene mascotas registradas en la base de datos");
 			
 			mavDatosCliente.addObject("usuario",usuariosImpl.buscarId(cliente.getId()));

@@ -153,10 +153,9 @@
 						</select>
 											
 						<div class="alert alert-warning" th:if="${empty}" th:text="${empty}"></div>
-					
+						<div class="panel panel-body alert alert-warning" th:if="${mascotas.empty}" role="alert" th:text="${txtMascota}" id="nombreMascota"></div>
+						
 						<button type="submit" class="btn btn-info mt-5" id="btnInformePDF"><i class="fa fa-file-pdf-o"></i> Exportar a PDF</button>
-					
-						<div class="panel panel-body alert alert-warning" th:if="${txtMascota}" role="alert" th:text="${txtMascota}" id="nombreMascota"></div>
 					</form>
            		</div>
 			</div>
