@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,6 +64,7 @@ public class ClientesPDFController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth.getPrincipal() != "anonymousUser") {
 			Usuarios cliente = usuariosRepository.findByUsername(auth.getName());
+			mavDatosCliente.addObject("citasTxt",cliente.getUsername()+" no tiene mascotas registradas en la base de datos");
 			
 			mavDatosCliente.addObject("usuario",usuariosImpl.buscarId(cliente.getId()));
 			
@@ -81,12 +83,14 @@ public class ClientesPDFController {
 			ModeloCitas cita) throws DocumentException, IOException {
 		
 		if(mascota.getNombre().isEmpty()) {
+			mascotas.findMascotasByNullValue(mascota.getNombre());
+			
 			String mensaje = "Debe seleccionar su mascota";
 			LOG_VETERINARIA.info(mensaje);
 			modelo.addAttribute("empty",mensaje);
 		}
 		else {
-			LOG_VETERINARIA.info(mascota.getNombre()+" introducido correctamente");
+			LOG_VETERINARIA.info(mascota.getNombre()+" seleccionado correctamente");
 			
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			if(auth.getPrincipal() != "anonymousUser") {

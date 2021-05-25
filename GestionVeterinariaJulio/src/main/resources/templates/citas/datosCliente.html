@@ -145,16 +145,20 @@
            			<li class="list-group-item bg-info text-white" id="data"><span class="text-left"><strong>Username:</strong></span> <span th:text="${usuario.username}" class="text-right"></span></li>
            		</ul>
            		
-           		<form class="col-md-12" action="#" th:action="@{/citas/datosCliente/pdf/}+${usuario.id}" th:object="${mascota}" method="GET">					
-					<select name="nombre" class="form-control col-sm-12 mt-3">
-						<option value="">Seleccione su mascota</option>
-						<option th:each="mascota: ${mascotas}" th:value="${mascota.nombre}" th:text="${mascota.nombre}"></option>
-					</select>
+           		<div class="col-offset-3 mt-2" th:if="${!mascotas.empty}">
+           			<form class="col-md-12" action="#" th:action="@{/citas/datosCliente/pdf/}+${usuario.id}" th:object="${mascota}" method="GET">					
+						<select name="nombre" class="form-control col-sm-12 mt-3">
+							<option value="">Seleccione su mascota</option>
+							<option th:each="mascota: ${mascotas}" th:value="${mascota.nombre}" th:text="${mascota.nombre}"></option>
+						</select>
+											
+						<div class="alert alert-warning" th:if="${empty}" th:text="${empty}"></div>
 					
-					<div class="alert alert-warning" th:if="${empty}" th:text="${empty}"></div>
+						<button type="submit" class="btn btn-info mt-5" id="btnInformePDF"><i class="fa fa-file-pdf-o"></i> Exportar a PDF</button>
 					
-					<button type="submit" class="btn btn-info mt-5" id="btnInformePDF"><i class="fa fa-file-pdf-o"></i> Exportar a PDF</button>
-				</form>
+						<div class="panel panel-body alert alert-warning" th:if="${txtCita}" role="alert" th:text="${txtCita}" id="nombreMascota"></div>
+					</form>
+           		</div>
 			</div>
 		</div>
 			
