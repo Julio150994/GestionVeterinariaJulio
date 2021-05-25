@@ -115,7 +115,7 @@ public class ExportarDatosCliente {
 		txtAnioCita.setColor(Color.decode("#508DD1"));
 		txtAnioCita.setSize(34);
 		Paragraph anio = new Paragraph("2021",txtAnioCita);
-		anio.setSpacingAfter(-629.35f);
+		anio.setSpacingAfter(-646.37f);
 		anio.setAlignment(Element.ALIGN_RIGHT);
 		docCliente.add(anio);
 		txtPortada = FontFactory.getFont(FontFactory.HELVETICA);
@@ -123,11 +123,11 @@ public class ExportarDatosCliente {
 		txtPortada.setSize(46);
 		Paragraph tituloPortada = new Paragraph("Clinica DAM \n Informe para \n el cliente",txtPortada);
 		tituloPortada.setAlignment(Element.ALIGN_LEFT);
-		tituloPortada.setSpacingBefore(613.87f);
+		tituloPortada.setSpacingBefore(615.87f);
 		docCliente.add(tituloPortada);
 		
 		Image imgPortada = Image.getInstance("src/main/resources/static/images/imagen_portada.png");	
-		imgPortada.setAbsolutePosition(134.11f,169.45f);
+		imgPortada.setAbsolutePosition(134.43f,190.46f);
 		imgPortada.scaleToFit(520.47f,550.51f);
 		imgPortada.setRotation(100f);
 		imgPortada.setAlignment(Element.ALIGN_RIGHT);
@@ -374,6 +374,24 @@ public class ExportarDatosCliente {
 				tablaCitasMascota.addCell(celdasCitasMascota);
 				
 				docCliente.add(tablaCitasMascota);
+				
+				//------------Ponemos la cabecera del pdf cada vez que pasamos de página-----------------
+				txtLogo = FontFactory.getFont("CALIBRI");
+				txtLogo.setSize(12);
+				txtLogo.setColor(Color.BLACK);
+				logo = new Paragraph("Informe de clínica DAM",txtLogo);
+				logo.setAlignment(Paragraph.ALIGN_LEFT);
+				docCliente.add(logo);
+				
+				logoClinica = Image.getInstance("src/main/resources/static/images/logo.png");
+				logoClinica.setAbsolutePosition(525,723);
+				logoClinica.setAlignment(Element.ALIGN_RIGHT);
+				
+				Paragraph linea = new Paragraph();// establecemos un párrafo como espacios en blanco
+				linea.setSpacingBefore(68.36f);
+				docCliente.add(linea);
+				
+				docCliente.add(logoClinica);
 				
 				docCliente.newPage();
 			}

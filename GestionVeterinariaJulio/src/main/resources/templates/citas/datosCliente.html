@@ -88,7 +88,7 @@
                       	<a class="dropdown-item" th:href="@{/citas/citasPosteriores/}+${usuario}"><i class="fa fa-link pull-left"></i> Ver citas posteriores</a>
                       </li>
                       <li sec:authorize="hasRole('ROLE_CLIENTE')">
-                      	<a class="dropdown-item" th:href="@{/citas/datosCliente/}+${usuario}"><i class="fa fa-link pull-left"></i> Datos personales</a>
+                      	<a class="dropdown-item" th:href="@{/citas/datosCliente/}+${usuario}"><i class="fa fa-link pull-left"></i> Datos de cliente</a>
                       </li>
                     </ul>
                   </li>
@@ -135,7 +135,7 @@
             
             <div sec:authorize="hasRole('ROLE_CLIENTE')" class="container mt-4">
 			
-			<div class="card-headert text-center mt-5"> <h3> DATOS PERSONALES (<span th:text="${clienteActual}"></span>)</h3> </div>
+			<div class="card-headert text-center mt-5"> <h3> DATOS DE CLIENTE <span th:text="${clienteActual}"></span></h3> </div>
 			
 			<div class="container mt-4 col-md-5">
 				<ul class="list-group">
