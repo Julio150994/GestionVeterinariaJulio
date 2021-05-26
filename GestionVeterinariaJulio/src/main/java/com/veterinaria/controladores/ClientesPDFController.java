@@ -75,7 +75,7 @@ public class ClientesPDFController {
 			boolean realizada = modeloCita.isRealizada();
 			realizada = true;
 			
-			mavDatosCliente.addObject("citas",citas.findCitasByMascota(cliente.getUsername(),realizada));
+			mavDatosCliente.addObject("citas",citas.findCitasByMascotaCliente(cliente.getUsername(),realizada));
 			
 			mavDatosCliente.addObject("clienteActual",cliente.getUsername().toUpperCase());
 		}
@@ -98,7 +98,7 @@ public class ClientesPDFController {
 			boolean realizada = cita.isRealizada();
 			realizada = true;
 			
-			List<Citas> modeloCita = citas.findCitasByMascota(mascota.getNombre(),realizada);
+			List<Citas> modeloCita = citas.findCitasByMascotaCliente(mascota.getNombre(),realizada);
 			LOG_VETERINARIA.info(mascota.getNombre()+" seleccionado correctamente");
 			
 			if(modeloCita.isEmpty()) {

@@ -149,18 +149,18 @@
            		</ul>
            		
            		<div class="col-offset-3 mt-2" th:if="${!mascotas.empty}">
-           			<form class="col-md-12" action="#" th:action="@{/citas/datosCliente/pdf/}+${usuario.id}" th:object="${mascota}" method="GET">
+           			<form class="col-md-12" action="#" th:action="@{/citas/datosCliente/pdf/}+${usuario.id}" th:object="${cita}" method="GET">
 						<select name="nombre" class="form-control col-sm-12 mt-3" required>
-							<option value="">Seleccione su mascota</option>
+							<option value="">Seleccione mascota</option>
 							<option th:each="mascota: ${mascotas}" th:value="${mascota.nombre}" th:text="${mascota.nombre}"></option>
 						</select>
 						
-						<button type="submit" class="btn btn-info mt-5" th:if="${!mascotas.empty}" id="btnInformePDF"><i class="fa fa-file-pdf-o"></i> Exportar a PDF</button>
+						<button type="submit" class="btn btn-info mt-5" id="btnInformePDF"><i class="fa fa-file-pdf-o"></i> Exportar a PDF</button>
 					</form>
            		</div>
            		
            		<!-- Para cuando el cliente no tiene ninguna mascota en la base de datos -->
-				<div class="col-sm-6 alert alert-warning" th:if="${mascotas.empty}" role="alert" th:text="${txtMascota}" id="nombreMascota"></div>
+				<div class="col-offset-3 alert alert-warning" th:if="${mascotas.empty}" role="alert" th:text="${txtMascota}" id="data"></div>
 			</div>
 		</div>
 			
