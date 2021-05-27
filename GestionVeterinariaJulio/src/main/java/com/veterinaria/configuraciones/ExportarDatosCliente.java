@@ -90,17 +90,6 @@ public class ExportarDatosCliente {
 		celdasCliente.setVerticalAlignment(Element.ALIGN_CENTER);
 		celdasCliente.setPadding(10);
 		tablaClientes.addCell(celdasCliente);
-		
-		filaCliente.setPhrase(new Phrase("Username",txtDatosCliente));
-		filaCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
-		filaCliente.setVerticalAlignment(Element.ALIGN_CENTER);
-		filaCliente.setPadding(10);
-		tablaClientes.addCell(filaCliente);
-		celdasCliente.setPhrase(new Phrase(datosCliente.getUsername()));
-		celdasCliente.setHorizontalAlignment(Element.ALIGN_CENTER);
-		celdasCliente.setVerticalAlignment(Element.ALIGN_CENTER);
-		celdasCliente.setPadding(10);
-		tablaClientes.addCell(celdasCliente);
 	}
 	
 	public void exportarDatosCliente(HttpServletResponse resCliente) throws DocumentException, IOException {
@@ -370,7 +359,7 @@ public class ExportarDatosCliente {
 				Image fotoMascota = Image.getInstance(cita.getMascota().getFoto());
 				fotoMascota.setAlignment(Element.ALIGN_CENTER);				
 				celdasCitasMascota.setPhrase(new Phrase(String.valueOf(fotoMascota)));
-				celdasCitasMascota.setFixedHeight(101.65f);
+				celdasCitasMascota.setFixedHeight(115.65f);
 				celdasCitasMascota.setColspan(6);
 				celdasCitasMascota.setImage(fotoMascota);
 				tablaCitasMascota.addCell(celdasCitasMascota);
