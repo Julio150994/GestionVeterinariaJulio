@@ -1,6 +1,9 @@
 package com.veterinaria.controladores;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -36,6 +39,13 @@ import com.veterinaria.servicios.Impl.UsuariosImpl;
 public class ClientesPDFController {
 	private static final Log LOG_VETERINARIA = LogFactory.getLog(ClientesPDFController.class);
 	private static final String datosClienteActual = "/citas/datosCliente";
+	
+	private String txtFechaActual;
+	
+	private Calendar fecha = new GregorianCalendar();
+	private int dia = fecha.get(Calendar.DAY_OF_MONTH);
+    private int mes = fecha.get(Calendar.MONTH);
+    private int anio = fecha.get(Calendar.YEAR);
 		
 	@Autowired
 	@Qualifier("usuariosImpl")
@@ -67,10 +77,13 @@ public class ClientesPDFController {
 			
 			mavDatosCliente.addObject("usuario",usuariosImpl.buscarId(cliente.getId()));
 			
-			mavDatosCliente.addObject("txtCitasMascota",cliente.getUsername()+" no tiene mascotas registradas en citas");
+			mavDatosCliente.addObject("txtCitasMascota",cliente.getUsername()+" no tiene mascotas registradas en la base de datos");
 			
 			//---------Para mostrar en el select las mascotas que tengan citas tanto pendientes como realizadas---------
-			mavDatosCliente.addObject("citas",citas.findMascotasByCitasExistentes(cliente.getId()));
+			boolean realizada = modeloCita.isRealizada();
+			realizada = true;
+			
+			mavDatosCliente.addObject("citas",citas.findMascotasByCitasExistentes(cliente.getId(),realizada));
 			
 			mavDatosCliente.addObject("clienteActual",cliente.getUsername().toUpperCase());
 		}
@@ -81,11 +94,10 @@ public class ClientesPDFController {
 	/* Método para exportar los datos del cliente a pdf */
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/citas/datosCliente/pdf/{id}")
-	public String mostrarInformeCliente(HttpServletResponse resCliente, Model modelo, @Valid @ModelAttribute("mascota") ModeloMascotas mascota,
+	public void mostrarInformeCliente(HttpServletResponse resCliente, Model modelo, @Valid @ModelAttribute("mascota") ModeloMascotas mascota,
 			ModeloCitas cita, RedirectAttributes mensajeFlash) throws DocumentException, IOException {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Usuarios c = usuariosRepository.findByUsername(auth.getName());
 		
 		if(auth.getPrincipal() != "anonymousUser") {
 			Usuarios cliente = usuariosRepository.findByUsername(auth.getName());
@@ -93,31 +105,23 @@ public class ClientesPDFController {
 			boolean realizada = cita.isRealizada();
 			realizada = true;
 			
-			List<Citas> modeloCita = citas.findCitasByMascotaCliente(mascota.getNombre(),realizada);
+			txtFechaActual = anio+"-"+(mes+1)+"-"+dia;
+		    Date fechaCita = Date.valueOf(txtFechaActual);// convertimos a fecha para la base de datos
+			
+			List<Citas> modeloCita = citas.findCitasByMascotaCliente(mascota.getNombre(),fechaCita,realizada);
 			LOG_VETERINARIA.info(mascota.getNombre()+" seleccionado correctamente");
 			
-			if(modeloCita.isEmpty()) {
-				String error = mascota.getNombre()+" no tiene citas realizadas";
-				LOG_VETERINARIA.info(error);
-				mensajeFlash.addFlashAttribute("errorCita",error);
-				
-				return "redirect:/citas/datosCliente/"+cliente.getId();
-			}
-			else {
-				resCliente.setContentType("application/pdf");
-				
-				String clientesPDF = "attachment; filename=informe_cliente_"+cliente.getUsername()+".pdf";
-				
-				resCliente.setHeader("Content-Disposition",clientesPDF);
+			resCliente.setContentType("application/pdf");
 			
-				ModeloUsuarios modeloCliente = usuariosImpl.buscarId(cliente.getId());
-				modelo.addAttribute("usuario",modeloCliente);
-				
-				ExportarDatosCliente pdfCliente = new ExportarDatosCliente(modeloCliente,modeloCita);
-				pdfCliente.exportarDatosCliente(resCliente);
-				return null;
-			}
+			String clientesPDF = "attachment; filename=informe_cliente_"+cliente.getUsername()+".pdf";
+			
+			resCliente.setHeader("Content-Disposition",clientesPDF);
+		
+			ModeloUsuarios modeloCliente = usuariosImpl.buscarId(cliente.getId());
+			modelo.addAttribute("usuario",modeloCliente);
+			
+			ExportarDatosCliente pdfCliente = new ExportarDatosCliente(modeloCliente,modeloCita);
+			pdfCliente.exportarDatosCliente(resCliente);
 		}
-		return "/citas/datosCliente/pdf/"+c.getId();
 	}
 }

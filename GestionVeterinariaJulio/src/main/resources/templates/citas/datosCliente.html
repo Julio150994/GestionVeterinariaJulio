@@ -135,7 +135,6 @@
             
             <div sec:authorize="hasRole('ROLE_CLIENTE')" class="container mt-4">
             
-            <div class="panel panel-body alert alert-warning" th:if="${citaEmpty}" role="alert" th:text="${citaEmpty}"></div>
 			<div class="panel panel-body alert alert-danger" th:if="${errorCita}" role="alert" th:text="${errorCita}"></div>
 			
 			<div class="card-headert text-center mt-5"> <h3> DATOS DE CLIENTE </h3> </div>
@@ -150,7 +149,7 @@
            		<div class="col-offset-3 mt-2" th:if="${!citas.empty}">
            			<form class="col-md-12" action="#" th:action="@{/citas/datosCliente/pdf/}+${usuario.id}" th:object="${cita}" method="GET">
 						<select name="nombre" class="form-control col-sm-12 mt-3" required>
-							<option value="">Seleccione una mascota con citas</option>
+							<option value="">Seleccione una mascota (tiene citas realizadas):</option>
 							<option th:each="cita: ${citas}" th:value="${cita.mascota.nombre}" th:text="${cita.mascota.nombre}"></option>
 						</select>
 						
