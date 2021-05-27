@@ -84,7 +84,9 @@ public class ClientesPDFController {
 			realizada = true;
 			
 			mavDatosCliente.addObject("citas",citas.findMascotasByCitasExistentes(cliente.getId(),realizada));
+			
 			mavDatosCliente.addObject("clienteActual",cliente.getUsername().toUpperCase());
+			
 		}
 			
 		return mavDatosCliente;
