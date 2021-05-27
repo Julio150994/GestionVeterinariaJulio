@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.lowagie.text.DocumentException;
 import com.veterinaria.configuraciones.ExportarDatosCliente;
 import com.veterinaria.entidades.Citas;
@@ -66,16 +65,14 @@ public class ClientesPDFController {
 		if(auth.getPrincipal() != "anonymousUser") {
 			Usuarios cliente = usuariosRepository.findByUsername(auth.getName());
 			
-			mavDatosCliente.addObject("txtMascota",cliente.getUsername()+" no tiene mascotas registradas en la base de datos");
-			
 			mavDatosCliente.addObject("usuario",usuariosImpl.buscarId(cliente.getId()));
 			
-			mavDatosCliente.addObject("mascotas",mascotas.findByIdUsuario(cliente));
+			mavDatosCliente.addObject("txtCitasMascota",cliente.getUsername()+" no tiene mascotas registradas en citas");
 			
-			boolean realizada = modeloCita.isRealizada();
-			realizada = true;
+			//---------Para mostrar en el select las mascotas que tengan citas tanto pendientes como realizadas---------
+			mavDatosCliente.addObject("citas",citas.findMascotasByCitasExistentes(cliente.getId()));
 			
-			mavDatosCliente.addObject("citas",citas.findCitasByMascotaCliente(cliente.getUsername(),realizada));
+			mavDatosCliente.addObject("clienteActual",cliente.getUsername().toUpperCase());
 		}
 			
 		return mavDatosCliente;
