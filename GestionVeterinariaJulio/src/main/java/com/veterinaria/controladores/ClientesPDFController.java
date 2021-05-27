@@ -77,14 +77,13 @@ public class ClientesPDFController {
 			
 			mavDatosCliente.addObject("usuario",usuariosImpl.buscarId(cliente.getId()));
 			
-			mavDatosCliente.addObject("txtCitasMascota",cliente.getUsername()+" no tiene mascotas registradas en la base de datos");
+			mavDatosCliente.addObject("txtCitasMascota",cliente.getUsername()+" no tiene mascotas registradas en la base de datos y/o en citas realizadas");
 			
 			//---------Para mostrar en el select las mascotas que tengan citas tanto pendientes como realizadas---------
 			boolean realizada = modeloCita.isRealizada();
 			realizada = true;
 			
 			mavDatosCliente.addObject("citas",citas.findMascotasByCitasExistentes(cliente.getId(),realizada));
-			
 			mavDatosCliente.addObject("clienteActual",cliente.getUsername().toUpperCase());
 		}
 			
