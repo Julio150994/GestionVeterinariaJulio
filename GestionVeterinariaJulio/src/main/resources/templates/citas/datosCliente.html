@@ -147,7 +147,7 @@
            		<div class="col-offset-3 mt-2" th:if="${!citas.empty}">
            			<form class="col-md-12" action="#" th:action="@{/citas/datosCliente/pdf/}+${usuario.id}" th:object="${cita}" method="GET">
 						<select name="nombre" class="form-control col-sm-12 mt-3" required>
-							<option value="">Seleccione una mascota (con citas realizadas):</option>
+							<option value="">Seleccione una mascota (con citas realizadas)</option>
 							<option th:each="cita: ${citas}" th:value="${cita.mascota.nombre}" th:text="${cita.mascota.nombre}"></option>
 						</select>
 						
