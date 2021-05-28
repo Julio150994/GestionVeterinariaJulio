@@ -265,7 +265,7 @@ public class ExportarDatosCliente {
 				tablaCitasMascota.addCell(celdasCitasMascota);
 				
 				
-				filaCitas.setPhrase(new Phrase("Motivo",txtCitasMascotaCliente));
+				filaCitas.setPhrase(new Phrase("Motivo de cita",txtCitasMascotaCliente));
 				filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
 				filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
 				filaCitas.setPadding(10);
@@ -279,7 +279,7 @@ public class ExportarDatosCliente {
 				tablaCitasMascota.addCell(celdasCitasMascota);
 				
 				
-				filaCitas.setPhrase(new Phrase("Informe",txtCitasMascotaCliente));
+				filaCitas.setPhrase(new Phrase("Informe de cita",txtCitasMascotaCliente));
 				filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
 				filaCitas.setVerticalAlignment(Element.ALIGN_CENTER);
 				filaCitas.setPadding(10);
@@ -335,7 +335,7 @@ public class ExportarDatosCliente {
 				tablaCitasMascota.addCell(celdasCitasMascota);
 				
 				
-				filaCitas.setPhrase(new Phrase("Fecha de mascota",txtCitasMascotaCliente));
+				filaCitas.setPhrase(new Phrase("Fecha de nacimiento de mascota",txtCitasMascotaCliente));
 				filaCitas.setHorizontalAlignment(Element.ALIGN_CENTER);
 				filaCitas.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				filaCitas.setPadding(10);
