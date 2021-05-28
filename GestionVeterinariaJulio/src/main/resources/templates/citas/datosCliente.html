@@ -159,10 +159,14 @@
            		<div class="col-offset-3 alert alert-warning" th:if="${mascotas.empty}" role="alert" th:text="${txtMascotas}" id="data"></div>
            		
            		<!-- El cliente no tiene mascotas en las citas -->
-				<div class="col-offset-3 alert alert-warning" th:if="${citasMascota.empty}" role="alert" th:text="${txtCitasMascota}" id="data"></div>
+           		<div class="col-offset-3" th:if="${!mascotas.empty}" id="data">
+           			<div class="alert alert-warning" th:if="${citasMascota.empty}" role="alert" th:text="${txtCitasMascota}"></div>
+           		</div>
            		
            		<!-- El cliente no tiene a sus mascotas con citas realizadas -->
-           		<div class="col-offset-3 alert alert-warning" th:if="${citas.empty}" role="alert" th:text="${txtCitasPendientes}" id="data"></div>
+           		<div class="col-offset-3" th:if="${!mascotas.empty and !citasMascota.empty}" id="data">
+           			<div class="alert alert-warning" th:if="${citas.empty}" role="alert" th:text="${txtCitasPendientes}"></div>
+           		</div>
 			</div>
 		</div>
 			
