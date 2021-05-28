@@ -52,6 +52,10 @@ public interface CitasRepository extends JpaRepository<Citas, Integer> {
 	@Query("select c from Citas c, Mascotas m, Usuarios u where c.mascota = m.id and m.usuario = u.id and c.usuario = :usuario group by u.username")
 	public abstract List<Citas> listarClientesByVeterinario(@Param("usuario") Usuarios cliente);
 	
+	
+	@Query("select c from Citas c, Mascotas m, Usuarios u where c.mascota = m.id and m.usuario = u.id and u.id = :id")
+	public abstract List<Citas> findMascotasWithCitasByUsuario(@Param("id") int id);
+	
 	@Query("select c from Citas c, Mascotas m, Usuarios u where c.mascota = m.id and m.usuario = u.id and u.id = :id and c.realizada = :realizada group by m.nombre")
 	public abstract List<Citas> findMascotasByCitasRealizadas(@Param("id") int id, @Param("realizada") boolean realizada);
 	
