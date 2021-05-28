@@ -173,7 +173,7 @@ public class ExportarDatosCliente {
 		txtCitasMascotaCliente = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
 		txtCitasMascotaCliente.setSize(19);
 		txtCitasMascotaCliente.setColor(Color.BLACK);
-		Paragraph tituloCitasMascota = new Paragraph("Lista de citas realizadas",txtCitasMascotaCliente);
+		Paragraph tituloCitasMascota = new Paragraph("Listado de citas realizadas",txtCitasMascotaCliente);
 		tituloCitasMascota.setAlignment(Paragraph.ALIGN_CENTER);
 		tituloCitasMascota.setSpacingBefore(9.51f);
 		tituloCitasMascota.setSpacingAfter(16.37f);
