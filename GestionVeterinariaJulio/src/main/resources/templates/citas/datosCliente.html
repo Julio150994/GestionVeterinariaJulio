@@ -164,8 +164,13 @@
            		</div>
            		
            		<!-- El cliente no tiene a sus mascotas con citas realizadas -->
-           		<div class="col-offset-3" th:if="${!mascotas.empty and !citasMascota.empty}" id="data">
+           		<div class="col-offset-3" th:if="${!mascotas.empty and !citasMascota.empty and citasFechaPosterior.empty}" id="data">
            			<div class="alert alert-warning" th:if="${citas.empty}" role="alert" th:text="${txtCitasPendientes}"></div>
+           		</div>
+           		
+           		<!-- El cliente tiene citas realizadas, pero para fechas posteriores al día actual -->
+           		<div class="col-offset-3" th:if="${!mascotas.empty and !citasMascota.empty and citas.empty != null}" id="data">
+           			<div class="alert alert-warning" th:if="${!citasFechaPosterior.empty}" role="alert" th:text="${txtFechaPosterior}"></div>
            		</div>
 			</div>
 		</div>

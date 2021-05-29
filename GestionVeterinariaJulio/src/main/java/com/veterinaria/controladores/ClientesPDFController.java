@@ -40,7 +40,7 @@ public class ClientesPDFController {
 	private static final Log LOG_VETERINARIA = LogFactory.getLog(ClientesPDFController.class);
 	private static final String datosClienteActual = "/citas/datosCliente";
 	
-	private String txtFechaActual;
+	private String txtFechaActual, fechaFormatoNormal;
 	
 	private Calendar fecha = new GregorianCalendar();
 	private int dia = fecha.get(Calendar.DAY_OF_MONTH);
@@ -91,7 +91,15 @@ public class ClientesPDFController {
 			boolean realizada = modeloCita.isRealizada();
 			realizada = true;
 			
-			mavDatosCliente.addObject("citas",citas.findMascotasByCitasRealizadas(cliente.getId(),realizada));
+			txtFechaActual = anio+"-"+(mes+1)+"-"+dia;
+			fechaFormatoNormal = dia+"/"+(mes+1)+"/"+anio;
+			Date fechaCita = Date.valueOf(txtFechaActual);// convertimos a fecha para la base de datos
+		    
+		    mavDatosCliente.addObject("txtFechaPosterior",cliente.getUsername()+" no debe tener citas realizadas con fecha posterior a "+fechaFormatoNormal);
+		    mavDatosCliente.addObject("citasFechaPosterior",citas.findCitasRealizadasByFechaPosterior(cliente.getId(),fechaCita, realizada));
+			
+		    
+			mavDatosCliente.addObject("citas",citas.findMascotasByCitasRealizadas(cliente.getId(),fechaCita,realizada));
 			
 			mavDatosCliente.addObject("clienteActual",cliente.getUsername().toUpperCase());
 		}
