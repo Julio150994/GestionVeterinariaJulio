@@ -3,9 +3,7 @@ package com.veterinaria.controladores;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-
 import javax.validation.Valid;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -367,8 +365,12 @@ public class CitasController {
 		if(auth.getPrincipal() != "anonymousUser") {
 			Usuarios usuario = usuariosRepository.findByUsername(auth.getName());
 			mavCitas.addObject("usuario",usuario.getId());
-		    
-		    txtFechaActual = anio+"-"+(mes+1)+"-"+dia;
+			
+			mavCitas.addObject("veterinarioTxt",usuario.getUsername()+" no tiene citas registradas en la base de datos");
+			mavCitas.addObject("citasVeterinario",citasRepository.findByVeterinarioWithoutCitas(usuario.getId()));
+			
+			
+			txtFechaActual = anio+"-"+(mes+1)+"-"+dia;
 		    fechaFormatoNormal = dia+"/"+(mes+1)+"/"+anio;
 		    
 		    Date diaActual = Date.valueOf(txtFechaActual);// convertimos a fecha para la base de datos
@@ -378,7 +380,6 @@ public class CitasController {
 			mavCitas.addObject("veterinarioActual",usuario.getUsername().toUpperCase());
 			
 			mavCitas.addObject("txtFechaActual",fechaFormatoNormal);
-			
 			
 			mavCitas.addObject("citas",citasRepository.listarCitasDiasPosteriores(diaActual,cita.isRealizada(),usuario.getId()));
 		}
