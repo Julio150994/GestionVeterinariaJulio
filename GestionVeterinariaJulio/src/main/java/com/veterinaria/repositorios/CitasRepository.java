@@ -56,11 +56,11 @@ public interface CitasRepository extends JpaRepository<Citas, Integer> {
 	@Query("select c from Citas c, Mascotas m, Usuarios u where c.mascota = m.id and m.usuario = u.id and u.id = :id")
 	public abstract List<Citas> findMascotasWithCitasByUsuario(@Param("id") int id);
 	
-	@Query("select c from Citas c, Mascotas m, Usuarios u where c.mascota = m.id and m.usuario = u.id and u.id = :id and c.fecha > :fecha and c.realizada = :realizada group by m.nombre")
-	public abstract List<Citas> findCitasRealizadasByFechaPosterior(@Param("id") int id, @Param("fecha") Date fecha, @Param("realizada") boolean realizada);
+	@Query("select c from Citas c, Mascotas m, Usuarios u where c.mascota = m.id and m.usuario = u.id and u.id = :id and c.realizada = :realizada group by m.nombre")
+	public abstract List<Citas> findMascotasByCitasRealizadas(@Param("id") int id, @Param("realizada") boolean realizada);
 	
-	@Query("select c from Citas c, Mascotas m, Usuarios u where c.mascota = m.id and m.usuario = u.id and u.id = :id and c.fecha <= :fecha and c.realizada = :realizada group by m.nombre")
-	public abstract List<Citas> findMascotasByCitasRealizadas(@Param("id") int id, @Param("fecha") Date fecha, @Param("realizada") boolean realizada);
+	@Query("select c from Citas c, Mascotas m, Usuarios u where c.mascota = m.id and m.usuario = u.id and m.nombre = :nombre and c.fecha > :fecha and c.realizada = :realizada")
+	public abstract List<Citas> findCitasRealizadasByFechaPosterior(@Param("nombre") String nombre, @Param("fecha") Date fecha, @Param("realizada") boolean realizada);
 	
 	@Query("select c from Citas c, Mascotas m, Usuarios u where c.mascota = m.id and m.usuario = u.id and m.nombre = :nombre and c.fecha <= :fecha and c.realizada = :realizada")
 	public abstract List<Citas> findCitasByMascotaCliente(@Param("nombre") String nombre, @Param("fecha") Date fecha, @Param("realizada") boolean realizada);

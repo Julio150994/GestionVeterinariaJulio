@@ -89,17 +89,9 @@ public class ClientesPDFController {
 			
 			//---------Para mostrar en el select las mascotas que tengan citas tanto pendientes como realizadas---------
 			boolean realizada = modeloCita.isRealizada();
-			realizada = true;
-			
-			txtFechaActual = anio+"-"+(mes+1)+"-"+dia;
-			fechaFormatoNormal = dia+"/"+(mes+1)+"/"+anio;
-			Date fechaCita = Date.valueOf(txtFechaActual);// convertimos a fecha para la base de datos
+			realizada = true;			
 		    
-		    mavDatosCliente.addObject("txtFechaPosterior",cliente.getUsername()+" no debe tener citas realizadas con fecha posterior a "+fechaFormatoNormal);
-		    mavDatosCliente.addObject("citasFechaPosterior",citas.findCitasRealizadasByFechaPosterior(cliente.getId(),fechaCita, realizada));
-			
-		    
-			mavDatosCliente.addObject("citas",citas.findMascotasByCitasRealizadas(cliente.getId(),fechaCita,realizada));
+			mavDatosCliente.addObject("citas",citas.findMascotasByCitasRealizadas(cliente.getId(),realizada));
 			
 			mavDatosCliente.addObject("clienteActual",cliente.getUsername().toUpperCase());
 		}
@@ -110,10 +102,11 @@ public class ClientesPDFController {
 	/* Método para exportar los datos del cliente a pdf */
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/citas/datosCliente/pdf/{id}")
-	public void mostrarInformeCliente(HttpServletResponse resCliente, Model modelo, @Valid @ModelAttribute("mascota") ModeloMascotas mascota,
+	public String mostrarInformeCliente(HttpServletResponse resCliente, Model modelo, @Valid @ModelAttribute("mascota") ModeloMascotas mascota,
 			ModeloCitas cita, RedirectAttributes mensajeFlash) throws DocumentException, IOException {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Usuarios c = usuariosRepository.findByUsername(auth.getName());
 		
 		if(auth.getPrincipal() != "anonymousUser") {
 			Usuarios cliente = usuariosRepository.findByUsername(auth.getName());
@@ -122,22 +115,33 @@ public class ClientesPDFController {
 			realizada = true;
 			
 			txtFechaActual = anio+"-"+(mes+1)+"-"+dia;
+			fechaFormatoNormal = dia+"/"+(mes+1)+"/"+anio;
 		    Date fechaCita = Date.valueOf(txtFechaActual);// convertimos a fecha para la base de datos
 			
 			List<Citas> modeloCita = citas.findCitasByMascotaCliente(mascota.getNombre(),fechaCita,realizada);
 			LOG_VETERINARIA.info(mascota.getNombre()+" seleccionado correctamente");
 			
-			resCliente.setContentType("application/pdf");
+			if(modeloCita.isEmpty()) {
+				mensajeFlash.addFlashAttribute("txtFechaPosterior",cliente.getUsername()+" solo tiene citas realizadas con fecha posterior a "+fechaFormatoNormal);
+			    mensajeFlash.addFlashAttribute("citasFechaPosterior",citas.findCitasRealizadasByFechaPosterior(mascota.getNombre(),fechaCita, realizada));
+			    return "redirect:/citas/datosCliente/"+cliente.getId();
+			}
+			else {
+				resCliente.setContentType("application/pdf");
+				
+				String clientesPDF = "attachment; filename=informe_cliente_"+cliente.getUsername()+".pdf";
+				
+				resCliente.setHeader("Content-Disposition",clientesPDF);
 			
-			String clientesPDF = "attachment; filename=informe_cliente_"+cliente.getUsername()+".pdf";
+				ModeloUsuarios modeloCliente = usuariosImpl.buscarId(cliente.getId());
+				modelo.addAttribute("usuario",modeloCliente);
+				
+				ExportarDatosCliente pdfCliente = new ExportarDatosCliente(modeloCliente,modeloCita);
+				pdfCliente.exportarDatosCliente(resCliente);
+				return null;
+			}
 			
-			resCliente.setHeader("Content-Disposition",clientesPDF);
-		
-			ModeloUsuarios modeloCliente = usuariosImpl.buscarId(cliente.getId());
-			modelo.addAttribute("usuario",modeloCliente);
-			
-			ExportarDatosCliente pdfCliente = new ExportarDatosCliente(modeloCliente,modeloCita);
-			pdfCliente.exportarDatosCliente(resCliente);
 		}
+		return "/citas/datosCliente/"+c.getId();
 	}
 }

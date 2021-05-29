@@ -134,6 +134,8 @@
             
             
             <div sec:authorize="hasRole('ROLE_CLIENTE')" class="container mt-4">
+            
+            <div class="panel panel-body alert alert-danger" th:if="${citasFechaPosterior}" th:text="${txtFechaPosterior}"></div>
 			
 			<div class="card-headert text-center mt-5"> <h3> DATOS DE CLIENTE </h3> </div>
 			
@@ -147,7 +149,7 @@
            		<div class="col-offset-3 mt-2" th:if="${!citas.empty}">
            			<form class="col-md-12" action="#" th:action="@{/citas/datosCliente/pdf/}+${usuario.id}" th:object="${cita}" method="GET">
 						<select name="nombre" class="form-control col-sm-12 mt-3" required>
-							<option value="">Seleccione una mascota (citas realizadas)</option>
+							<option value="">Seleccione su mascota (con citas realizadas)</option>
 							<option th:each="cita: ${citas}" th:value="${cita.mascota.nombre}" th:text="${cita.mascota.nombre}"></option>
 						</select>
 						
@@ -164,13 +166,8 @@
            		</div>
            		
            		<!-- El cliente no tiene a sus mascotas con citas realizadas -->
-           		<div class="col-offset-3" th:if="${!mascotas.empty and !citasMascota.empty and citasFechaPosterior.empty}" id="data">
+           		<div class="col-offset-3" th:if="${!mascotas.empty and !citasMascota.empty}" id="data">
            			<div class="alert alert-warning" th:if="${citas.empty}" role="alert" th:text="${txtCitasPendientes}"></div>
-           		</div>
-           		
-           		<!-- El cliente tiene citas realizadas, pero para fechas posteriores al día actual -->
-           		<div class="col-offset-3" th:if="${!mascotas.empty and !citasMascota.empty and citas.empty != null}" id="data">
-           			<div class="alert alert-warning" th:if="${!citasFechaPosterior.empty}" role="alert" th:text="${txtFechaPosterior}"></div>
            		</div>
 			</div>
 		</div>
