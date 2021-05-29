@@ -366,9 +366,6 @@ public class CitasController {
 			Usuarios usuario = usuariosRepository.findByUsername(auth.getName());
 			mavCitas.addObject("usuario",usuario.getId());
 			
-			mavCitas.addObject("veterinarioTxt",usuario.getUsername()+" no tiene citas registradas en la base de datos");
-			mavCitas.addObject("citasVeterinario",citasRepository.findByVeterinarioWithoutCitas(usuario.getId()));
-			
 			
 			txtFechaActual = anio+"-"+(mes+1)+"-"+dia;
 		    fechaFormatoNormal = dia+"/"+(mes+1)+"/"+anio;
