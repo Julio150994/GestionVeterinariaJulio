@@ -139,8 +139,10 @@
 			
 			<div class="card-body">
 				
+				<!-- El veterinario no tiene citas registradas en la base de datos -->
 				<div class="alert alert-warning" th:if="${veterinarioTxt}" th:text="${veterinarioTxt}" id="fechaCita"></div>
 				
+				<!-- El veterinario no tiene citas pendientes para días posteriores -->
 				<div class="panel panel-body" th:if="${veterinarioTxt == null}" id="fechaCita">
 					<div class="panel panel-body alert alert-warning" th:if="${citas.empty}" th:text="${citasTxt}"></div>
 				</div>
