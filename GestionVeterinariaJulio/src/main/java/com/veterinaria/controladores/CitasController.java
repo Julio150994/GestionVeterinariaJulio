@@ -387,7 +387,6 @@ public class CitasController {
 			}
 			
 			mavCitas.addObject("txtFechaActual",fechaFormatoNormal);
-			//mavCitas.addObject("citasVeterinario",citasRepository.findByVeterinarioWithoutCitas(usuario.getId()));
 		}
 		
 		return mavCitas;
