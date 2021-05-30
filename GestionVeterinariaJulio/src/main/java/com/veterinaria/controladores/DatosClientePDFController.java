@@ -36,8 +36,8 @@ import com.veterinaria.servicios.Impl.UsuariosImpl;
 
 @Controller
 @RequestMapping("/")
-public class ClientesPDFController {
-	private static final Log LOG_VETERINARIA = LogFactory.getLog(ClientesPDFController.class);
+public class DatosClientePDFController {
+	private static final Log LOG_VETERINARIA = LogFactory.getLog(DatosClientePDFController.class);
 	private static final String datosClienteActual = "/citas/datosCliente";
 	
 	private String txtFechaActual, fechaFormatoNormal;
