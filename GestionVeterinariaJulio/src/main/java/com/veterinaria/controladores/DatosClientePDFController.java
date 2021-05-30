@@ -122,7 +122,7 @@ public class DatosClientePDFController {
 			LOG_VETERINARIA.info(mascota.getNombre()+" seleccionado correctamente");
 			
 			if(modeloCita.isEmpty()) {
-				mensajeFlash.addFlashAttribute("txtFechaPosterior",cliente.getUsername()+" solo tiene citas realizadas con fecha posterior a "+fechaFormatoNormal);
+				mensajeFlash.addFlashAttribute("txtFechaPosterior",cliente.getUsername()+" debe tener citas realizadas con fecha anterior o igual a "+fechaFormatoNormal);
 			    mensajeFlash.addFlashAttribute("citasFechaPosterior",citas.findCitasRealizadasByFechaPosterior(mascota.getNombre(),fechaCita, realizada));
 			    return "redirect:/citas/datosCliente/"+cliente.getId();
 			}

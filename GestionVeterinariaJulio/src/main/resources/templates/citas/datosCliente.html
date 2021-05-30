@@ -135,7 +135,7 @@
             
             <div sec:authorize="hasRole('ROLE_CLIENTE')" class="container mt-4">
             
-            <div class="panel panel-body alert alert-warning" th:if="${citasFechaPosterior}" th:text="${txtFechaPosterior}"></div>
+            <div class="panel panel-body alert alert-danger" th:if="${citasFechaPosterior}" th:text="${txtFechaPosterior}"></div>
 			
 			<div class="card-headert text-center mt-5"> <h3> DATOS DE CLIENTE </h3> </div>
 			
