@@ -119,7 +119,7 @@ public class DatosClientePDFController {
 		    Date fechaCita = Date.valueOf(txtFechaActual);// convertimos a fecha para la base de datos
 			
 			List<Citas> modeloCita = citas.findCitasByMascotaCliente(mascota.getNombre(),fechaCita,realizada);
-			LOG_VETERINARIA.info(mascota.getNombre()+" seleccionado correctamente");
+			LOG_VETERINARIA.info(mascota.getNombre()+" seleccionado");
 			
 			if(modeloCita.isEmpty()) {
 				String mensajeError = cliente.getUsername()+" debe tener citas realizadas con fecha anterior o igual a "+fechaFormatoNormal;
