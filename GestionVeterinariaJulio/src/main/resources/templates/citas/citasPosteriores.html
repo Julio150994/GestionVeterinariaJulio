@@ -139,7 +139,11 @@
 			
 			<div class="card-body">
 				
-				<div class="panel panel-body alert alert-warning" th:if="${citas.empty}" th:text="${citasTxt}" id="fechaCita"></div>
+				<div class="alert alert-warning" th:if="${veterinarioTxt}" th:text="${veterinarioTxt}" id="fechaCita"></div>
+				
+				<div class="panel panel-body" th:if="${veterinarioTxt == null}" id="fechaCita">
+					<div class="panel panel-body alert alert-warning" th:if="${citas.empty}" th:text="${citasTxt}"></div>
+				</div>
 			
 				<table class="table table-bordered text-center" id="historialCitas">
 					<thead class="table table-dark">

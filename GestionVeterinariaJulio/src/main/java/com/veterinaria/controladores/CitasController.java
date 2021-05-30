@@ -3,6 +3,8 @@ package com.veterinaria.controladores;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
+
 import javax.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -366,19 +368,26 @@ public class CitasController {
 			Usuarios usuario = usuariosRepository.findByUsername(auth.getName());
 			mavCitas.addObject("usuario",usuario.getId());
 			
-			
 			txtFechaActual = anio+"-"+(mes+1)+"-"+dia;
 		    fechaFormatoNormal = dia+"/"+(mes+1)+"/"+anio;
-		    
-		    Date diaActual = Date.valueOf(txtFechaActual);// convertimos a fecha para la base de datos
-		    
-			mavCitas.addObject("citasTxt",usuario.getUsername()+" no tiene citas pendientes para fechas posteriores a "+fechaFormatoNormal);
 			
-			mavCitas.addObject("veterinarioActual",usuario.getUsername().toUpperCase());
+			List<Citas> citasVeterinario = citasRepository.findByVeterinarioWithoutCitas(usuario.getId());
+			
+			if(citasVeterinario.isEmpty())
+				mavCitas.addObject("veterinarioTxt",usuario.getUsername()+" no tiene citas registradas en la base de datos");
+			else {
+			    
+			    Date diaActual = Date.valueOf(txtFechaActual);// convertimos a fecha para la base de datos
+			    
+				mavCitas.addObject("citasTxt",usuario.getUsername()+" no tiene citas pendientes para fechas posteriores a "+fechaFormatoNormal);
+				
+				mavCitas.addObject("veterinarioActual",usuario.getUsername().toUpperCase());
+				
+				mavCitas.addObject("citas",citasRepository.listarCitasDiasPosteriores(diaActual,cita.isRealizada(),usuario.getId()));
+			}
 			
 			mavCitas.addObject("txtFechaActual",fechaFormatoNormal);
-			
-			mavCitas.addObject("citas",citasRepository.listarCitasDiasPosteriores(diaActual,cita.isRealizada(),usuario.getId()));
+			//mavCitas.addObject("citasVeterinario",citasRepository.findByVeterinarioWithoutCitas(usuario.getId()));
 		}
 		
 		return mavCitas;

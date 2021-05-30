@@ -46,6 +46,8 @@ public interface CitasRepository extends JpaRepository<Citas, Integer> {
 	public abstract List<Citas> listarCitasDiaActual(@Param("fecha") Date fecha, @Param("id") int id);
 	
 	
+	@Query("select c from Citas c, Usuarios u where c.usuario = u.id and u.id = :id")
+	public abstract List<Citas> findByVeterinarioWithoutCitas(@Param("id") int id);
 	
 	@Query("select c from Citas c, Usuarios u where c.fecha > :fecha and c.realizada = :realizada and c.usuario = u.id and u.id = :id")
 	public abstract List<Citas> listarCitasDiasPosteriores(@Param("fecha") Date fecha, @Param("realizada") boolean realizada, @Param("id") int id);
