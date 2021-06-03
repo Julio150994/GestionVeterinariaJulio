@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,6 +25,14 @@ public class SecurityVeterinaria extends WebSecurityConfigurerAdapter {
 	private UsuariosService usuarios;
 	
 	
+	//--------------Configuración de seguridad para el api rest---------------------
+	@Bean
+	@Override
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
+	
+	
 	@Override
 	protected void configure(AuthenticationManagerBuilder authSecurity) throws Exception {
 		authSecurity.userDetailsService(usuarios).passwordEncoder(encriptarContrasenia());
@@ -34,8 +44,9 @@ public class SecurityVeterinaria extends WebSecurityConfigurerAdapter {
 	}
 	
 	@Override
-	protected void configure(HttpSecurity gestionVeterinaria) throws Exception {
+	protected void configure(HttpSecurity gestionVeterinaria) throws Exception {		
 		gestionVeterinaria
+		.csrf().disable()
 		.authorizeRequests()
 			.antMatchers("/","/auth/**","/build/**","/css/**","/error/**","/clientes/**","/veterinarios/**","/frontend/**","/images/**","/mascotasImg/**","/js/**","/maps/**","/vendors/**","/webjars/**").permitAll()
 			.antMatchers("/menu","/registrarCliente","/auth/registrarCliente","/auth/login").permitAll()
@@ -51,6 +62,8 @@ public class SecurityVeterinaria extends WebSecurityConfigurerAdapter {
 			.antMatchers("/citas/formCita","/citas/saveCita","/citas/listadoCitas","/citas/citasMascota","/citas/citasPendientes","/citas/formCita/{id}",
 					"/citas/anularCita/{id}","/citas/datosCliente/{id}","/citas/datosCliente/pdf/{id}").access("hasRole('ROLE_CLIENTE')")
 			.antMatchers("/citas/historialMascota/{id}","/citas/nombreMascota","/citas/citaDia/{id}","/realizada/{id}","/citas/citasPosteriores/{id}").access("hasRole('ROLE_VETERINARIO')")
+			.antMatchers(HttpMethod.POST,"/apiVeterinaria/login/").permitAll()
+			.antMatchers(HttpMethod.GET,"/apiVeterinaria/citas/datosCliente/{id}").access("hasRole('ROLE_CLIENTE')")
 			.anyRequest().authenticated()
 			.and()
 		.formLogin()
