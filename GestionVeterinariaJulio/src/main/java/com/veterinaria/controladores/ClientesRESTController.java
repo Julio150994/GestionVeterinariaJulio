@@ -85,7 +85,7 @@ public class ClientesRESTController {
 	
 	
 	@PostMapping("/login/")
-	public ResponseEntity<?> loginWithCiente(@RequestParam(name="username",required=false) String username, @RequestParam(name="password",required=false) String password) {
+	public ResponseEntity<?> loginWithCiente(@RequestParam("username") String username, @RequestParam("password") String password) {
 		
 		Usuarios usuario = new Usuarios();
 		usuario.setUsername(username);
@@ -128,22 +128,6 @@ public class ClientesRESTController {
 			//return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El usuario "+username+" no debe ser un veterinario");
 		}
 	}
-	
-	/*@PostMapping("/login/")
-	public Usuarios loginWithCliente(@RequestParam("username") String username, @RequestParam("password") String password) {
-		Authentication autenticacion = 
-				authCliente.authenticate(
-						new UsernamePasswordAuthenticationToken(username,password));
-		
-		SecurityContextHolder.getContext().setAuthentication(autenticacion);
-		
-		String clienteToken = generarToken(username);
-		Usuarios usuario = new Usuarios();
-		usuario.setUsername(username);
-		usuario.setPassword(password);
-		usuario.setToken(clienteToken);
-		return usuario;
-	}*/
 	
 
 	private String generarToken(String nombreUsuario) {
