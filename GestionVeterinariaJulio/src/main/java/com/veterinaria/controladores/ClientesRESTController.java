@@ -104,29 +104,28 @@ public class ClientesRESTController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(datosUsuario);
 		}
 		else {
-			
 			Authentication autenticacion = authCliente.authenticate(new UsernamePasswordAuthenticationToken(username,password));
-			
 			SecurityContextHolder.getContext().setAuthentication(autenticacion);
 			
-			String clienteToken = generarToken(username);
-			usuario.setToken(clienteToken);
+			for(GrantedAuthority rol: autenticacion.getAuthorities()) {
+				LOG_VETERINARIA.info("Rol de usuario: "+rol);
 			
-			txtLogin = username+" se ha logueado éxitosamente";
-			LOG_VETERINARIA.info(txtLogin);
-			
-			return ResponseEntity.ok(txtLogin+"\n"+clienteToken);
-			
-			/*if()
-				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El usuario "+username+" debe ser un cliente");
-			else {
-				
-				
-			}*/
-			
-			//return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El usuario "+username+" no debe ser un administrador");
-			//return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El usuario "+username+" no debe ser un veterinario");
+				if(rol.getAuthority().toString() == "ROLE_ADMIN")
+					return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El usuario "+username+" no debe ser administrador");
+				else if(rol.getAuthority().toString() == "ROLE_VETERINARIO")
+					return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El usuario "+username+" no debe ser veterinario");
+				else {
+					String clienteToken = generarToken(username);
+					usuario.setToken(clienteToken);
+					
+					txtLogin = username+" se ha logueado éxitosamente";
+					LOG_VETERINARIA.info(txtLogin);
+					
+					return ResponseEntity.ok(txtLogin+"\n"+clienteToken);
+				}
+			}
 		}
+		return null;
 	}
 	
 
