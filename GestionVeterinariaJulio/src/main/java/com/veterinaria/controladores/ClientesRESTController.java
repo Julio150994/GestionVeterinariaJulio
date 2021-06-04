@@ -149,6 +149,18 @@ public class ClientesRESTController {
 	}
 	
 	
+	@PreAuthorize("hasRole('ROLE_CLIENTE')")
+	@GetMapping("/cliente")
+	public Usuarios mostrarClienteActual() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		LOG_VETERINARIA.info("Datos de cliente "+auth.getName());
+		
+		Usuarios cliente = usuariosRepository.findByUsername(auth.getName());
+		return cliente;
+	}
+	
+	
 	/*--------------Después de pulsar el botón desde Ionic----------------------*/
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/citas/datosCliente")
