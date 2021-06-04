@@ -95,7 +95,7 @@ public class ClientesRESTController {
 			usuarioEmpty = "Debe introducir datos de usuario cliente para iniciar sesión";
 			
 			LOG_VETERINARIA.info(usuarioEmpty);
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(usuarioEmpty);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(usuarioEmpty);
 		}
 		else if((username == null || password == null) || (username.isEmpty() || password.isEmpty())) {
 			datosUsuario = "Faltan datos por introducir para este usuario";
@@ -105,29 +105,29 @@ public class ClientesRESTController {
 		}
 		else {
 			Authentication autenticacion = authCliente.authenticate(new UsernamePasswordAuthenticationToken(username,password));
-			SecurityContextHolder.getContext().setAuthentication(autenticacion);
 			
-			for(GrantedAuthority rol: autenticacion.getAuthorities()) {
-				LOG_VETERINARIA.info("Rol de usuario: "+rol);
+			@SuppressWarnings("unchecked")
+			List<GrantedAuthority> listaRoles = (List<GrantedAuthority>) autenticacion.getAuthorities();
 			
-				if(rol.getAuthority().toString() == "ROLE_ADMIN")
-					return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El usuario "+username+" no debe ser administrador");
-				else if(rol.getAuthority().toString() == "ROLE_VETERINARIO")
-					return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El usuario "+username+" no debe ser veterinario");
-				else {
-					String clienteToken = generarToken(username);
-					usuario.setToken(clienteToken);
-					
-					txtLogin = username+" se ha logueado éxitosamente";
-					LOG_VETERINARIA.info(txtLogin);
-					
-					return ResponseEntity.ok(txtLogin+"\n"+clienteToken);
-				}
+			String rol = listaRoles.get(0).toString();
+			
+			if(rol.equals("ROLE_ADMIN"))
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El usuario "+username+" no debe ser administrador");
+			else if(rol.equals("ROLE_VETERINARIO"))
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El usuario "+username+" no debe ser veterinario");
+			else {
+				SecurityContextHolder.getContext().setAuthentication(autenticacion);
+				
+				String clienteToken = generarToken(username);
+				usuario.setToken(clienteToken);
+			
+				txtLogin = "Cliente "+username+" logueado éxitosamente";
+				LOG_VETERINARIA.info(txtLogin);
+			
+				return ResponseEntity.ok(txtLogin+"\n"+clienteToken);
 			}
 		}
-		return null;
 	}
-	
 
 	private String generarToken(String nombreUsuario) {
 		String passwordCliente = "secret";
@@ -151,7 +151,7 @@ public class ClientesRESTController {
 	
 	/*--------------Después de pulsar el botón desde Ionic----------------------*/
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
-	@GetMapping("/citas/datosCliente/{id}")
+	@GetMapping("/citas/datosCliente")
 	public ResponseEntity<?> mostrarHistorialCliente(@PathVariable("id") Integer id, HttpServletResponse resCliente, Model modelo,
 			@Valid @ModelAttribute("mascota") ModeloMascotas mascota, ModeloCitas cita, RedirectAttributes mensajeFlash) throws DocumentException, IOException {
 		LOG_VETERINARIA.info("Historial de citas del cliente mostrado");

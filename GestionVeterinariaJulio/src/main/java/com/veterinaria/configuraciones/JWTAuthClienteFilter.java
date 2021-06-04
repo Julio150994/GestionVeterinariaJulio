@@ -18,6 +18,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 
 public class JWTAuthClienteFilter extends OncePerRequestFilter {
@@ -44,7 +45,31 @@ public class JWTAuthClienteFilter extends OncePerRequestFilter {
 			
 			filterChain.doFilter(request, response);
 		}
-		catch(ExpiredJwtException | UnsupportedJwtException | MalformedJwtException ex) {
+		catch(MalformedJwtException ex) {
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			((HttpServletResponse ) response).sendError(HttpServletResponse.SC_FORBIDDEN, ex.getMessage());
+			return;
+		}
+		catch(UnsupportedJwtException ex) {
+			System.out.println("Token no soportado");
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			((HttpServletResponse ) response).sendError(HttpServletResponse.SC_FORBIDDEN, ex.getMessage());
+			return;
+		}
+		catch(ExpiredJwtException ex) {
+			System.out.println("Token expirado");
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			((HttpServletResponse ) response).sendError(HttpServletResponse.SC_FORBIDDEN, ex.getMessage());
+			return;
+		}
+		catch(IllegalArgumentException ex) {
+			System.out.println("Token vacío");
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			((HttpServletResponse ) response).sendError(HttpServletResponse.SC_FORBIDDEN, ex.getMessage());
+			return;
+		}
+		catch(SignatureException ex) {
+			System.out.println("Error producido en la firma");
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 			((HttpServletResponse ) response).sendError(HttpServletResponse.SC_FORBIDDEN, ex.getMessage());
 			return;
