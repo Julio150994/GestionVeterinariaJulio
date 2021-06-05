@@ -140,14 +140,12 @@ public class ClientesRESTController {
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/cliente")
-	public ResponseEntity<?> mostrarClienteActual(@RequestParam(value="name", defaultValue="World") String name) {
-		return ResponseEntity.ok("Resultado "+name+" mostrado correctamente");
-		
-		/*Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	public ResponseEntity<?> mostrarClienteActual() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
 		Usuarios cliente = usuariosRepository.findByUsername(auth.getName());
 		
-		return ResponseEntity.ok(cliente);*/
+		return ResponseEntity.ok(cliente);
 	}
 	
 	
