@@ -84,7 +84,7 @@ public class ClientesRESTController {
 	private CitasRepository citas;
 	
 	
-	@PostMapping("/login/")
+	@PostMapping("/login")
 	public ResponseEntity<?> loginWithCiente(@RequestParam("username") String username, @RequestParam("password") String password) {
 		
 		Usuarios usuario = new Usuarios();
@@ -160,7 +160,7 @@ public class ClientesRESTController {
 		
 		LOG_VETERINARIA.info("Datos de cliente: "+cliente);
 		
-		return cliente;
+		return null;
 	}
 	
 	
