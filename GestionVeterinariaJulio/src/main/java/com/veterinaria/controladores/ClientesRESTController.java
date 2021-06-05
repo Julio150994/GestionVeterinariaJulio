@@ -1,13 +1,10 @@
 package com.veterinaria.controladores;
 
 import java.util.Calendar;
-import java.io.IOException;
 import java.sql.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,24 +18,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import com.lowagie.text.DocumentException;
-import com.veterinaria.configuraciones.ExportarDatosCliente;
 import com.veterinaria.entidades.Citas;
+import com.veterinaria.entidades.Mascotas;
 import com.veterinaria.entidades.Usuarios;
-import com.veterinaria.modelos.ModeloCitas;
-import com.veterinaria.modelos.ModeloMascotas;
-import com.veterinaria.modelos.ModeloUsuarios;
 import com.veterinaria.repositorios.CitasRepository;
 import com.veterinaria.repositorios.UsuariosRepository;
 import com.veterinaria.servicios.Impl.ClientesImpl;
@@ -52,7 +41,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @RequestMapping("/apiVeterinaria")
 public class ClientesRESTController {
 	private static final Log LOG_VETERINARIA = LogFactory.getLog(ClientesRESTController.class);
-	private String txtFechaActual, fechaFormatoNormal, usuarioEmpty, datosUsuario, txtLogin;
+	private String txtFechaActual, usuarioEmpty, datosUsuario, txtLogin, txtCitasEmpty, txtHistorialCitas;
 	
 	private Calendar fecha = new GregorianCalendar();
 	private int dia = fecha.get(Calendar.DAY_OF_MONTH);
@@ -151,63 +140,43 @@ public class ClientesRESTController {
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/cliente")
-	public ResponseEntity<?> mostrarClienteActual() {
+	public ResponseEntity<?> mostrarClienteActual(@RequestParam(value="name", defaultValue="World") String name) {
+		return ResponseEntity.ok("Resultado "+name+" mostrado correctamente");
 		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		/*Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
 		Usuarios cliente = usuariosRepository.findByUsername(auth.getName());
 		
-		return ResponseEntity.ok(cliente);
+		return ResponseEntity.ok(cliente);*/
 	}
 	
 	
 	/*--------------Después de pulsar el botón desde Ionic----------------------*/
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/cliente/citas")
-	public ResponseEntity<?> mostrarHistorialCliente(@PathVariable(name="id",required=false) Integer id, HttpServletResponse resCliente, Model modelo,
-			@Valid @ModelAttribute("mascota") ModeloMascotas mascota, ModeloCitas cita, RedirectAttributes mensajeFlash) throws DocumentException, IOException {
-		LOG_VETERINARIA.info("Historial de citas del cliente mostrado");
+	public ResponseEntity<?> mostrarHistorialCliente(Mascotas mascota, Citas cita) {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Usuarios c = usuariosRepository.findByUsername(auth.getName());
-		if(auth.getPrincipal() != "anonymousUser") {
-			Usuarios cliente = usuariosRepository.findByUsername(auth.getName());
-			
-			boolean realizada = cita.isRealizada();
-			realizada = true;
-			
-			txtFechaActual = anio+"-"+(mes+1)+"-"+dia;
-			fechaFormatoNormal = dia+"/"+(mes+1)+"/"+anio;
-		    Date fechaCita = Date.valueOf(txtFechaActual);// convertimos a fecha para la base de datos
-			
-			List<Citas> modeloCita = citas.findCitasByMascotaCliente(mascota.getNombre(),fechaCita,realizada);
-			LOG_VETERINARIA.info(mascota.getNombre()+" seleccionado");
-			
-			if(modeloCita.isEmpty()) {
-				String mensajeError = cliente.getUsername()+" debe tener citas realizadas con fecha anterior o igual a "+fechaFormatoNormal;
-				LOG_VETERINARIA.info(mensajeError);
-				
-				mensajeFlash.addFlashAttribute("txtFechaPosterior",mensajeError);
-			    mensajeFlash.addFlashAttribute("citasFechaPosterior",citas.findCitasRealizadasByFechaPosterior(mascota.getNombre(),fechaCita, realizada));
-			    return null;
-			}
-			else {
-				LOG_VETERINARIA.info("Informe descargado correctamente");
-				
-				resCliente.setContentType("application/pdf");
-				
-				String clientesPDF = "attachment; filename=informe_cliente_"+cliente.getUsername()+".pdf";
-				
-				resCliente.setHeader("Content-Disposition",clientesPDF);
-			
-				ModeloUsuarios modeloCliente = usuariosImpl.buscarId(cliente.getId());
-				modelo.addAttribute("usuario",modeloCliente);
-				
-				ExportarDatosCliente pdfCliente = new ExportarDatosCliente(modeloCliente,modeloCita);
-				pdfCliente.exportarDatosCliente(resCliente);
-				return null;
-			}
-		}
-		return ResponseEntity.ok("/citas/datosCliente/pdf/"+c.getId());
+		
+		boolean realizada = cita.isRealizada();
+		realizada = true;
+		
+		txtFechaActual = anio+"-"+(mes+1)+"-"+dia;
+	    Date fechaCita = Date.valueOf(txtFechaActual);// convertimos a fecha para la base de datos
+		
+	    List<Citas> modeloCita = citas.findCitasByMascotaCliente(mascota.getNombre(),fechaCita,realizada);
+	    
+	    if(modeloCita == null) {
+	    	txtCitasEmpty = "Citas no encontradas para "+auth.getName();
+	    	LOG_VETERINARIA.info(txtCitasEmpty);
+	    	
+	    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(txtCitasEmpty);
+	    }
+	    else {
+	    	txtHistorialCitas = "Historial de citas de "+auth.getName()+" obtenido";
+	    	LOG_VETERINARIA.info(txtHistorialCitas);
+	    	
+	    	return ResponseEntity.ok(txtHistorialCitas);
+	    }
 	}
 }
