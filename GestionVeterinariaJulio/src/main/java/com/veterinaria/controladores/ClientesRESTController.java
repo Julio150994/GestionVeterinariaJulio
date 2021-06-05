@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.sql.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -141,24 +142,28 @@ public class ClientesRESTController {
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/cliente")
-	public ResponseEntity<?> mostrarClienteActual() {
+	public ResponseEntity<?> mostrarClienteActual(Map<String, Object> clienteJSON) {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
 		UserDetails usuario = (UserDetails) auth.getPrincipal();
 		
 		Usuarios cliente = new Usuarios();
-		
 		cliente = this.usuariosRepository.findByUsername(usuario.getUsername());
 		
-		return ResponseEntity.status(HttpStatus.OK).contentLength(98).body(cliente);
+		clienteJSON.put("id",cliente.getId());
+		clienteJSON.put("nombre",cliente.getNombre());
+		clienteJSON.put("apellidos",cliente.getApellidos());
+		clienteJSON.put("telefono",cliente.getTelefono());
+		clienteJSON.put("username",cliente.getUsername());
+		return ResponseEntity.status(HttpStatus.OK).body(clienteJSON);
 	}
 	
 	
 	/*--------------Después de pulsar el botón desde Ionic----------------------*/
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/cliente/citas")
-	public ResponseEntity<?> mostrarHistorialCliente(Mascotas mascota, Citas cita) {
+	public ResponseEntity<?> mostrarHistorialCliente(Mascotas mascota, Citas cita, Map<String, Object> clienteJSON) {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
@@ -180,7 +185,18 @@ public class ClientesRESTController {
 	    	txtHistorialCitas = "Historial de citas de "+auth.getName()+" mostrado correctamente";
 	    	LOG_VETERINARIA.info(txtHistorialCitas);
 	    	
-	    	return ResponseEntity.ok(txtHistorialCitas+"\n\nNombre de mascota: "+mascota.getNombre());
+	    	UserDetails usuario = (UserDetails) auth.getPrincipal();
+			
+			Usuarios cliente = new Usuarios();
+			cliente = this.usuariosRepository.findByUsername(usuario.getUsername());
+			
+			clienteJSON.put("id",cliente.getId());
+			clienteJSON.put("nombre",cliente.getNombre());
+			clienteJSON.put("apellidos",cliente.getApellidos());
+			clienteJSON.put("telefono",cliente.getTelefono());
+			clienteJSON.put("username",cliente.getUsername());
+	    	
+	    	return ResponseEntity.ok(txtHistorialCitas+"\n\n"+clienteJSON);
 	    }
 	}
 }
