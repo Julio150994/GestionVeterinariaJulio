@@ -166,7 +166,7 @@ public class ClientesRESTController {
 	
 	/*--------------Después de pulsar el botón desde Ionic----------------------*/
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
-	@GetMapping("/citas/cliente")
+	@GetMapping("/cliente/citas")
 	public ResponseEntity<?> mostrarHistorialCliente(@PathVariable("id") Integer id, HttpServletResponse resCliente, Model modelo,
 			@Valid @ModelAttribute("mascota") ModeloMascotas mascota, ModeloCitas cita, RedirectAttributes mensajeFlash) throws DocumentException, IOException {
 		LOG_VETERINARIA.info("Historial de citas del cliente mostrado");
