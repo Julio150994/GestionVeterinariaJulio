@@ -196,7 +196,7 @@ public class ClientesRESTController {
 			clienteJSON.put("telefono",cliente.getTelefono());
 			clienteJSON.put("username",cliente.getUsername());
 	    	
-	    	return ResponseEntity.ok(txtHistorialCitas+"\n\n"+clienteJSON);
+	    	return ResponseEntity.status(HttpStatus.OK).body(txtHistorialCitas+"\n\n"+clienteJSON);
 	    }
 	}
 }
