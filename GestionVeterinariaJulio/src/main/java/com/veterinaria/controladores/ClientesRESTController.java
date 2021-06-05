@@ -151,19 +151,11 @@ public class ClientesRESTController {
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/cliente")
-	public ResponseEntity<?> mostrarClienteActual(@RequestParam(name="id",required=false) Integer id, @RequestParam(name="nombre",required=false) String nombre,
-			@RequestParam(name="apellidos",required=false) String apellidos, @RequestParam(name="telefono",required=false) String telefono,
-			@RequestParam(name="username",required=false) String username) {
+	public ResponseEntity<?> mostrarClienteActual() {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
 		Usuarios cliente = usuariosRepository.findByUsername(auth.getName());
-		
-		cliente.setId(cliente.getId());
-		cliente.setNombre(nombre);
-		cliente.setApellidos(apellidos);
-		cliente.setTelefono(telefono);
-		cliente.setUsername(username);
 		
 		return ResponseEntity.ok(cliente);
 	}
