@@ -151,23 +151,28 @@ public class ClientesRESTController {
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/cliente")
-	public Usuarios mostrarClienteActual() {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	public ResponseEntity<?> mostrarClienteActual(@RequestParam(name="id",required=false) Integer id, @RequestParam(name="nombre",required=false) String nombre,
+			@RequestParam(name="apellidos",required=false) String apellidos, @RequestParam(name="telefono",required=false) String telefono,
+			@RequestParam(name="username",required=false) String username) {
 		
-		LOG_VETERINARIA.info("Datos de cliente "+auth.getName());
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
 		Usuarios cliente = usuariosRepository.findByUsername(auth.getName());
 		
-		LOG_VETERINARIA.info("Datos de cliente: "+cliente);
+		cliente.setId(cliente.getId());
+		cliente.setNombre(nombre);
+		cliente.setApellidos(apellidos);
+		cliente.setTelefono(telefono);
+		cliente.setUsername(username);
 		
-		return null;
+		return ResponseEntity.ok(cliente);
 	}
 	
 	
 	/*--------------Después de pulsar el botón desde Ionic----------------------*/
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/cliente/citas")
-	public ResponseEntity<?> mostrarHistorialCliente(@PathVariable("id") Integer id, HttpServletResponse resCliente, Model modelo,
+	public ResponseEntity<?> mostrarHistorialCliente(@PathVariable(name="id",required=false) Integer id, HttpServletResponse resCliente, Model modelo,
 			@Valid @ModelAttribute("mascota") ModeloMascotas mascota, ModeloCitas cita, RedirectAttributes mensajeFlash) throws DocumentException, IOException {
 		LOG_VETERINARIA.info("Historial de citas del cliente mostrado");
 		
