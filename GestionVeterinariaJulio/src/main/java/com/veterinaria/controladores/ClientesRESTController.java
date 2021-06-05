@@ -142,6 +142,7 @@ public class ClientesRESTController {
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/cliente")
 	public ResponseEntity<?> mostrarClienteActual() {
+		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
 		UserDetails usuario = (UserDetails) auth.getPrincipal();
