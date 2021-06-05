@@ -18,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -143,9 +144,13 @@ public class ClientesRESTController {
 	public ResponseEntity<?> mostrarClienteActual() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
-		Usuarios cliente = usuariosRepository.findByUsername(auth.getName());
+		UserDetails usuario = (UserDetails) auth.getPrincipal();
 		
-		return ResponseEntity.ok(cliente);
+		Usuarios cliente = new Usuarios();
+		
+		cliente = this.usuariosRepository.findByUsername(usuario.getUsername());
+		
+		return ResponseEntity.status(HttpStatus.OK).contentLength(98).body(cliente);
 	}
 	
 	
@@ -171,10 +176,10 @@ public class ClientesRESTController {
 	    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(txtCitasEmpty);
 	    }
 	    else {
-	    	txtHistorialCitas = "Historial de citas de "+auth.getName()+" obtenido";
+	    	txtHistorialCitas = "Historial de citas de "+auth.getName()+" mostrado correctamente";
 	    	LOG_VETERINARIA.info(txtHistorialCitas);
 	    	
-	    	return ResponseEntity.ok(txtHistorialCitas);
+	    	return ResponseEntity.ok(txtHistorialCitas+"\n\nNombre de mascota: "+mascota.getNombre());
 	    }
 	}
 }
