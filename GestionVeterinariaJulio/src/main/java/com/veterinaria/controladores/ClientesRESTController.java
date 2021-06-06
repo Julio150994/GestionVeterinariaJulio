@@ -76,18 +76,16 @@ public class ClientesRESTController {
 	
 	
 	@PostMapping("/login")
-	public ResponseEntity<?> loginWithCiente(@RequestParam("username") String username, @RequestParam("password") String password,
+	public ResponseEntity<?> loginWithCiente(@RequestParam(name="username",required=false) String username, @RequestParam(name="password",required=false) String password,
 			Map<String, Object> clienteJSON) {
 		
 		Usuarios usuario = new Usuarios();
-		usuario.setUsername(username);
-		usuario.setPassword(password);
 		
 		if((username == null && password == null) || (username.isEmpty() && password.isEmpty())) {
 			usuarioEmpty = "Debe introducir datos de usuario cliente para iniciar sesión";
 			
 			LOG_VETERINARIA.info(usuarioEmpty);
-			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(usuarioEmpty);
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(usuarioEmpty);
 		}
 		else if((username == null || password == null) || (username.isEmpty() || password.isEmpty())) {
 			datosUsuario = "Faltan datos por introducir para este usuario";
@@ -151,7 +149,6 @@ public class ClientesRESTController {
 	}
 	
 	
-	/*--------------Después de pulsar el botón desde Ionic----------------------*/
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/cliente/citas")
 	public ResponseEntity<?> mostrarHistorialCliente(Mascotas mascota, Citas cita, Map<String, Object> clienteJSON) {
@@ -164,7 +161,7 @@ public class ClientesRESTController {
 		txtFechaActual = anio+"-"+(mes+1)+"-"+dia;
 	    Date fechaCita = Date.valueOf(txtFechaActual);// convertimos a fecha para la base de datos
 		
-	    List<Citas> modeloCita = citas.findCitasByMascotaCliente(mascota.getNombre(),fechaCita,realizada);
+	    List<Citas> modeloCita = citas.findCitasByMascotaCliente(mascota.getNombre(),fechaCita,realizada);    
 	    
 	    if(modeloCita == null) {
 	    	txtCitasEmpty = "Citas no encontradas para "+auth.getName();
@@ -181,14 +178,7 @@ public class ClientesRESTController {
 			Usuarios cliente = new Usuarios();
 			cliente = this.usuariosRepository.findByUsername(usuario.getUsername());
 			
-			clienteJSON.put("id",cliente.getId());
-			clienteJSON.put("nombre",cliente.getNombre());
-			clienteJSON.put("apellidos",cliente.getApellidos());
-			clienteJSON.put("telefono",cliente.getTelefono());
-			clienteJSON.put("mascotas",clienteJSON.put("nombre",modeloCita));
-			clienteJSON.put("citas",clienteJSON.put("informe",cita.getInforme()));
-	    	
-	    	return ResponseEntity.status(HttpStatus.OK).body(clienteJSON);
+	    	return ResponseEntity.status(HttpStatus.OK).body(cliente);
 	    }
 	}
 }
