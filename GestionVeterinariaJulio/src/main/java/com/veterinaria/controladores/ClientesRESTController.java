@@ -155,7 +155,6 @@ public class ClientesRESTController {
 		clienteJSON.put("nombre",cliente.getNombre());
 		clienteJSON.put("apellidos",cliente.getApellidos());
 		clienteJSON.put("telefono",cliente.getTelefono());
-		clienteJSON.put("username",cliente.getUsername());
 		return ResponseEntity.status(HttpStatus.OK).body(clienteJSON);
 	}
 	
@@ -194,9 +193,10 @@ public class ClientesRESTController {
 			clienteJSON.put("nombre",cliente.getNombre());
 			clienteJSON.put("apellidos",cliente.getApellidos());
 			clienteJSON.put("telefono",cliente.getTelefono());
-			clienteJSON.put("username",cliente.getUsername());
+			clienteJSON.put("mascotas","");
+			clienteJSON.put("citas","");
 	    	
-	    	return ResponseEntity.status(HttpStatus.OK).body(txtHistorialCitas+"\n\n"+clienteJSON);
+	    	return ResponseEntity.status(HttpStatus.OK).body(clienteJSON);
 	    }
 	}
 }
