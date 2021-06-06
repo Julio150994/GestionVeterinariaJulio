@@ -180,8 +180,12 @@ public class ClientesRESTController {
 	    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(txtCitasEmpty);
 	    }
 	    else {
+	    	SecurityContextHolder.getContext().setAuthentication(auth);
+	    	
 	    	txtHistorialCitas = "Historial de citas de "+auth.getName()+" mostrado correctamente";
 	    	LOG_VETERINARIA.info(txtHistorialCitas);
+	    	
+	    	historialCitasJSON.put("citas",cliente.getCitas());
 	    	
 	    	return ResponseEntity.status(HttpStatus.OK).body(citasCliente);
 	    }
