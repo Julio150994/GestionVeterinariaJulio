@@ -151,25 +151,6 @@ public class ClientesRESTController {
 	}
 	
 	
-	@PreAuthorize("hasRole('ROLE_CLIENTE')")
-	@GetMapping("/cliente")
-	public ResponseEntity<?> mostrarClienteActual(Map<String, Object> clienteJSON) {
-		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		
-		UserDetails usuario = (UserDetails) auth.getPrincipal();
-		
-		Usuarios cliente = new Usuarios();
-		cliente = this.usuariosRepository.findByUsername(usuario.getUsername());
-		
-		clienteJSON.put("id",cliente.getId());
-		clienteJSON.put("nombre",cliente.getNombre());
-		clienteJSON.put("apellidos",cliente.getApellidos());
-		clienteJSON.put("telefono",cliente.getTelefono());
-		return ResponseEntity.status(HttpStatus.OK).body(clienteJSON);
-	}
-	
-	
 	/*--------------Después de pulsar el botón desde Ionic----------------------*/
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/cliente/citas")
@@ -204,8 +185,8 @@ public class ClientesRESTController {
 			clienteJSON.put("nombre",cliente.getNombre());
 			clienteJSON.put("apellidos",cliente.getApellidos());
 			clienteJSON.put("telefono",cliente.getTelefono());
-			clienteJSON.put("mascotas","");
-			clienteJSON.put("citas","");
+			clienteJSON.put("mascotas",clienteJSON.put("nombre",modeloCita));
+			clienteJSON.put("citas",clienteJSON.put("informe",cita.getInforme()));
 	    	
 	    	return ResponseEntity.status(HttpStatus.OK).body(clienteJSON);
 	    }
