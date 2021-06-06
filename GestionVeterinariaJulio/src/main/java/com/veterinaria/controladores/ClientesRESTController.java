@@ -185,12 +185,14 @@ public class ClientesRESTController {
 	    	txtHistorialCitas = "Historial de citas de "+auth.getName()+" mostrado correctamente";
 	    	LOG_VETERINARIA.info(txtHistorialCitas);
 	    	
-	    	historialCitasJSON.put("fecha", cita.getFecha());
-	    	historialCitasJSON.put("nombre",cliente.getNombre());
-	    	historialCitasJSON.put("apellidos",cliente.getApellidos());
-	    	historialCitasJSON.put("telefono",cliente.getTelefono());
 	    	
-	    	return ResponseEntity.status(HttpStatus.OK).body(historialCitasJSON);
+	    	historialCitasJSON.put("fecha cita",cita.getFecha());
+	    	historialCitasJSON.put("nombre veterinario",cita.getUsuario().getNombre());
+	    	historialCitasJSON.put("apellidos veterinario",cita.getUsuario().getApellidos());
+	    	historialCitasJSON.put("telefono veterinario",cita.getUsuario().getTelefono());
+	    	historialCitasJSON.put("username veterinario",cita.getUsuario().getUsername());
+	    	
+	    	return ResponseEntity.status(HttpStatus.OK).body(citasCliente);
 	    }
 	}
 }
