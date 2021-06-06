@@ -185,7 +185,12 @@ public class ClientesRESTController {
 	    	txtHistorialCitas = "Historial de citas de "+auth.getName()+" mostrado correctamente";
 	    	LOG_VETERINARIA.info(txtHistorialCitas);
 	    	
-	    	return ResponseEntity.status(HttpStatus.OK).body(citasCliente.get(0));
+	    	historialCitasJSON.put("fecha", cita.getFecha());
+	    	historialCitasJSON.put("nombre",cliente.getNombre());
+	    	historialCitasJSON.put("apellidos",cliente.getApellidos());
+	    	historialCitasJSON.put("telefono",cliente.getTelefono());
+	    	
+	    	return ResponseEntity.status(HttpStatus.OK).body(historialCitasJSON);
 	    }
 	}
 }
