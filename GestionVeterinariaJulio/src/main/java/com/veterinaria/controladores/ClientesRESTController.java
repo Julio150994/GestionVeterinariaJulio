@@ -32,6 +32,7 @@ import com.veterinaria.entidades.Mascotas;
 import com.veterinaria.entidades.Usuarios;
 import com.veterinaria.repositorios.CitasRepository;
 import com.veterinaria.repositorios.UsuariosRepository;
+import com.veterinaria.servicios.Impl.CitasImpl;
 import com.veterinaria.servicios.Impl.ClientesImpl;
 import com.veterinaria.servicios.Impl.UsuariosImpl;
 import io.jsonwebtoken.Jwts;
@@ -71,8 +72,12 @@ public class ClientesRESTController {
 	private UsuariosImpl usuariosImpl;// para mostrar todos los clientes
 	
 	@Autowired
+	@Qualifier("citasImpl")
+	private CitasImpl citasImpl;
+	
+	@Autowired
 	@Qualifier("citasRepository")
-	private CitasRepository citas;
+	private CitasRepository citasRepository;
 	
 	
 	@PostMapping("/login")
@@ -151,9 +156,14 @@ public class ClientesRESTController {
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/cliente/citas")
-	public ResponseEntity<?> mostrarHistorialCliente(Mascotas mascota, Citas cita, Map<String, Object> clienteJSON) {
+	public ResponseEntity<?> mostrarHistorialCliente(Mascotas mascota, Citas cita, Map<String, Object> historialCitasJSON) {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		UserDetails usuario = (UserDetails) auth.getPrincipal();
+		
+		Usuarios cliente = new Usuarios();
+		cliente = this.usuariosRepository.findByUsername(usuario.getUsername());
 		
 		boolean realizada = cita.isRealizada();
 		realizada = true;
@@ -161,9 +171,9 @@ public class ClientesRESTController {
 		txtFechaActual = anio+"-"+(mes+1)+"-"+dia;
 	    Date fechaCita = Date.valueOf(txtFechaActual);// convertimos a fecha para la base de datos
 		
-	    List<Citas> modeloCita = citas.findCitasByMascotaCliente(mascota.getNombre(),fechaCita,realizada);    
+	    List<Citas> citasCliente = citasRepository.listarHistorialCitasByCliente(cliente.getId(), fechaCita, realizada);
 	    
-	    if(modeloCita == null) {
+	    if(citasCliente == null) {
 	    	txtCitasEmpty = "Citas no encontradas para "+auth.getName();
 	    	LOG_VETERINARIA.info(txtCitasEmpty);
 	    	
@@ -173,12 +183,7 @@ public class ClientesRESTController {
 	    	txtHistorialCitas = "Historial de citas de "+auth.getName()+" mostrado correctamente";
 	    	LOG_VETERINARIA.info(txtHistorialCitas);
 	    	
-	    	UserDetails usuario = (UserDetails) auth.getPrincipal();
-			
-			Usuarios cliente = new Usuarios();
-			cliente = this.usuariosRepository.findByUsername(usuario.getUsername());
-			
-	    	return ResponseEntity.status(HttpStatus.OK).body(cliente);
+	    	return ResponseEntity.status(HttpStatus.OK).body(citasCliente);
 	    }
 	}
 }
