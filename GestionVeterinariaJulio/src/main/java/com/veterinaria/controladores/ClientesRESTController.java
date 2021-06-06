@@ -76,7 +76,8 @@ public class ClientesRESTController {
 	
 	
 	@PostMapping("/login")
-	public ResponseEntity<?> loginWithCiente(@RequestParam("username") String username, @RequestParam("password") String password) {
+	public ResponseEntity<?> loginWithCiente(@RequestParam("username") String username, @RequestParam("password") String password,
+			Map<String, Object> clienteJSON) {
 		
 		Usuarios usuario = new Usuarios();
 		usuario.setUsername(username);
@@ -107,15 +108,25 @@ public class ClientesRESTController {
 			else if(rol.equals("ROLE_VETERINARIO"))
 				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El usuario "+username+" no debe ser veterinario");
 			else {
+				
+				UserDetails cliente = (UserDetails) autenticacion.getPrincipal();
+				
+				usuario = this.usuariosRepository.findByUsername(cliente.getUsername());
+				
 				SecurityContextHolder.getContext().setAuthentication(autenticacion);
 				
 				String clienteToken = generarToken(username);
-				usuario.setToken(clienteToken);
 			
 				txtLogin = "Cliente "+username+" logueado éxitosamente";
 				LOG_VETERINARIA.info(txtLogin);
-			
-				return ResponseEntity.ok(txtLogin+"\n"+clienteToken);
+				
+				clienteJSON.put("id",usuario.getId());
+				clienteJSON.put("username",usuario.getUsername());
+				clienteJSON.put("password",usuario.getPassword());
+				clienteJSON.put("activado",usuario.isActivado());
+				clienteJSON.put("rol",usuario.getRol());
+				clienteJSON.put("token",clienteToken);
+				return ResponseEntity.status(HttpStatus.OK).body(clienteJSON);
 			}
 		}
 	}
