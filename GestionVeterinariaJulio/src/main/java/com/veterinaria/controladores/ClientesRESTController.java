@@ -160,7 +160,7 @@ public class ClientesRESTController {
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/cliente/citas")
-	public ResponseEntity<?> mostrarHistorialCliente(Citas cita, Map<String, Object> citasJSON) {
+	public ResponseEntity<?> mostrarHistorialCitasCliente(Citas cita, Map<String, Object> citasJSON) {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
@@ -195,7 +195,6 @@ public class ClientesRESTController {
     		citasJSON.put("fecha de nacimiento mascota",citaRealizada.getMascota().getFechaNacimiento().toString());
     		citasJSON.put("foto mascota",citaRealizada.getMascota().getFoto());
     		citasJSON.put("informe de cita",citaRealizada.getInforme());
-    		LOG_VETERINARIA.info("Txt 11");
 	    	return ResponseEntity.status(HttpStatus.OK).body(citasJSON);
     	}
     	return null;
