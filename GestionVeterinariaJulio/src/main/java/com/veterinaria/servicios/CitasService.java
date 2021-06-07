@@ -9,8 +9,6 @@ import com.veterinaria.modelos.ModeloCitas;
 
 
 public interface CitasService {
-	public abstract List<ModeloCitas> mostrarCitas();
-	
 	public abstract List<ModeloCitas> buscarCitas(Date fecha);
 	public abstract ModeloCitas buscarIdCita(Integer id);
 	

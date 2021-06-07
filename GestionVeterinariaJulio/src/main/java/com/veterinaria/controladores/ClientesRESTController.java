@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.veterinaria.entidades.Citas;
 import com.veterinaria.entidades.Mascotas;
 import com.veterinaria.entidades.Usuarios;
-import com.veterinaria.modelos.ModeloCitas;
 import com.veterinaria.repositorios.CitasRepository;
 import com.veterinaria.repositorios.UsuariosRepository;
 import com.veterinaria.servicios.Impl.CitasImpl;
@@ -152,34 +151,6 @@ public class ClientesRESTController {
 				.signWith(SignatureAlgorithm.HS512, passwordCliente.getBytes()).compact();
 		
 		return "Bearer "+clienteToken;
-	}
-	
-	
-	@PreAuthorize("hasRole('ROLE_CLIENTE')")
-	@GetMapping("/cliente/listarCitas")
-	public ResponseEntity<?> listarCitas(Map<String, Object> citasJSON) {
-		List<ModeloCitas> citas = citasImpl.mostrarCitas();
-		 
-		
-		if(citas.isEmpty())
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Citas no encontradas en la base de datos");
-		else {
-			for(ModeloCitas cita: citas) {
-				citasJSON.put("id",cita.getId());
-		    	citasJSON.put("dia de cita",cita.getFecha());
-		    	citasJSON.put("nombre veterinario",cita.getUsuario().getNombre());
-		    	citasJSON.put("apellidos veterinario",cita.getUsuario().getApellidos());
-		    	citasJSON.put("telefono veterinario",cita.getUsuario().getTelefono());
-		    	citasJSON.put("nombre mascota",cita.getMascota().getNombre());
-		    	citasJSON.put("tipo mascota",cita.getMascota().getTipo());
-		    	citasJSON.put("raza mascota",cita.getMascota().getRaza());
-		    	citasJSON.put("fecha de nacimiento mascota",Date.valueOf(cita.getMascota().getFechaNacimiento().toString()));
-		    	citasJSON.put("foto mascota",cita.getMascota().getFoto());
-		    	citasJSON.put("informe de cita",cita.getInforme());
-		    	return ResponseEntity.status(HttpStatus.OK).body(citasJSON);
-			}
-		}
-		return ResponseEntity.status(HttpStatus.OK).body(citasJSON);
 	}
 	
 	
