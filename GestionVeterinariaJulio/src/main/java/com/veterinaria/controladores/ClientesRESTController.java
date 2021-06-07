@@ -6,6 +6,10 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +24,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +33,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.veterinaria.entidades.Citas;
-import com.veterinaria.entidades.Mascotas;
 import com.veterinaria.entidades.Usuarios;
 import com.veterinaria.repositorios.CitasRepository;
 import com.veterinaria.repositorios.UsuariosRepository;
@@ -44,7 +48,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @RequestMapping("/apiVeterinaria")
 public class ClientesRESTController {
 	private static final Log LOG_VETERINARIA = LogFactory.getLog(ClientesRESTController.class);
-	private String txtFechaActual, usuarioEmpty, datosUsuario, txtLogin, txtCitasEmpty, txtHistorialCitas;
+	private String txtFechaActual, usuarioEmpty, datosUsuario, txtLogin, txtLogout, txtHistorialCitas; // txtCitasEmpty
 	
 	private Calendar fecha = new GregorianCalendar();
 	private int dia = fecha.get(Calendar.DAY_OF_MONTH);
@@ -156,7 +160,7 @@ public class ClientesRESTController {
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/cliente/citas")
-	public ResponseEntity<?> mostrarHistorialCliente(Citas cita, Mascotas mascota, Map<String, Object> historialCitasJSON) {
+	public ResponseEntity<?> mostrarHistorialCliente(Citas cita, Map<String, Object> citasJSON) {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
@@ -173,34 +177,44 @@ public class ClientesRESTController {
 		
 	    List<Citas> citasCliente = citasRepository.listarHistorialCitasByCliente(cliente.getId(), fechaCita, realizada);
 	    
-	    if(citasCliente == null) {
-	    	txtCitasEmpty = "Citas no encontradas para "+auth.getName();
-	    	LOG_VETERINARIA.info(txtCitasEmpty);
-	    	
-	    	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(txtCitasEmpty);
-	    }
-	    else {
-	    	SecurityContextHolder.getContext().setAuthentication(auth);
-	    	
-	    	txtHistorialCitas = "Historial de citas de "+auth.getName()+" mostrado correctamente";
-	    	LOG_VETERINARIA.info(txtHistorialCitas);
-	    	
-	    	for(Citas citaRealizada: citasCliente) {
-	    		historialCitasJSON.put("id",citaRealizada.getId());
-	    		historialCitasJSON.put("dia de cita",citaRealizada.getFecha());
-		    	historialCitasJSON.put("nombre veterinario",citaRealizada.getUsuario().getNombre());
-		    	historialCitasJSON.put("apellidos veterinario",citaRealizada.getUsuario().getApellidos());
-		    	historialCitasJSON.put("telefono veterinario",citaRealizada.getUsuario().getTelefono());
-		    	historialCitasJSON.put("nombre mascota",citaRealizada.getMascota().getNombre());
-		    	historialCitasJSON.put("tipo mascota",citaRealizada.getMascota().getTipo());
-		    	historialCitasJSON.put("raza mascota",citaRealizada.getMascota().getRaza());
-		    	historialCitasJSON.put("fecha de nacimiento mascota",citaRealizada.getMascota().getFechaNacimiento().toString());
-		    	historialCitasJSON.put("foto mascota",citaRealizada.getMascota().getFoto());
-		    	historialCitasJSON.put("informe de cita",citaRealizada.getInforme());
-		    	return ResponseEntity.status(HttpStatus.OK).body(historialCitasJSON);
-	    	}
-	    	
-	    	return ResponseEntity.status(HttpStatus.OK).body(historialCitasJSON);
-	    }
+	    SecurityContextHolder.getContext().setAuthentication(auth);
+    	
+    	txtHistorialCitas = "Historial de citas de "+auth.getName()+" mostrado correctamente";
+    	LOG_VETERINARIA.info(txtHistorialCitas);
+    	
+    	for(Citas citaRealizada: citasCliente) {
+    		citasJSON.put("id",citaRealizada.getId());
+    		citasJSON.put("dia de cita",citaRealizada.getFecha());
+    		citasJSON.put("nombre veterinario",citaRealizada.getUsuario().getNombre());
+    		citasJSON.put("apellidos veterinario",citaRealizada.getUsuario().getApellidos());
+    		citasJSON.put("telefono veterinario",citaRealizada.getUsuario().getTelefono());
+    		citasJSON.put("nombre mascota",citaRealizada.getMascota().getNombre());
+    		citasJSON.put("tipo mascota",citaRealizada.getMascota().getTipo());
+    		citasJSON.put("raza mascota",citaRealizada.getMascota().getRaza());
+    		citasJSON.put("fecha de nacimiento mascota",citaRealizada.getMascota().getFechaNacimiento().toString());
+    		citasJSON.put("foto mascota",citaRealizada.getMascota().getFoto());
+    		citasJSON.put("informe de cita",citaRealizada.getInforme());
+	    	return ResponseEntity.status(HttpStatus.OK).body(citasJSON);
+    	}
+    	
+    	return null;
+	}
+	
+	@PreAuthorize("hasRole('ROLE_CLIENTE')")
+	@PostMapping("/logout")
+	public ResponseEntity<?> logoutCliente(HttpServletRequest req, HttpServletResponse res) {
+		Usuarios usuario = new Usuarios();
+		
+		Authentication authCliente = SecurityContextHolder.getContext().getAuthentication();
+		
+		if(authCliente != null)
+			new SecurityContextLogoutHandler().logout(req, res, authCliente);
+		
+		usuario = this.usuariosRepository.findByUsername(authCliente.getName());
+		
+		txtLogout = "Cliente "+usuario.getUsername()+" ha cerrado sesión éxitosamente";
+		LOG_VETERINARIA.info(txtLogout);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(txtLogout);
 	}
 }

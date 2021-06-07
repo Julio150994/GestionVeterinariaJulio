@@ -1,3 +1,5 @@
-1) Login con usuario: http://localhost:8080/apiVeterinaria/login
+1) Login de usuario cliente: http://localhost:8080/apiVeterinaria/login
 
 2) Historial de citas del cliente: http://localhost:8080/apiVeterinaria/cliente/citas
+
+3) Logout de usuario cliente: http://localhost:8080/apiVeterinaria/logout
