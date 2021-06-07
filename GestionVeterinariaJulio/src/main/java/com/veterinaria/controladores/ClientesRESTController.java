@@ -167,6 +167,7 @@ public class ClientesRESTController {
 		UserDetails usuario = (UserDetails) auth.getPrincipal();
 		
 		Usuarios cliente = new Usuarios();
+		
 		cliente = this.usuariosRepository.findByUsername(usuario.getUsername());
 		
 		boolean realizada = cita.isRealizada();
@@ -174,12 +175,12 @@ public class ClientesRESTController {
 		
 		txtFechaActual = anio+"-"+(mes+1)+"-"+dia;
 	    Date fechaCita = Date.valueOf(txtFechaActual);// convertimos a fecha para la base de datos
-		
+	    
 	    List<Citas> citasCliente = citasRepository.listarHistorialCitasByCliente(cliente.getId(), fechaCita, realizada);
 	    
 	    SecurityContextHolder.getContext().setAuthentication(auth);
     	
-    	txtHistorialCitas = "Historial de citas de "+auth.getName()+" mostrado correctamente";
+	    txtHistorialCitas = "Historial de citas de "+auth.getName()+" mostrado correctamente";
     	LOG_VETERINARIA.info(txtHistorialCitas);
     	
     	for(Citas citaRealizada: citasCliente) {
@@ -194,11 +195,12 @@ public class ClientesRESTController {
     		citasJSON.put("fecha de nacimiento mascota",citaRealizada.getMascota().getFechaNacimiento().toString());
     		citasJSON.put("foto mascota",citaRealizada.getMascota().getFoto());
     		citasJSON.put("informe de cita",citaRealizada.getInforme());
+    		LOG_VETERINARIA.info("Txt 11");
 	    	return ResponseEntity.status(HttpStatus.OK).body(citasJSON);
     	}
-    	
     	return null;
 	}
+	
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@PostMapping("/logout")
