@@ -81,4 +81,10 @@ public class CitasImpl implements CitasService {
 	public ModeloCitas convertirCitas(Citas cita) {
 		return dozerCitas.map(cita, ModeloCitas.class);
 	}
+	
+	
+	@Override
+	public List<ModeloCitas> mostrarCitas() {
+		return citas.findAll().stream().map(c -> convertirCitas(c)).collect(Collectors.toList());
+	}
 }
