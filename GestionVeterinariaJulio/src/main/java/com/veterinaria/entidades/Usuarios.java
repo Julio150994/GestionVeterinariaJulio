@@ -58,7 +58,7 @@ public class Usuarios {
 	@Column(name="rol",nullable=false,length=20)
 	private String rol;
 	
-	@Column(name="token",nullable=false,length=255)
+	@Column(name="token",length=255)
 	private String token;
 	
 	@OneToMany(mappedBy="usuario", cascade=CascadeType.ALL, orphanRemoval=false)
