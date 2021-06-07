@@ -39,7 +39,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 
-@CrossOrigin(origins="http://localhost:8080", methods={RequestMethod.POST, RequestMethod.GET})
+@CrossOrigin(origins="http://localhost:8100", methods={RequestMethod.POST, RequestMethod.GET})
 @RestController
 @RequestMapping("/apiVeterinaria")
 public class ClientesRESTController {
@@ -93,7 +93,7 @@ public class ClientesRESTController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(usuarioEmpty);
 		}
 		else if((username == null || password == null) || (username.isEmpty() || password.isEmpty())) {
-			datosUsuario = "Faltan datos por introducir para este usuario";
+			datosUsuario = "Faltan datos por introducir";
 			
 			LOG_VETERINARIA.info(datosUsuario);
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(datosUsuario);
@@ -154,9 +154,10 @@ public class ClientesRESTController {
 	}
 	
 	
+	//----------------En verdad, este método sobra----------------------------------
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/cliente/citas")
-	public ResponseEntity<?> mostrarHistorialCliente(Mascotas mascota, Citas cita, Map<String, Object> historialCitasJSON) {
+	public ResponseEntity<?> mostrarHistorialCliente(Citas cita, Mascotas mascota, Map<String, Object> historialCitasJSON) {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
@@ -186,7 +187,7 @@ public class ClientesRESTController {
 	    	LOG_VETERINARIA.info(txtHistorialCitas);
 	    	
 	    	
-	    	return ResponseEntity.status(HttpStatus.OK).body(citasCliente);
+	    	return ResponseEntity.status(HttpStatus.OK).body(cita);
 	    }
 	}
 }
