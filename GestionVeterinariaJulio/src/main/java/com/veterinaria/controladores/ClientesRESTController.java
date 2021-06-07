@@ -1,5 +1,6 @@
 package com.veterinaria.controladores;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.sql.Date;
 import java.util.GregorianCalendar;
@@ -25,6 +26,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -160,7 +162,7 @@ public class ClientesRESTController {
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/cliente/citas")
-	public ResponseEntity<?> mostrarHistorialCitasCliente(Citas cita, Map<String, Object> citasJSON) {
+	public ResponseEntity<?> mostrarHistorialCitasCliente(BindingResult validacionCita, Citas cita, Map<String, Object> citasJSON) {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
@@ -176,7 +178,8 @@ public class ClientesRESTController {
 		txtFechaActual = anio+"-"+(mes+1)+"-"+dia;
 	    Date fechaCita = Date.valueOf(txtFechaActual);// convertimos a fecha para la base de datos
 	    
-	    List<Citas> citasCliente = citasRepository.listarHistorialCitasByCliente(cliente.getId(), fechaCita, realizada);
+	    List<Citas> citasCliente = new ArrayList<>();
+	    citasCliente = citasRepository.listarHistorialCitasByCliente(cliente.getId(), fechaCita, realizada);
 	    
 	    SecurityContextHolder.getContext().setAuthentication(auth);
     	
@@ -197,7 +200,7 @@ public class ClientesRESTController {
     		citasJSON.put("informe de cita",citaRealizada.getInforme());
 	    	return ResponseEntity.status(HttpStatus.OK).body(citasJSON);
     	}
-    	return null;
+    	return ResponseEntity.notFound().build();
 	}
 	
 	
