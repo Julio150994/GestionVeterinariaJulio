@@ -215,7 +215,6 @@ public class ClientesRESTController {
 	    	LOG_VETERINARIA.info(txtHistorialCitas);
 	    	
 	    	for(Citas citaRealizada: citasCliente) {
-	    		/*--------------Para las citas realizadas------------------*/
 	    		historialCitasJSON.put("id",citaRealizada.getId());
 	    		historialCitasJSON.put("dia de cita",citaRealizada.getFecha());
 		    	historialCitasJSON.put("nombre veterinario",citaRealizada.getUsuario().getNombre());
