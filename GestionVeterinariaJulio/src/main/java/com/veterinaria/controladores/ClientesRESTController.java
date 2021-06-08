@@ -1,16 +1,13 @@
 package com.veterinaria.controladores;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.sql.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +23,6 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -162,7 +158,7 @@ public class ClientesRESTController {
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/cliente/citas")
-	public ResponseEntity<?> mostrarHistorialCitasCliente(BindingResult validacionCita, Citas cita, Map<String, Object> citasJSON) {
+	public ResponseEntity<?> mostrarHistorialCitasCliente(Citas cita) {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
@@ -178,29 +174,14 @@ public class ClientesRESTController {
 		txtFechaActual = anio+"-"+(mes+1)+"-"+dia;
 	    Date fechaCita = Date.valueOf(txtFechaActual);// convertimos a fecha para la base de datos
 	    
-	    List<Citas> citasCliente = new ArrayList<>();
-	    citasCliente = citasRepository.listarHistorialCitasByCliente(cliente.getId(), fechaCita, realizada);
+	    List<Citas> citasCliente = citasRepository.listarHistorialCitasByCliente(cliente.getId(), fechaCita, realizada);
 	    
 	    SecurityContextHolder.getContext().setAuthentication(auth);
     	
 	    txtHistorialCitas = "Historial de citas de "+auth.getName()+" mostrado correctamente";
     	LOG_VETERINARIA.info(txtHistorialCitas);
     	
-    	for(Citas citaRealizada: citasCliente) {
-    		citasJSON.put("id",citaRealizada.getId());
-    		citasJSON.put("dia de cita",citaRealizada.getFecha());
-    		citasJSON.put("nombre veterinario",citaRealizada.getUsuario().getNombre());
-    		citasJSON.put("apellidos veterinario",citaRealizada.getUsuario().getApellidos());
-    		citasJSON.put("telefono veterinario",citaRealizada.getUsuario().getTelefono());
-    		citasJSON.put("nombre mascota",citaRealizada.getMascota().getNombre());
-    		citasJSON.put("tipo mascota",citaRealizada.getMascota().getTipo());
-    		citasJSON.put("raza mascota",citaRealizada.getMascota().getRaza());
-    		citasJSON.put("fecha de nacimiento mascota",citaRealizada.getMascota().getFechaNacimiento().toString());
-    		citasJSON.put("foto mascota",citaRealizada.getMascota().getFoto());
-    		citasJSON.put("informe de cita",citaRealizada.getInforme());
-	    	return ResponseEntity.status(HttpStatus.OK).body(citasJSON);
-    	}
-    	return ResponseEntity.notFound().build();
+    	return ResponseEntity.status(HttpStatus.OK).body(citasCliente);
 	}
 	
 	
