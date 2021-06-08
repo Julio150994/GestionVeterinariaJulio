@@ -15,6 +15,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name="citas")
@@ -35,6 +37,7 @@ public class Citas {
 	@Column(name="fecha",nullable=false)
 	private Date fecha;
 	
+	@JsonIgnore
 	@NotNull(message="Debe escribir un motivo para su cita")
 	@Size(min=1,max=100,message="Su motivo no debe tener más de 100 caracteres")
 	@Pattern(regexp="^[A-Z]{1}[a-z].+$",message="El motivo de la cita debe empezar por mayúsculas")
@@ -47,6 +50,7 @@ public class Citas {
 	@Column(name="informe",nullable=false,length=100)
 	private String informe;
 	
+	@JsonIgnore
 	@Column(name="realizada",nullable=false)
 	private boolean realizada;
 	

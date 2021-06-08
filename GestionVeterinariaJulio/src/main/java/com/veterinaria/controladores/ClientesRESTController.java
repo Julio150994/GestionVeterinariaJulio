@@ -46,7 +46,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @RequestMapping("/apiVeterinaria")
 public class ClientesRESTController {
 	private static final Log LOG_VETERINARIA = LogFactory.getLog(ClientesRESTController.class);
-	private String txtFechaActual, usuarioEmpty, datosUsuario, txtLogin, txtLogout, txtHistorialCitas; // txtCitasEmpty
+	private String txtFechaActual, usuarioEmpty, datosUsuario, txtLogin, txtLogout, txtCitasEmpty, txtHistorialCitas;
 	
 	private Calendar fecha = new GregorianCalendar();
 	private int dia = fecha.get(Calendar.DAY_OF_MONTH);
@@ -158,7 +158,7 @@ public class ClientesRESTController {
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/cliente/citas")
-	public ResponseEntity<?> mostrarHistorialCitasCliente(Citas cita) {
+	public ResponseEntity<?> mostrarHistorialCitasCliente(Citas cita, Map<String, Object> citasJSON) {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
@@ -176,12 +176,20 @@ public class ClientesRESTController {
 	    
 	    List<Citas> citasCliente = citasRepository.listarHistorialCitasByCliente(cliente.getId(), fechaCita, realizada);
 	    
-	    SecurityContextHolder.getContext().setAuthentication(auth);
-    	
-	    txtHistorialCitas = "Historial de citas de "+auth.getName()+" mostrado correctamente";
-    	LOG_VETERINARIA.info(txtHistorialCitas);
-    	
-    	return ResponseEntity.status(HttpStatus.OK).body(citasCliente);
+	    if(citasCliente == null) {
+	    	txtCitasEmpty = "Citas para "+cliente.getUsername()+" no encontradas";
+	    	LOG_VETERINARIA.info(txtCitasEmpty);
+	    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(txtCitasEmpty);
+	    }
+	    else {
+	    	
+	    	SecurityContextHolder.getContext().setAuthentication(auth);
+	    	
+		    txtHistorialCitas = "Historial de citas de "+auth.getName()+" mostrado correctamente";
+	    	LOG_VETERINARIA.info(txtHistorialCitas);
+	    	
+	    	return ResponseEntity.status(HttpStatus.OK).body(citasCliente);
+	    }
 	}
 	
 	

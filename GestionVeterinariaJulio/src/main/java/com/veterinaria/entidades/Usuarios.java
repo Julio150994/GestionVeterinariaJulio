@@ -16,9 +16,13 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 
 @Entity
 @Table(name="usuarios")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Usuarios {
 
 	@Id
@@ -43,27 +47,33 @@ public class Usuarios {
 	@Column(name="telefono",unique=true,nullable=false,length=10)
 	private String telefono;
 	
+	@JsonIgnore
 	@NotEmpty(message="Debe introducir un nombre de usuario")
 	@Pattern(regexp="^[a-zA-Z]{1}[a-zA-Z0-9]{0,29}$",message="El nombre de usuario no debe contener espacios en blanco y 30 caracteres de longitud máxima")
 	@Column(name="username",unique=true,nullable=false,length=30)
 	private String username;
 	
+	@JsonIgnore
 	@NotEmpty(message="Debe introducir una contraseña de usuario")
 	@Column(name="password",nullable=false,length=100)
 	private String password;
 	
+	@JsonIgnore
 	@Column(name="activado",nullable=false)
 	private boolean activado;	
 	
 	@Column(name="rol",nullable=false,length=20)
 	private String rol;
 	
+	@JsonIgnore
 	@Column(name="token",length=255)
 	private String token;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="usuario", cascade=CascadeType.ALL, orphanRemoval=false)
 	private List<Mascotas> mascotas = new ArrayList<Mascotas>();
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="usuario", cascade=CascadeType.ALL, orphanRemoval=false)
 	private List<Citas> citas = new ArrayList<Citas>();
 	

@@ -14,11 +14,16 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 
 @Entity
 @Table(name="mascotas")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Mascotas {	
 	
+	@JsonIgnore
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
@@ -44,6 +49,7 @@ public class Mascotas {
 	@Column(name="foto",length=100,unique=true)
 	private String foto;
 	
+	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="idCliente",nullable=false)
 	private Usuarios usuario;
