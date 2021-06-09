@@ -158,7 +158,7 @@ public class ClientesRESTController {
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/cliente/citas")
-	public ResponseEntity<?> mostrarHistorialCitasCliente(Citas cita, Map<String, Object> citasJSON) {
+	public ResponseEntity<?> mostrarHistorialCitasCliente(Citas cita) {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
@@ -182,7 +182,6 @@ public class ClientesRESTController {
 	    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(txtCitasEmpty);
 	    }
 	    else {
-	    	
 	    	SecurityContextHolder.getContext().setAuthentication(auth);
 	    	
 		    txtHistorialCitas = "Historial de citas de "+auth.getName()+" mostrado correctamente";
