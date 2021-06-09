@@ -25,6 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Usuarios {
 
+	@JsonIgnore
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
@@ -47,7 +48,6 @@ public class Usuarios {
 	@Column(name="telefono",unique=true,nullable=false,length=10)
 	private String telefono;
 	
-	@JsonIgnore
 	@NotEmpty(message="Debe introducir un nombre de usuario")
 	@Pattern(regexp="^[a-zA-Z]{1}[a-zA-Z0-9]{0,29}$",message="El nombre de usuario no debe contener espacios en blanco y 30 caracteres de longitud máxima")
 	@Column(name="username",unique=true,nullable=false,length=30)
@@ -62,6 +62,7 @@ public class Usuarios {
 	@Column(name="activado",nullable=false)
 	private boolean activado;	
 	
+	@JsonIgnore
 	@Column(name="rol",nullable=false,length=20)
 	private String rol;
 	
