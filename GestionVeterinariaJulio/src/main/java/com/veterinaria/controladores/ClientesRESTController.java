@@ -194,13 +194,13 @@ public class ClientesRESTController {
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@PostMapping("/logout")
-	public ResponseEntity<?> logoutCliente(HttpServletRequest request, HttpServletResponse response) {
+	public ResponseEntity<?> logoutCliente(HttpServletRequest req, HttpServletResponse res) {
 		Usuarios usuario = new Usuarios();
 		
 		Authentication authCliente = SecurityContextHolder.getContext().getAuthentication();
 		
 		if(authCliente != null)
-			new SecurityContextLogoutHandler().logout(request, response, authCliente);
+			new SecurityContextLogoutHandler().logout(req, res, authCliente);
 		
 		usuario = this.usuariosRepository.findByUsername(authCliente.getName());
 		
