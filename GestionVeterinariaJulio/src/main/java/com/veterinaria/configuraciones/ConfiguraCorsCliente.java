@@ -15,8 +15,7 @@ public class ConfiguraCorsCliente {
 			@Override
 			public void addCorsMappings(CorsRegistry cliente) {
 				cliente.addMapping("/apiVeterinaria/**")
-				.allowedOrigins("http://localhost:8080")
-				.allowedMethods("GET","POST").maxAge(3600);
+				.allowedOrigins("http://localhost:8100");
 			}
 		};
 	}
