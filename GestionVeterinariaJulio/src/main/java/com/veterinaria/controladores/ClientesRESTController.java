@@ -47,7 +47,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @RequestMapping("/apiVeterinaria")
 public class ClientesRESTController {
 	private static final Log LOG_VETERINARIA = LogFactory.getLog(ClientesRESTController.class);
-	private String txtFechaActual, usuarioEmpty, datosUsuario, txtLogin, txtLogout, txtCitasEmpty, txtHistorialCitas;
+	private String txtFechaActual, usuarioEmpty, datosUsuario, txtLogin, txtAdmin, txtVeterinario, txtLogout, txtCitasEmpty, txtHistorialCitas;
 	
 	private Calendar fecha = new GregorianCalendar();
 	private int dia = fecha.get(Calendar.DAY_OF_MONTH);
@@ -84,8 +84,8 @@ public class ClientesRESTController {
 	
 	
 	@PostMapping("/login")
-	public ResponseEntity<?> loginWithCiente(@RequestParam(name="username",required=false) String username, @RequestParam(name="password",required=false) String password,
-			Map<String, Object> clienteJSON) {
+	public ResponseEntity<?> loginWithCiente(@RequestParam(name="username",required=false) String username,
+			@RequestParam(name="password",required=false) String password, Map<String, Object> clienteJSON) {
 		
 		Usuarios usuario = new Usuarios();
 		
@@ -109,12 +109,17 @@ public class ClientesRESTController {
 			
 			String rol = listaRoles.get(0).toString();
 			
-			if(rol.equals("ROLE_ADMIN"))
-				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El usuario "+username+" no debe ser administrador");
-			else if(rol.equals("ROLE_VETERINARIO"))
-				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("El usuario "+username+" no debe ser veterinario");
+			if(rol.equals("ROLE_ADMIN")) {
+				txtAdmin = "El usuario "+username+" no debe ser administrador";
+				LOG_VETERINARIA.info(txtAdmin);
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).body(txtAdmin);
+			}
+			else if(rol.equals("ROLE_VETERINARIO")) {
+				txtVeterinario = "El usuario "+username+" no debe ser veterinario";
+				LOG_VETERINARIA.info(txtVeterinario);
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).body(txtVeterinario);
+			}
 			else {
-				
 				UserDetails cliente = (UserDetails) autenticacion.getPrincipal();
 				
 				usuario = this.usuariosRepository.findByUsername(cliente.getUsername());
@@ -178,7 +183,7 @@ public class ClientesRESTController {
 	    List<Citas> citasCliente = citasRepository.listarHistorialCitasByCliente(cliente.getId(), fechaCita, realizada);
 	    
 	    if(citasCliente.isEmpty()) {
-	    	txtCitasEmpty = "Citas para "+cliente.getUsername()+" no encontradas";
+	    	txtCitasEmpty = "No se han podido encontrar citas para "+cliente.getUsername();
 	    	LOG_VETERINARIA.info(txtCitasEmpty);
 	    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(txtCitasEmpty);
 	    }
