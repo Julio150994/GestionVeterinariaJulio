@@ -46,6 +46,8 @@ public class SecurityVeterinaria extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity gestionVeterinaria) throws Exception {		
 		gestionVeterinaria
+		.cors()
+		.and()
 		.csrf().disable()
 		.authorizeRequests()
 			.antMatchers("/","/auth/**","/build/**","/css/**","/error/**","/clientes/**","/veterinarios/**","/frontend/**","/images/**","/mascotasImg/**","/js/**","/maps/**","/vendors/**","/webjars/**").permitAll()

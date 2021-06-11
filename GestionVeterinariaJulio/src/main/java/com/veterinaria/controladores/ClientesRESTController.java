@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.veterinaria.entidades.Citas;
@@ -41,8 +40,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 
-@CrossOrigin(origins="http://localhost:8100",
-	methods={RequestMethod.POST, RequestMethod.GET})
 @RestController
 @RequestMapping("/apiVeterinaria")
 public class ClientesRESTController {
@@ -83,6 +80,7 @@ public class ClientesRESTController {
 	private CitasRepository citasRepository;
 	
 	
+	@CrossOrigin(origins="http://localhost:8080")
 	@PostMapping("/login")
 	public ResponseEntity<?> loginWithCiente(@RequestParam(name="username",required=false) String username,
 			@RequestParam(name="password",required=false) String password, Map<String, Object> clienteJSON) {
@@ -161,7 +159,7 @@ public class ClientesRESTController {
 		return "Bearer "+clienteToken;
 	}
 	
-	
+	@CrossOrigin(origins="http://localhost:8080")
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@GetMapping("/cliente/citas")
 	public ResponseEntity<?> mostrarHistorialCitasCliente(Citas cita) {
@@ -197,7 +195,7 @@ public class ClientesRESTController {
 	    }
 	}
 	
-	
+	@CrossOrigin(origins="http://localhost:8080")
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
 	@PostMapping("/logout")
 	public ResponseEntity<?> logoutCliente(HttpServletRequest req, HttpServletResponse res) {
