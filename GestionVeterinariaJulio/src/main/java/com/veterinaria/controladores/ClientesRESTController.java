@@ -41,7 +41,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 
-@CrossOrigin(origins="http://localhost:8080", methods={RequestMethod.POST, RequestMethod.GET})
+@CrossOrigin(origins="http://localhost:8100",
+	methods={RequestMethod.POST, RequestMethod.GET})
 @RestController
 @RequestMapping("/apiVeterinaria")
 public class ClientesRESTController {
