@@ -177,7 +177,7 @@ public class ClientesRESTController {
 	    
 	    List<Citas> citasCliente = citasRepository.listarHistorialCitasByCliente(cliente.getId(), fechaCita, realizada);
 	    
-	    if(citasCliente == null) {
+	    if(citasCliente.isEmpty()) {
 	    	txtCitasEmpty = "Citas para "+cliente.getUsername()+" no encontradas";
 	    	LOG_VETERINARIA.info(txtCitasEmpty);
 	    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(txtCitasEmpty);
