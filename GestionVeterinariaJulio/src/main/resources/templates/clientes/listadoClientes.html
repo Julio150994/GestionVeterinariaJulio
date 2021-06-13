@@ -124,7 +124,7 @@
             <div class="panel panel-body alert alert-danger" th:if="${eliminado}" th:text="${eliminado}"></div>
             
             
-            <div class="container mt-4">
+            <div sec:authorize="hasRole('ROLE_ADMIN')" class="container mt-4">
 
 			<div class="card-headert mt-5 text-center"> <h3>TABLA DE CLIENTES (<span class="text-secondary" th:text="${nombre}"></span>)</h3> </div>
 			
