@@ -172,7 +172,7 @@ public class ClientesController {
 		}
 		
 		usuarios.enabledCliente(id, usuario);
-		return "redirect:"+vista_clientes;
+		return vista_clientes;
 	}
 	
 	
@@ -195,12 +195,12 @@ public class ClientesController {
 	
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PostMapping("/clientes/saveCliente")
+	@PostMapping("clientes/saveCliente")
 	public String saveCliente(@Valid @ModelAttribute("usuario") ModeloUsuarios cliente, BindingResult clienteValido,
 			RedirectAttributes mensajeFlash) {
 		
 		if(clienteValido.hasErrors())
-			return "redirect:"+formCliente;
+			return formCliente;
 		else {
 			if(cliente.getId() == 0) {
 				clientes.aniadirCliente(cliente);
@@ -217,7 +217,7 @@ public class ClientesController {
 				mensajeFlash.addFlashAttribute("editado",txtCliente);
 			}
 			
-			return "redirect:"+vista_clientes;
+			return vista_clientes;
 		}
 	}
 	
@@ -231,7 +231,7 @@ public class ClientesController {
 		txtCliente = "Cliente "+username+" eliminado correctamente";
 		LOG_VETERINARIA.info(txtCliente);
 		mensajeFlash.addFlashAttribute("eliminado",txtCliente);
-		return "redirect:"+vista_clientes;
+		return vista_clientes;
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
