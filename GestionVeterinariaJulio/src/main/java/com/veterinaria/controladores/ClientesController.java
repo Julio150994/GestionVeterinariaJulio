@@ -123,14 +123,14 @@ public class ClientesController {
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/clientes/listadoClientes")
-	public ModelAndView verListadoClientes(@ModelAttribute("usuario") ModeloUsuarios modeloCliente, @RequestParam Map<String,Object> paginas) {
+	public String verListadoClientes(@ModelAttribute("usuario") ModeloUsuarios modeloCliente, @RequestParam Map<String,Object> paginas,
+			Model mavUsuarios) {
 		LOG_VETERINARIA.info("Vista de listado de clientes");
 		UserDetails usuario = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
-		ModelAndView mavUsuarios = new ModelAndView(vista_clientes);
-		mavUsuarios.addObject("clientesTxt","Clientes no encontrados en la base de datos");
-		mavUsuarios.addObject("clientes",usuarios.listarUsuarios());
-		mavUsuarios.addObject("nombre",usuario.getUsername().toUpperCase());
+		mavUsuarios.addAttribute("clientesTxt","Clientes no encontrados en la base de datos");
+		mavUsuarios.addAttribute("clientes",usuarios.listarUsuarios());
+		mavUsuarios.addAttribute("nombre",usuario.getUsername().toUpperCase());
 		
 		/* Realizamos paginación para los usuarios clientes */
 		int numPaginas = paginas.get("pagina") != null ? (Integer.valueOf(paginas.get("pagina").toString()) - 1) : 0;
@@ -143,16 +143,16 @@ public class ClientesController {
 		if(totalClientes > 0) {	
 			/* Para empezar desde la 1ª paginación hasta el final de las páginas */
 			List<Integer> listadoClientes = IntStream.rangeClosed(1,totalClientes).boxed().collect(Collectors.toList());
-			mavUsuarios.addObject("paginas",listadoClientes);
+			mavUsuarios.addAttribute("paginas",listadoClientes);
 		}
 		
-		mavUsuarios.addObject("clientes",paginasCliente.getContent());
+		mavUsuarios.addAttribute("clientes",paginasCliente.getContent());
 		
-		mavUsuarios.addObject("anterior",numPaginas);
-		mavUsuarios.addObject("actual",numPaginas + 1);
-		mavUsuarios.addObject("siguiente",numPaginas + 2);
-		mavUsuarios.addObject("ultima",totalClientes);
-		return mavUsuarios;
+		mavUsuarios.addAttribute("anterior",numPaginas);
+		mavUsuarios.addAttribute("actual",numPaginas + 1);
+		mavUsuarios.addAttribute("siguiente",numPaginas + 2);
+		mavUsuarios.addAttribute("ultima",totalClientes);
+		return vista_clientes;
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
