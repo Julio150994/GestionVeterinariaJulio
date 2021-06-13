@@ -38,7 +38,7 @@ import org.apache.commons.logging.LogFactory;
 public class ClientesController {
 	private static final Log LOG_VETERINARIA = LogFactory.getLog(ClientesController.class);
 	private static final String menu = "menu", formulario = "registrarCliente", vista_perfil = "perfil_cliente",
-			vista_clientes = "/clientes/listadoClientes", formCliente = "/clientes/formCliente", datosCliente = "/clientes/mostrarCliente";
+			vista_clientes = "clientes/listadoClientes", formCliente = "/clientes/formCliente", datosCliente = "/clientes/mostrarCliente";
 	private String txtCliente;
 	
 	
@@ -122,15 +122,15 @@ public class ClientesController {
 	/*---------------------Métodos para los clientes--------------------------------*/
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/clientes/listadoClientes")
-	public String verListadoClientes(@ModelAttribute("usuario") ModeloUsuarios modeloCliente, @RequestParam Map<String,Object> paginas,
-			Model mavUsuarios) {
+	@GetMapping("clientes/listadoClientes")
+	public ModelAndView verListadoClientes(@ModelAttribute("usuario") ModeloUsuarios modeloCliente, @RequestParam Map<String,Object> paginas) {
 		LOG_VETERINARIA.info("Vista de listado de clientes");
 		UserDetails usuario = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
-		mavUsuarios.addAttribute("clientesTxt","Clientes no encontrados en la base de datos");
-		mavUsuarios.addAttribute("clientes",usuarios.listarUsuarios());
-		mavUsuarios.addAttribute("nombre",usuario.getUsername().toUpperCase());
+		ModelAndView mavUsuarios = new ModelAndView(vista_clientes);
+		mavUsuarios.addObject("clientesTxt","Clientes no encontrados en la base de datos");
+		mavUsuarios.addObject("clientes",usuarios.listarUsuarios());
+		mavUsuarios.addObject("nombre",usuario.getUsername().toUpperCase());
 		
 		/* Realizamos paginación para los usuarios clientes */
 		int numPaginas = paginas.get("pagina") != null ? (Integer.valueOf(paginas.get("pagina").toString()) - 1) : 0;
@@ -143,16 +143,16 @@ public class ClientesController {
 		if(totalClientes > 0) {	
 			/* Para empezar desde la 1ª paginación hasta el final de las páginas */
 			List<Integer> listadoClientes = IntStream.rangeClosed(1,totalClientes).boxed().collect(Collectors.toList());
-			mavUsuarios.addAttribute("paginas",listadoClientes);
+			mavUsuarios.addObject("paginas",listadoClientes);
 		}
 		
-		mavUsuarios.addAttribute("clientes",paginasCliente.getContent());
+		mavUsuarios.addObject("clientes",paginasCliente.getContent());
 		
-		mavUsuarios.addAttribute("anterior",numPaginas);
-		mavUsuarios.addAttribute("actual",numPaginas + 1);
-		mavUsuarios.addAttribute("siguiente",numPaginas + 2);
-		mavUsuarios.addAttribute("ultima",totalClientes);
-		return vista_clientes;
+		mavUsuarios.addObject("anterior",numPaginas);
+		mavUsuarios.addObject("actual",numPaginas + 1);
+		mavUsuarios.addObject("siguiente",numPaginas + 2);
+		mavUsuarios.addObject("ultima",totalClientes);
+		return mavUsuarios;
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
