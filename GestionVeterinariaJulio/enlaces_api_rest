@@ -1,5 +1,5 @@
-1) Login de usuario cliente: http://localhost:8080/apiVeterinaria/login
+1) Login de usuario cliente: https://julio-gestion-veterinaria.herokuapp.com/apiVeterinaria/login
 
-2) Historial de citas del cliente: http://localhost:8080/apiVeterinaria/cliente/citas
+2) Historial de citas del cliente: https://julio-gestion-veterinaria.herokuapp.com/apiVeterinaria/cliente/citas
 
-3) Logout de usuario cliente: http://localhost:8080/apiVeterinaria/logout
+3) Logout de usuario cliente: https://julio-gestion-veterinaria.herokuapp.com/apiVeterinaria/logout
