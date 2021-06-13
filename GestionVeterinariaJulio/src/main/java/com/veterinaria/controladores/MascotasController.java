@@ -34,8 +34,8 @@ import com.veterinaria.storage.StorageService;
 @RequestMapping("/")
 public class MascotasController {
 	private static final Log LOG_VETERINARIA = LogFactory.getLog(MascotasController.class);
-	private static final String vista_mascotas = "/mascotas/listadoMascotas",
-			formMascota = "/mascotas/formMascota", datosMascota = "/mascotas/mostrarMascota";
+	private static final String vista_mascotas = "mascotas/listadoMascotas",
+			formMascota = "mascotas/formMascota", datosMascota = "mascotas/mostrarMascota";
 	private String txtMascota;
 	
 	@Autowired
@@ -59,7 +59,7 @@ public class MascotasController {
 	
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
-	@GetMapping("/mascotas/listadoMascotas")
+	@GetMapping("mascotas/listadoMascotas")
 	public ModelAndView listarMascotas(Mascotas modeloMascota, @ModelAttribute("usuario") Usuarios modeloUsuario) {
 		LOG_VETERINARIA.info("Vista de listado de mascotas");
 		UserDetails usuarioClienteActual = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -82,7 +82,7 @@ public class MascotasController {
 	}
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
-	@GetMapping({"/mascotas/formMascota","/mascotas/formMascota/{id}"})
+	@GetMapping({"mascotas/formMascota","mascotas/formMascota/{id}"})
 	public String formularioMascota(@PathVariable(name="id",required=false) Integer id, Model modeloMascota,
 			@ModelAttribute("mascota") Mascotas mascota) {
 		
@@ -108,7 +108,7 @@ public class MascotasController {
 	}
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
-	@PostMapping("/mascotas/saveMascota")
+	@PostMapping("mascotas/saveMascota")
 	public String saveMascota(@ModelAttribute("mascota") Mascotas modeloMascota, BindingResult validaMascota,
 			RedirectAttributes mensajeFlash, Model cliente, @RequestParam(name="foto",required=false) MultipartFile foto,
 			@RequestParam(name="id",required=false) Integer id) {
@@ -157,7 +157,7 @@ public class MascotasController {
 	
 	/* Eliminamos mascota con el uso de formulario modal */
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
-	@GetMapping("/mascotas/eliminarMascota/{id}")
+	@GetMapping("mascotas/eliminarMascota/{id}")
 	public String eliminarMascota(@ModelAttribute("mascota") Mascotas modeloMascota, @PathVariable("id") Integer id,
 			RedirectAttributes mensajeFlash) {
 		
@@ -168,7 +168,7 @@ public class MascotasController {
 	
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
-	@GetMapping("/mascotas/mostrarMascota/{id}")
+	@GetMapping("mascotas/mostrarMascota/{id}")
 	public String mostrarDatosMascota(@PathVariable Integer id, Model modeloMascota) {
 		LOG_VETERINARIA.info("Vista de mostrar datos de mascota");		
 		
