@@ -38,7 +38,7 @@ import org.apache.commons.logging.LogFactory;
 public class ClientesController {
 	private static final Log LOG_VETERINARIA = LogFactory.getLog(ClientesController.class);
 	private static final String menu = "menu", formulario = "registrarCliente", vista_perfil = "perfil_cliente",
-			vista_clientes = "clientes/listadoClientes", formCliente = "/clientes/formCliente", datosCliente = "/clientes/mostrarCliente";
+			vista_clientes = "/clientes/listadoClientes", formCliente = "/clientes/formCliente", datosCliente = "/clientes/mostrarCliente";
 	private String txtCliente;
 	
 	

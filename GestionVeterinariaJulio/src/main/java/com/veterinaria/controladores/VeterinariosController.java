@@ -38,7 +38,7 @@ import com.veterinaria.servicios.Impl.VeterinariosImpl;
 @RequestMapping("/veterinarios")
 public class VeterinariosController {
 	private static final Log LOG_VETERINARIA = LogFactory.getLog(VeterinariosController.class);
-	private static final String vista_veterinarios = "veterinarios/listadoVeterinarios", formVeterinario = "/veterinarios/formVeterinario",
+	private static final String vista_veterinarios = "/veterinarios/listadoVeterinarios", formVeterinario = "/veterinarios/formVeterinario",
 			datosVeterinario = "/veterinarios/mostrarVeterinario";
 	private String txtVeterinario;
 	
