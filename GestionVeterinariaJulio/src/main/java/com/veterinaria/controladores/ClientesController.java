@@ -38,7 +38,7 @@ import org.apache.commons.logging.LogFactory;
 public class ClientesController {
 	private static final Log LOG_VETERINARIA = LogFactory.getLog(ClientesController.class);
 	private static final String menu = "menu", formulario = "registrarCliente", vista_perfil = "perfil_cliente",
-			formCliente = "/clientes/formCliente", datosCliente = "/clientes/mostrarCliente";
+			vista_clientes = "clientes/listadoClientes", formCliente = "clientes/formCliente", datosCliente = "clientes/mostrarCliente";
 	private String txtCliente;
 	
 	
@@ -83,7 +83,7 @@ public class ClientesController {
 	
 	/*-------------Métodos visualizados para un solo cliente-------------------------*/
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
-	@RequestMapping(value="/perfil_cliente/{id}",method=RequestMethod.GET)
+	@RequestMapping(value="perfil_cliente/{id}",method=RequestMethod.GET)
 	public ModelAndView verPerfilCliente(@ModelAttribute("usuario") ModeloUsuarios cliente, @PathVariable("id") Integer id) {		
 		UserDetails usuario = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String username = usuario.getUsername();
@@ -95,7 +95,7 @@ public class ClientesController {
 	}
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
-	@PostMapping("/editarPerfil")
+	@PostMapping("editarPerfil")
 	public String editarPerfilCliente(@Valid @ModelAttribute("usuario") ModeloUsuarios cliente,
 			BindingResult validacionPerfil, RedirectAttributes mensajeFlash) {
 		String error = "Error al registar nuevo cliente";
@@ -123,14 +123,14 @@ public class ClientesController {
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("clientes/listadoClientes")
-	public String verListadoClientes(@ModelAttribute("usuario") ModeloUsuarios modeloCliente, @RequestParam Map<String,Object> paginas,
-			Model mavUsuarios) {
+	public ModelAndView verListadoClientes(@ModelAttribute("usuario") ModeloUsuarios modeloCliente, @RequestParam Map<String,Object> paginas) {
 		LOG_VETERINARIA.info("Vista de listado de clientes");
 		UserDetails usuario = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
-		mavUsuarios.addAttribute("clientesTxt","Clientes no encontrados en la base de datos");
-		mavUsuarios.addAttribute("clientes",usuarios.listarUsuarios());
-		mavUsuarios.addAttribute("nombre",usuario.getUsername().toUpperCase());
+		ModelAndView mavUsuarios = new ModelAndView(vista_clientes);
+		mavUsuarios.addObject("clientesTxt","Clientes no encontrados en la base de datos");
+		mavUsuarios.addObject("clientes",usuarios.listarUsuarios());
+		mavUsuarios.addObject("nombre",usuario.getUsername().toUpperCase());
 		
 		/* Realizamos paginación para los usuarios clientes */
 		int numPaginas = paginas.get("pagina") != null ? (Integer.valueOf(paginas.get("pagina").toString()) - 1) : 0;
@@ -143,20 +143,20 @@ public class ClientesController {
 		if(totalClientes > 0) {	
 			/* Para empezar desde la 1ª paginación hasta el final de las páginas */
 			List<Integer> listadoClientes = IntStream.rangeClosed(1,totalClientes).boxed().collect(Collectors.toList());
-			mavUsuarios.addAttribute("paginas",listadoClientes);
+			mavUsuarios.addObject("paginas",listadoClientes);
 		}
 		
-		mavUsuarios.addAttribute("clientes",paginasCliente.getContent());
+		mavUsuarios.addObject("clientes",paginasCliente.getContent());
 		
-		mavUsuarios.addAttribute("anterior",numPaginas);
-		mavUsuarios.addAttribute("actual",numPaginas + 1);
-		mavUsuarios.addAttribute("siguiente",numPaginas + 2);
-		mavUsuarios.addAttribute("ultima",totalClientes);
-		return "clientes/listadoClientes";
+		mavUsuarios.addObject("anterior",numPaginas);
+		mavUsuarios.addObject("actual",numPaginas + 1);
+		mavUsuarios.addObject("siguiente",numPaginas + 2);
+		mavUsuarios.addObject("ultima",totalClientes);
+		return mavUsuarios;
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PostMapping("/actived/{id}")
+	@PostMapping("actived/{id}")
 	public String gestionarCliente(@ModelAttribute("usuario") ModeloUsuarios usuario, @PathVariable("id") int id, @RequestParam(name="username",required=false) String username,
 			@RequestParam(name="activado",required=false) boolean activado, BindingResult clienteValido, RedirectAttributes mensajeFlash) {
 		
@@ -172,12 +172,12 @@ public class ClientesController {
 		}
 		
 		usuarios.enabledCliente(id, usuario);
-		return "redirect:clientes/listadoClientes";
+		return "redirect:"+vista_clientes;
 	}
 	
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping({"/clientes/formCliente","/clientes/formCliente/{id}"})
+	@GetMapping({"clientes/formCliente","clientes/formCliente/{id}"})
 	public String formularioCliente(@ModelAttribute("usuario") ModeloUsuarios cliente, @PathVariable(name="id",required=false) Integer id,
 			Model modeloCliente) {
 		LOG_VETERINARIA.info("Formulario de cliente");
@@ -195,7 +195,7 @@ public class ClientesController {
 	
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PostMapping("/clientes/saveCliente")
+	@PostMapping("clientes/saveCliente")
 	public String saveCliente(@Valid @ModelAttribute("usuario") ModeloUsuarios cliente, BindingResult clienteValido,
 			RedirectAttributes mensajeFlash) {
 		
@@ -217,12 +217,12 @@ public class ClientesController {
 				mensajeFlash.addFlashAttribute("editado",txtCliente);
 			}
 			
-			return "redirect:clientes/listadoClientes";
+			return "redirect:"+vista_clientes;
 		}
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PostMapping("/clientes/eliminarCliente/{id}")
+	@PostMapping("clientes/eliminarCliente/{id}")
 	public String eliminarCliente(@ModelAttribute("usuario") ModeloUsuarios cliente, @PathVariable("id") int id,
 			@RequestParam(name="username",required=false) String username, RedirectAttributes mensajeFlash) {	
 		
@@ -231,11 +231,11 @@ public class ClientesController {
 		txtCliente = "Cliente "+username+" eliminado correctamente";
 		LOG_VETERINARIA.info(txtCliente);
 		mensajeFlash.addFlashAttribute("eliminado",txtCliente);
-		return "redirect:clientes/listadoClientes";
+		return "redirect:"+vista_clientes;
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/clientes/mostrarCliente/{id}")
+	@GetMapping("clientes/mostrarCliente/{id}")
 	public String mostrarDatosCliente(@PathVariable("id") int id, Model modeloCliente) {
 		LOG_VETERINARIA.info("Vista de mostrar datos de cliente");
 		modeloCliente.addAttribute("usuario",usuarios.buscarId(id));
