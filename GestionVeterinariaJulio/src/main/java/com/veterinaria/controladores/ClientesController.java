@@ -172,7 +172,7 @@ public class ClientesController {
 		}
 		
 		usuarios.enabledCliente(id, usuario);
-		return vista_clientes;
+		return "redirect:"+vista_clientes;
 	}
 	
 	
@@ -217,7 +217,7 @@ public class ClientesController {
 				mensajeFlash.addFlashAttribute("editado",txtCliente);
 			}
 			
-			return vista_clientes;
+			return "redirect:"+vista_clientes;
 		}
 	}
 	
@@ -231,7 +231,7 @@ public class ClientesController {
 		txtCliente = "Cliente "+username+" eliminado correctamente";
 		LOG_VETERINARIA.info(txtCliente);
 		mensajeFlash.addFlashAttribute("eliminado",txtCliente);
-		return vista_clientes;
+		return "redirect:"+vista_clientes;
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
