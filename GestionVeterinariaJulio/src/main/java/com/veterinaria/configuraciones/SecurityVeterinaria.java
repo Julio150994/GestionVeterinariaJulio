@@ -56,7 +56,7 @@ public class SecurityVeterinaria extends WebSecurityConfigurerAdapter {
 					"clientes/eliminarCliente/{id}","clientes/mostrarCliente").access("hasRole('ROLE_ADMIN')")
 			.antMatchers("veterinarios/listadoVeterinarios","veterinarios/formVeterinario","veterinarios/formVeterinario/{id}","veterinarios/saveVeterinario",
 					"veterinarios/eliminarVeterinario/{id}","veterinarios/mostrarVeterinario").access("hasRole('ROLE_ADMIN')")
-			.antMatchers("actived/{id}").access("hasRole('ROLE_ADMIN')")
+			.antMatchers("/actived/{id}").access("hasRole('ROLE_ADMIN')")
 			.antMatchers("perfil_cliente/{id}","editarPerfil").access("hasRole('ROLE_CLIENTE')")
 			.antMatchers("mascotas/listadoMascotas").access("hasRole('ROLE_CLIENTE') or hasRole('ROLE_VETERINARIO')")
 			.antMatchers("mascotas/formMascota","mascotas/formMascota/{id}","mascotas/saveMascota",
