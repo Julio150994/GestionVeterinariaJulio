@@ -156,7 +156,7 @@ public class ClientesController {
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PostMapping("/actived/{id}")
+	@PostMapping("actived/{id}")
 	public String gestionarCliente(@ModelAttribute("usuario") ModeloUsuarios usuario, @PathVariable("id") int id, @RequestParam(name="username",required=false) String username,
 			@RequestParam(name="activado",required=false) boolean activado, BindingResult clienteValido, RedirectAttributes mensajeFlash) {
 		
