@@ -49,7 +49,13 @@ public class UsuariosService implements UserDetailsService {
 		usuario.setUsername(usuario.getUsername());
 		usuario.setPassword(encriptar.encode(usuario.getPassword()));
 		usuario.setActivado(false);
-		usuario.setRol("ROLE_CLIENTE");
+		
+		if(usuario.getRol() == "ROLE_ADMIN")
+			usuario.setRol("ROLE_ADMIN");
+		else if(usuario.getRol() == "ROLE_VETERINARIO")
+			usuario.setRol("ROLE_VETERINARIO");
+		else if(usuario.getRol() == "ROLE_CLIENTE")
+			usuario.setRol("ROLE_CLIENTE");
 		return usuarios.save(usuario);
 	}
 	
