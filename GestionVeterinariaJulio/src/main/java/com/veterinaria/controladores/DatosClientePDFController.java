@@ -38,7 +38,7 @@ import com.veterinaria.servicios.Impl.UsuariosImpl;
 @RequestMapping("/")
 public class DatosClientePDFController {
 	private static final Log LOG_VETERINARIA = LogFactory.getLog(DatosClientePDFController.class);
-	private static final String datosClienteActual = "/citas/datosCliente";
+	private static final String datosClienteActual = "citas/datosCliente";
 	
 	private String txtFechaActual, fechaFormatoNormal;
 	
@@ -66,7 +66,7 @@ public class DatosClientePDFController {
 	
 	/* Método para mostrar los datos del cliente actual */
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
-	@GetMapping("/citas/datosCliente/{id}")
+	@GetMapping("citas/datosCliente/{id}")
 	public ModelAndView mostrarDatosCliente(@ModelAttribute("cita") ModeloCitas modeloCita, ModeloMascotas modeloMascota) {
 		LOG_VETERINARIA.info("Datos personales del cliente");
 		ModelAndView mavDatosCliente = new ModelAndView(datosClienteActual);
@@ -101,7 +101,7 @@ public class DatosClientePDFController {
 		
 	/* Método para exportar los datos del cliente a pdf */
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
-	@GetMapping("/citas/datosCliente/pdf/{id}")
+	@GetMapping("citas/datosCliente/pdf/{id}")
 	public String mostrarInformeCliente(HttpServletResponse resCliente, Model modelo, @Valid @ModelAttribute("mascota") ModeloMascotas mascota,
 			ModeloCitas cita, RedirectAttributes mensajeFlash) throws DocumentException, IOException {
 		
@@ -127,7 +127,7 @@ public class DatosClientePDFController {
 				
 				mensajeFlash.addFlashAttribute("txtFechaPosterior",mensajeError);
 			    mensajeFlash.addFlashAttribute("citasFechaPosterior",citas.findCitasRealizadasByFechaPosterior(mascota.getNombre(),fechaCita, realizada));
-			    return "redirect:/citas/datosCliente/"+cliente.getId();
+			    return "redirect:citas/datosCliente/"+cliente.getId();
 			}
 			else {
 				LOG_VETERINARIA.info("Informe descargado correctamente");
@@ -147,6 +147,6 @@ public class DatosClientePDFController {
 			}
 			
 		}
-		return "/citas/datosCliente/"+c.getId();
+		return "citas/datosCliente/"+c.getId();
 	}
 }

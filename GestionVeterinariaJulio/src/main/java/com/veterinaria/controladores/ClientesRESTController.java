@@ -42,7 +42,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @CrossOrigin(origins="http://localhost:8100", methods= {RequestMethod.GET, RequestMethod.POST})
 @RestController
-@RequestMapping("/apiVeterinaria")
+@RequestMapping("apiVeterinaria")
 public class ClientesRESTController {
 	private static final Log LOG_VETERINARIA = LogFactory.getLog(ClientesRESTController.class);
 	private String txtFechaActual, usuarioEmpty, datosUsuario, txtLogin, txtAdmin, txtVeterinario, txtLogout, txtCitasEmpty, txtHistorialCitas;
@@ -81,7 +81,7 @@ public class ClientesRESTController {
 	private CitasRepository citasRepository;
 	
 	
-	@PostMapping("/login")
+	@PostMapping("login")
 	public ResponseEntity<?> loginWithCiente(@RequestParam(name="username",required=false) String username,
 			@RequestParam(name="password",required=false) String password, Map<String, Object> clienteJSON) {
 		
@@ -160,7 +160,7 @@ public class ClientesRESTController {
 	}
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
-	@GetMapping("/cliente/citas")
+	@GetMapping("cliente/citas")
 	public ResponseEntity<?> mostrarHistorialCitasCliente(Citas cita) {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -195,7 +195,7 @@ public class ClientesRESTController {
 	}
 	
 	@PreAuthorize("hasRole('ROLE_CLIENTE')")
-	@PostMapping("/logout")
+	@PostMapping("logout")
 	public ResponseEntity<?> logoutCliente(HttpServletRequest req, HttpServletResponse res) {
 		Usuarios usuario = new Usuarios();
 		
