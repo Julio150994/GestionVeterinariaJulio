@@ -50,7 +50,6 @@ public class SecurityVeterinaria extends WebSecurityConfigurerAdapter {
 		.and()
 		.csrf().disable()
 		.authorizeRequests()
-			.antMatchers("/https://julio-gestion-veterinaria.herokuapp.com/").permitAll() // para nuestra aplicación de heroku
 			.antMatchers("/","/auth/**","/build/**","/css/**","/error/**","/clientes/**","/veterinarios/**","/frontend/**","/images/**","/mascotasImg/**","/js/**","/maps/**","/vendors/**","/webjars/**").permitAll()
 			.antMatchers("/menu","/registrarCliente","/auth/registrarCliente","/auth/login").permitAll()
 			.antMatchers("/clientes/listadoClientes","/clientes/formCliente","/clientes/formCliente/{id}","/clientes/saveCliente",
