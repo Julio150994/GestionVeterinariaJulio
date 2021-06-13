@@ -50,7 +50,7 @@ public class SecurityVeterinaria extends WebSecurityConfigurerAdapter {
 		.and()
 		.csrf().disable()
 		.authorizeRequests()
-			.antMatchers("/","/auth/**","/build/**","/css/**","/error/**","/clientes/**","/veterinarios/**","/frontend/**","/images/**","/mascotasImg/**","/js/**","/maps/**","/vendors/**","/webjars/**").permitAll()
+			.antMatchers("/","/auth/**","/build/**","/css/**","/error/**","clientes/**","/veterinarios/**","/frontend/**","/images/**","/mascotasImg/**","/js/**","/maps/**","/vendors/**","/webjars/**").permitAll()
 			.antMatchers("/menu","/registrarCliente","/auth/registrarCliente","/auth/login").permitAll()
 			.antMatchers("clientes/listadoClientes","clientes/formCliente","clientes/formCliente/{id}","clientes/saveCliente",
 					"clientes/eliminarCliente/{id}","clientes/mostrarCliente").access("hasRole('ROLE_ADMIN')")
