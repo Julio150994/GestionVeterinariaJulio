@@ -47,10 +47,6 @@ public class MascotasController {
 	private MascotasImpl mascotas;
 	
 	@Autowired
-	@Qualifier("clientesImpl")
-	private ClientesImpl clientes;
-	
-	@Autowired
 	@Qualifier("usuariosImpl")
 	private UsuariosImpl usuarioCliente;
 	
