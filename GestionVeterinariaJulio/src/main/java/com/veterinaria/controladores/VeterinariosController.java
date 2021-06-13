@@ -38,8 +38,8 @@ import com.veterinaria.servicios.Impl.VeterinariosImpl;
 @RequestMapping("/veterinarios")
 public class VeterinariosController {
 	private static final Log LOG_VETERINARIA = LogFactory.getLog(VeterinariosController.class);
-	private static final String vista_veterinarios = "/veterinarios/listadoVeterinarios", formVeterinario = "/veterinarios/formVeterinario",
-			datosVeterinario = "/veterinarios/mostrarVeterinario";
+	private static final String vista_veterinarios = "veterinarios/listadoVeterinarios", formVeterinario = "veterinarios/formVeterinario",
+			datosVeterinario = "veterinarios/mostrarVeterinario";
 	private String txtVeterinario;
 	
 	@Autowired
@@ -52,7 +52,7 @@ public class VeterinariosController {
 	
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/listadoVeterinarios")
+	@GetMapping("listadoVeterinarios")
 	public ModelAndView verListadoVeterinarios(@ModelAttribute("usuario") ModeloUsuarios veterinario, @RequestParam Map<String,Object> paginas) {
 		LOG_VETERINARIA.info("Vista de listado de veterinarios");
 		
@@ -88,7 +88,7 @@ public class VeterinariosController {
 	
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping({"/formVeterinario","/formVeterinario/{id}"})
+	@GetMapping({"formVeterinario","formVeterinario/{id}"})
 	public String formularioVeterinario(@PathVariable(name="id",required=false) Integer id,
 			Model modeloVeterinario) {
 		LOG_VETERINARIA.info("Formulario de veterinario");
@@ -104,7 +104,7 @@ public class VeterinariosController {
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PostMapping("/saveVeterinario")
+	@PostMapping("saveVeterinario")
 	public String saveVeterinario(@Valid @ModelAttribute("usuario") ModeloUsuarios veterinario, BindingResult veterinarioValidado,
 			RedirectAttributes mensajeFlash) {
 		
@@ -130,7 +130,7 @@ public class VeterinariosController {
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PostMapping("/eliminarVeterinario/{id}")
+	@PostMapping("eliminarVeterinario/{id}")
 	public String eliminarVeterinario(@ModelAttribute("usuario") ModeloUsuarios veterinario, @PathVariable("id") Integer id,
 			@RequestParam(name="username",required=false) String username, RedirectAttributes mensajeFlash) {
 		
@@ -143,7 +143,7 @@ public class VeterinariosController {
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/mostrarVeterinario/{id}")
+	@GetMapping("mostrarVeterinario/{id}")
 	public String mostrarDatosVeterinario(@PathVariable Integer id, Model modeloVeterinario) {
 		LOG_VETERINARIA.info("Vista de mostrar datos de cliente");
 		modeloVeterinario.addAttribute("usuario",usuarios.buscarId(id));
