@@ -195,7 +195,7 @@ public class ClientesController {
 	
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PostMapping("/clientes/saveCliente")
+	@PostMapping("clientes/saveCliente")
 	public String saveCliente(@Valid @ModelAttribute("usuario") ModeloUsuarios cliente, BindingResult clienteValido,
 			RedirectAttributes mensajeFlash) {
 		
@@ -222,7 +222,7 @@ public class ClientesController {
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PostMapping("/clientes/eliminarCliente/{id}")
+	@PostMapping("clientes/eliminarCliente/{id}")
 	public String eliminarCliente(@ModelAttribute("usuario") ModeloUsuarios cliente, @PathVariable("id") int id,
 			@RequestParam(name="username",required=false) String username, RedirectAttributes mensajeFlash) {	
 		
