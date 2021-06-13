@@ -49,16 +49,6 @@
 							<input type="password" th:field="*{password}" placeholder="Password" class="form-control" name="password" id="datoCliente"/>
 							<div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error producido en la contraseña</div>
 						</div>
-						
-						<div class="form-label-group">
-							<select name="rol" th:field="*{rol}" id="datoCliente">
-								<option value="">Seleccione un rol:</option>
-								<option value="ROLE_ADMIN">ROLE_ADMIN</option>
-								<option value="ROLE_VETERINARIO">ROLE_VETERINARIO</option>
-								<option value="ROLE_CLIENTE">ROLE_CLIENTE</option>
-							</select>
-							<div class="text-danger" th:if="${#fields.hasErrors('rol')}" th:errors="*{rol}">Error producido en el rol</div>
-						</div>
 					
 						<div class="card-footer">
 							<div class="alert alert-danger" th:if="${errorCliente}" th:text="${errorCliente}"></div>
