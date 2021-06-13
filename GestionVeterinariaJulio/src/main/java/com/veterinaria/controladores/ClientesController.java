@@ -122,7 +122,7 @@ public class ClientesController {
 	/*---------------------Métodos para los clientes--------------------------------*/
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/clientes/listadoClientes")
+	@GetMapping("clientes/listadoClientes")
 	public String verListadoClientes(@ModelAttribute("usuario") ModeloUsuarios modeloCliente, @RequestParam Map<String,Object> paginas,
 			Model mavUsuarios) {
 		LOG_VETERINARIA.info("Vista de listado de clientes");
@@ -172,7 +172,7 @@ public class ClientesController {
 		}
 		
 		usuarios.enabledCliente(id, usuario);
-		return "redirect:/clientes/listadoClientes";
+		return "redirect:clientes/listadoClientes";
 	}
 	
 	
@@ -217,7 +217,7 @@ public class ClientesController {
 				mensajeFlash.addFlashAttribute("editado",txtCliente);
 			}
 			
-			return "redirect:/clientes/listadoClientes";
+			return "redirect:clientes/listadoClientes";
 		}
 	}
 	
@@ -231,7 +231,7 @@ public class ClientesController {
 		txtCliente = "Cliente "+username+" eliminado correctamente";
 		LOG_VETERINARIA.info(txtCliente);
 		mensajeFlash.addFlashAttribute("eliminado",txtCliente);
-		return "redirect:/clientes/listadoClientes";
+		return "redirect:clientes/listadoClientes";
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
