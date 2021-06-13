@@ -38,7 +38,7 @@ import org.apache.commons.logging.LogFactory;
 public class ClientesController {
 	private static final Log LOG_VETERINARIA = LogFactory.getLog(ClientesController.class);
 	private static final String menu = "menu", formulario = "registrarCliente", vista_perfil = "perfil_cliente",
-			vista_clientes = "clientes/listadoClientes", formCliente = "/clientes/formCliente", datosCliente = "/clientes/mostrarCliente";
+			vista_clientes = "/clientes/listadoClientes", formCliente = "/clientes/formCliente", datosCliente = "/clientes/mostrarCliente";
 	private String txtCliente;
 	
 	
@@ -122,7 +122,7 @@ public class ClientesController {
 	/*---------------------Métodos para los clientes--------------------------------*/
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("clientes/listadoClientes")
+	@GetMapping("/clientes/listadoClientes")
 	public ModelAndView verListadoClientes(@ModelAttribute("usuario") ModeloUsuarios modeloCliente, @RequestParam Map<String,Object> paginas) {
 		LOG_VETERINARIA.info("Vista de listado de clientes");
 		UserDetails usuario = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
